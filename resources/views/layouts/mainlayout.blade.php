@@ -583,10 +583,13 @@
     };
 </script>
 <!-- end::Global Config -->
+<!-- jquery plugin -->
+<script src="{{ asset('js/jquery.min.js') }}" type="text/javascript"></script>
 <!--begin::Global Theme Bundle(used by all pages) -->
 <script src="{{ asset('plugins/global/plugins.bundle.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/scripts.bundle.js') }}" type="text/javascript"></script>
 <!--end::Global Theme Bundle -->
+<script src="{{ asset('js/createquestion.js') }}" type="text/javascript"></script>
 <!--begin::Page Scripts(used by this page) -->
 <!--end::Page Scripts -->
 </body>

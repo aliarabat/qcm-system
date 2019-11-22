@@ -1,4 +1,4 @@
-<div class="kt-portlet kt-portlet--height-fluid">
+<div class="kt-portlet kt-portlet--height-fluid" id="form-create-question">
         <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
                 <h3 class="kt-portlet__head-title">Création des questions</h3>
@@ -84,7 +84,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row justify-content-center align-items-baseline mb-2">
+                <div class="row justify-content-center align-items-baseline mb-2" id="response">
                     <div class="input-group col-md-6 col-sm-9 col-lg-6 col-10">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Réponse 1</span>
@@ -105,7 +105,7 @@
                         <i class="fa fa-trash"></i>
                     </button>
                 </div>
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center" id="add-button">
                     <button class="btn btn-icon btn-circle btn-outline-brand btn-elevate">
                         <i class="fa fa-plus" style="font-size: 20px;"></i>
                     </button>
