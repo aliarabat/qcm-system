@@ -14,5 +14,16 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return auth()->user();
+});
+
+Route::post('/register', 'RegisterController@register')->name('registerUser');
+Route::post('/login', 'LoginController@login')->name('loginUser');
+
+Route::middleware('jwt.auth')->get('/users', function (Request $request) {
     return $request->user();
+});
+
+Route::middleware('jwt.auth')->group(function(){
+    Route::resource('books', 'Api\BookController');
 });

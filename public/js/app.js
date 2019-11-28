@@ -19235,6 +19235,11 @@ module.exports = function(module) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+$(function () {
+  $(".button-collapse").sideNav();
+  $('select').material_select();
+});
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

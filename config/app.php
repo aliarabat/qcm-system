@@ -175,7 +175,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 		
-		Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        'Tymon\JWTAuth\Providers\LaravelServiceProvider'
     ],
 
     /*
@@ -227,7 +228,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 		'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-
+        'JWTAuth'=>'Tymon\JWTAuth\Facades\JWTAuth',
+        'JWTFactory'=>'Tymon\JWTAuth\Facades\JWTFactory',
     ],
 
 ];

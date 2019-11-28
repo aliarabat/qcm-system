@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/questions', 'QuestionController@create');
+Route::get('/mainparts', 'MainPartsController@create');
+

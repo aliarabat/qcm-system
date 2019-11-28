@@ -1,115 +1,95 @@
-<div class="kt-portlet kt-portlet--height-fluid" id="form-create-question">
-        <div class="kt-portlet__head">
-            <div class="kt-portlet__head-label">
-                <h3 class="kt-portlet__head-title">Création des questions</h3>
+@extends('layouts.mainLayout')
+@section('mainContent')
+    <form class="row">
+        <div id="question-create-form1" class="col-s12 z-depth-4 mt-p-1">
+            <div class="row">
+                <div class="input-field col s6">
+                    <select>
+                        <option value="f1" selected>F1</option>
+                        <option value="f2">F1</option>
+                        <option value="f3">F2</option>
+                    </select>
+                    <label>Filière</label>
+                </div>
+                <div class="input-field col s6">
+                    <select>
+                        <option value="m1" selected>M1</option>
+                        <option value="m2">M2</option>
+                        <option value="m3">M3</option>
+                    </select>
+                    <label>Module</label>
+                </div>
+                <div class="input-field col s6 offset-s3">
+                    <select>
+                        <option value="C1" selected>C1</option>
+                        <option value="C2">C2</option>
+                        <option value="C3">C3</option>
+                    </select>
+                    <label>Chapitre</label>
+                </div>
+            </div>
+            <div class="row" style="display: flex; justify-content: center;">
+                <button id="arrow-forward" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
+                    <i class="material-icons right">arrow_forward</i>
+                    suivant
+                </button>
             </div>
         </div>
-        <div class="kt-portlet__body kt-portlet__body--fluid">
-            <form class="col-lg-12">
-                <div class="row">
-                    <div class="form-group input-group col-md-6 col-sm-12 col-lg-6">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Filière</span>
-                        </div>
-                        <select class="form-control">
-                            <option>Mustard</option>
-                            <option>Ketchup</option>
-                            <option>Relish</option>
-                        </select>
+        <div id="question-create-form2" hidden class="col-s12 z-depth-4 mt-p-1">
+            <div class="row">
+                <div class="col s6" style="display: flex; align-items: center">
+                    <div class="input-field col s11" style="padding: 0;">
+                        <input type="text">
+                        <label>Question</label>
                     </div>
-                    <div class="form-group  input-group col-md-6 col-sm-12 col-lg-6">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Module</span>
-                        </div>
-                        <select class="form-control">
-                            <option>Mustard</option>
-                            <option>Ketchup</option>
-                            <option>Relish</option>
-                        </select>
-                    </div>
+                    <p class="col s2" >
+                        <input type="checkbox" id="test5" />
+                        <label for="test5">Unique</label>
+                    </p>
                 </div>
-                <div class="row">
-                    <div class="form-group input-group col-md-6 col-sm-12 col-lg-6">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Chapitre</span>
-                        </div>
-                        <select class="form-control">
-                            <option>Mustard</option>
-                            <option>Ketchup</option>
-                            <option>Relish</option>
-                        </select>
-                    </div>
+                <div class="input-field col s6">
+                    <input type="number">
+                    <label>Durée</label>
                 </div>
-                <hr/>
-                <div class="row">
-                    <div class="form-group input-group col-md-6 col-sm-12 col-lg-6">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Question</span>
-                            </div>
-                            <input type="text" class="form-control"
-                                   aria-label="Text input with dropdown button">
-                            <div class="input-group-append">
-                                <button class="btn btn-secondary dropdown-toggle"
-                                        data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    Unique
-                                </button>
-                                <div class="dropdown-menu" x-placement="bottom-start">
-                                    <a class="dropdown-item" href="#">Unique</a>
-                                    <a class="dropdown-item" href="#">Choix multiple</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group input-group col-md-6 col-sm-12 col-lg-6">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Durée</span>
-                        </div>
-                        <input type="number" class="form-control" name="duration" min="0"/>
-                        <div class="input-group-append">
-                            <span class="input-group-text">s</span>
-                        </div>
-                    </div>
+                <div class="input-field col s6">
+                    <select name="" id="">
+                        <option value="Facile">Facile</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Difficile">Difficile</option>
+                    </select>
+                    <label>Chapitre</label>
                 </div>
-                <div class="row mb-5">
-                    <div class="input-group col-md-6 col-sm-12 col-lg-6">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Niveau</span>
-                        </div>
-                        <select class="form-control">
-                            <option>Facile</option>
-                            <option>Moyen</option>
-                            <option>Difficile</option>
-                        </select>
+                <div class="input-field col s6">
+                    <input type="number" min="0">
+                    <label>Note</label>
+                </div>
+            </div>
+            <div class="row">
+                <div id="response1" style="display: flex; align-items: center;">
+                    <div class="input-field col s6 offset-s3">
+                        <input type="text" >
+                        <label>Réponse 1</label>
                     </div>
+                    <p class="">
+                        <input type="checkbox" id="check1" />
+                        <label for="check1"></label>
+                    </p>
+                    <span class="red-text" style="cursor: pointer">
+                        <i class="material-icons ">delete</i>
+                    </span>
                 </div>
-                <div class="row justify-content-center align-items-baseline mb-2" id="response">
-                    <div class="input-group col-md-6 col-sm-9 col-lg-6 col-10">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Réponse 1</span>
-                        </div>
-                        <input type="text" class="form-control"
-                               aria-label="Text input with checkbox">
-                        <div class="input-group-append">
-                            <span class="input-group-text">
-                                <label
-                                    class="kt-checkbox kt-checkbox--single kt-checkbox--primary">
-                                    <input type="checkbox" checked="">
-                                    <span></span>
-                                </label>
-                            </span>
-                        </div>
-                    </div>
-                    <button class="btn btn-circle btn-outline-danger btn-icon btn-elevate">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </div>
-                <div class="d-flex justify-content-center" id="add-button">
-                    <button class="btn btn-icon btn-circle btn-outline-brand btn-elevate">
-                        <i class="fa fa-plus" style="font-size: 20px;"></i>
-                    </button>
-                </div>
-            </form>
+            </div>
+            <div id="add-button" class="row" style="display: flex; justify-content: center">
+                <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
+                    <i class="material-icons">add</i>
+                </button>
+            </div>
+            <div class="row" style="display: flex; justify-content: center;">
+                    <a href="#" id="arrow-back" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
+                        <i class="material-icons left">arrow_back</i>
+                        Revenir
+                    </a>
+            </div>
         </div>
-    </div>
+    </form>
+@endsection
