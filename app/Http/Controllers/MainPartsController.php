@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Niveau;
 use Illuminate\Http\Request;
 
 class MainPartsController extends Controller
@@ -10,4 +11,17 @@ class MainPartsController extends Controller
     {
         return view('mainparts.create');
     }
+
+    public function createNiveau(Request $request)
+    {
+        $niveau=new Niveau();
+        $niveau->niveau=$request->input('niveau');
+        $niveau->type=$request->input('type');
+        $niveau->save();
+        return redirect()->route('mainParts.create');
+
+
+    }
+
+    
 }

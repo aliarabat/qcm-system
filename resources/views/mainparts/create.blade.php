@@ -12,13 +12,24 @@
             </ul>
         </div>
         <div id="niveau" class="col s12" style="display: flex; align-items: baseline;">
-            <div class="input-field col s5">
-                <input type="text"/>
-                <label for="">Niveau</label>
-            </div>
+            <form action="{{route('mainParts.createNiveau')}}" method="post">
+                    @csrf
+                            <div class="input-field col s5">
+                                    <input id="niveauIn" name="niveau" type="text"/>
+                                    <label for="niveauIn">Niveau</label>
+                                </div>
+                                <div class="input-field col s5">
+                                    <input  id="typeIn" name="type" type="text"/>
+                                    <label for="typeIn">Type</label>
+                                </div>
+                  
+        
             <div class="col">
-                <button class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
+                <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
             </div>
+            
+        </form>
+            
         </div>
         <div id="filiere" class="col s12" style="display: flex; align-items: baseline;">
             <div class="input-field col s5">
