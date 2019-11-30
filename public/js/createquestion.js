@@ -14,19 +14,24 @@ $(function () {
         e.preventDefault();
         var count = $('[id^="response"]').length + 1;
         const newResponse = `
-                <div id="response`+ count + `" style="display: flex; align-items: center;">
+                <div id="response${count}" style="display: flex; align-items: center;">
                     <div class="input-field col s6 offset-s3">
-                        <input type="text" >
-                        <label>Réponse `+ count + `</label>
+                        <input type="text" required name="response[${count-1}][suggestion]">
+                        <label>Réponse ${count}</label>
                     </div>
                     <p class="">
-                        <input type="checkbox" id="check`+ count + `" />
-                        <label for="check`+ count + `"></label>
+                        <input type="checkbox" id="check${count}" name="response[${count-1}][checked] " />
+                        <label for="check${count}"></label>
                     </p>
                     <span class="red-text" style="cursor: pointer">
                         <i class="material-icons ">delete</i>
                     </span>
                 </div>`;
         $("[id^='response']:last").after(newResponse);
+    });
+
+    $("#question-form").submit(function (e) {
+        console.log($(this));
+        e.preventDefault();
     });
 });

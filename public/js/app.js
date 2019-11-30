@@ -19238,6 +19238,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 $(function () {
   $(".button-collapse").sideNav();
   $('select').material_select();
+  $('.modal').modal(); // $('.tabs').tabs({swipeable: true});
 });
 
 /***/ }),
