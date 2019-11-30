@@ -19,6 +19,9 @@ Route::get('/questions', 'QuestionController@create');
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
 Route::Post('/mainparts', 'MainPartsController@createNiveau')->name('mainParts.createNiveau');
 Route::Post('/mainparts/filiere', 'MainPartsController@createFiliere')->name('mainParts.createFiliere');
+Route::Post('/mainparts/module', 'MainPartsController@createModule')->name('mainParts.createModule');
+Route::Post('/mainparts/chapitre', 'MainPartsController@createChapitre')->name('mainParts.createChapitre');
+
 
 
 
