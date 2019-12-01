@@ -14,12 +14,24 @@
         </div>
 
 
-
+        @if(session()->has('status'))
+        <h6 style="color: green">
+            {{session()->get('status')}}
+            </h6>
+@endif
+@if(session()->has('errorStatus'))
+<h6 style="color: red">
+{{session()->get('errorStatus')}}
+</h6>
+@endif
 
 
         <!--Niveau-->
-        <div id="niveau" class="col s12" style="display: flex; align-items: baseline;">
-            <form action="{{route('mainParts.createNiveau')}}" method="post" class="col s12" >
+        <div id="niveau" class="col s12" >
+
+            <div style="display: flex; align-items: center;">
+            
+                <form action="{{route('mainParts.createNiveau')}}" method="post" class="col s12" >
                     @csrf  
 
                                     <div class="input-field col s6 ">
@@ -33,7 +45,65 @@
                                     <div class="col s2 offset-s5">
                                         <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
                                     </div>
-        </form>
+                </form>
+
+            </div>
+
+            <div class="row">
+                <table class="centered">
+                    <thead>
+                        <tr>
+                            <th>Niveau</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+            
+                    <tbody>
+                        <tr>
+                            <td>Licence</td>
+                            <td>Professionnelle</td>
+                            <td>
+                                <a href="#modal1" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <div class="material-icons">edit</div>
+                                </a>
+                                <a href="#delete1" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
+                                    <div class="material-icons">delete</div>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Master</td>
+                            <td>Recherche</td>
+                            <td>
+                                <a href="#" class="light-blue-text text-darken-4 tooltipped" data-position="top" data-tooltip="Mettre à jour">
+                                    <div class="material-icons">edit</div>
+                                </a>
+                                <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                    <div class="material-icons">delete</div>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Licence</td>
+                            <td>Fondamentale</td>
+                            <td>
+                                <a href="#" class="light-blue-text text-darken-4 tooltipped" data-position="top" data-tooltip="Mettre à jour">
+                                    <div class="material-icons">edit</div>
+                                </a>
+                                <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                    <div class="material-icons">delete</div>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+
+
+
+
         </div>
 
 
@@ -41,35 +111,78 @@
 
 
         <!--Filiere -->
-        <div id="filiere" class="col s12" style="display: flex; align-items: baseline;">
+        <div id="filiere" class="col s12">
+            <div  style="display: flex; align-items: center;">
+
                 <form action="{{route('mainParts.createFiliere')}}" method="post" class="col s12" >
-                        @csrf  
-                        <div class="input-field col s4">
-                                <select name="niveauFiliere" id="niveauFiliere">
-                                        <option value="m1" selected disabled>Niveau</option>
-                                        @forelse ($niveaux as $niveau)
-                                        <option value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
-                                        @empty
-                                        <option value="m1" selected disabled>Niveau</option>
-                                        @endforelse
-                                </select>
-                                <label>Niveau</label>
-                            </div>
+                    @csrf  
+                    <div class="input-field col s4">
+                            <select name="niveauFiliere" id="niveauFiliere">
+                                    <option value="m1" selected disabled>Niveau</option>
+                                    @forelse ($niveaux as $niveau)
+                                    <option value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
+                                    @empty
+                                    <option value="m1" selected disabled>Niveau</option>
+                                    @endforelse
+                            </select>
+                            <label>Niveau</label>
+                        </div>
 
-                            <div class="input-field col s4 ">
-                                    <input id="filiereIn" name="nom_filiere" type="text"/>
-                                     <label for="filiereIn">Filière</label>
-                             </div>
+                        <div class="input-field col s4 ">
+                                <input id="filiereIn" name="nom_filiere" type="text"/>
+                                 <label for="filiereIn">Filière</label>
+                         </div>
 
-                             <div class="input-field col s4">
-                                 <input  id="libelleIn" name="libelle" type="text"/>
-                                 <label for="libelleIn">Libellé</label>
-                             </div>
+                         <div class="input-field col s4">
+                             <input  id="libelleIn" name="libelle" type="text"/>
+                             <label for="libelleIn">Libellé</label>
+                         </div>
 
-                            <div class=" col s2 offset-s5">
-                                <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
-                            </div>
-            </form>
+                        <div class=" col s2 offset-s5">
+                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                        </div>
+        </form>
+            </div>
+
+            <div class="row">
+                <table class="centered">
+                    <thead>
+                        <tr>
+                            <th>Niveau</th>
+                            <th>Filière</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+            
+                    <tbody>
+                        <tr>
+                            <td>Master</td>
+                            <td>ISI</td>
+                            <td>
+                                <a href="#modal1" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <div class="material-icons">edit</div>
+                                </a>
+                                <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                    <div class="material-icons">delete</div>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>License</td>
+                            <td>SMI</td>
+                            <td>
+                                <a href="#" class="light-blue-text text-darken-4 tooltipped" data-position="top" data-tooltip="Mettre à jour">
+                                    <div class="material-icons">edit</div>
+                                </a>
+                                <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                    <div class="material-icons">delete</div>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+                
 
             
         </div>
@@ -80,35 +193,78 @@
 
 
         <!--Module-->
-        <div id="module" class="col s12" style="display: flex; align-items: baseline;">
-            <form action="{{route('mainParts.createModule')}}" method="post" class="col s12" >
-                @csrf  
-                <div class="input-field col s4">
-                        <select name="filiereModule" id="filiereModule">
-                                <option value="m1" selected disabled>Filière</option>
-                                @forelse ($filieres as $filiere)
-                                <option value="{{$filiere->nom_filiere}}-{{$filiere->libelle}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
-                                @empty
-                                <option value="m1" selected disabled>Filière</option>
-                                @endforelse
-                        </select>
-                        <label>Filière</label>
-                    </div>
+        <div id="module" class="col s12">
 
-                    <div class="input-field col s4 ">
-                            <input id="moduleIn" name="nom_module" type="text"/>
-                             <label for="moduleIn">Module</label>
-                     </div>
-
-                     <div class="input-field col s4">
-                         <input  id="libelleModuleIn" name="libelleModule" type="text"/>
-                         <label for="libelleModuleIn">Libellé</label>
-                     </div>
-
-                    <div class="col s2 offset-s5">
-                        <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
-                    </div>
-    </form>
+            <div style="display: flex; align-items: center;">
+                <form action="{{route('mainParts.createModule')}}" method="post" class="col s12" >
+                    @csrf  
+                    <div class="input-field col s4">
+                            <select name="filiereModule" id="filiereModule">
+                                    <option value="m1" selected disabled>Filière</option>
+                                    @forelse ($filieres as $filiere)
+                                    <option value="{{$filiere->nom_filiere}}-{{$filiere->libelle}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
+                                    @empty
+                                    <option value="m1" selected disabled>Filière</option>
+                                    @endforelse
+                            </select>
+                            <label>Filière</label>
+                        </div>
+    
+                        <div class="input-field col s4 ">
+                                <input id="moduleIn" name="nom_module" type="text"/>
+                                 <label for="moduleIn">Module</label>
+                         </div>
+    
+                         <div class="input-field col s4">
+                             <input  id="libelleModuleIn" name="libelleModule" type="text"/>
+                             <label for="libelleModuleIn">Libellé</label>
+                         </div>
+    
+                        <div class="col s2 offset-s5">
+                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                        </div>
+        </form>
+            
+            </div>
+            <div class="row">
+                <table class="centered">
+                    <thead>
+                        <tr>
+                            <th>Filière</th>
+                            <th>Module</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+            
+                    <tbody>
+                        <tr>
+                            <td>ISI</td>
+                            <td>SI</td>
+                            <td>
+                                <a href="#modal1" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <div class="material-icons">edit</div>
+                                </a>
+                                <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                    <div class="material-icons">delete</div>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>SD</td>
+                            <td>Machine Learning</td>
+                            <td>
+                                <a href="#" class="light-blue-text text-darken-4 tooltipped" data-position="top" data-tooltip="Mettre à jour">
+                                    <div class="material-icons">edit</div>
+                                </a>
+                                <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                    <div class="material-icons">delete</div>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
 
         </div>
 
@@ -118,47 +274,210 @@
 
         <!--Chapitre-->
         <div id="chapitre" class="col s12">
-            <form action="{{route('mainParts.createChapitre')}}" method="post" class="col s12" >
-                @csrf  
-                <div class="input-field col s6">
-                        <select name="moduleChapitre" id="moduleChapitre">
-                                <option value="m1" selected disabled>Module</option>
-                                @forelse ($allModules  as $module)
-                                <option value="{{$module->nom_module}}-{{$module->libelle}}">{{$module->nom_module}}-{{$module->libelle}}</option>
-                                @empty
-                                <option value="m1" selected disabled>Module</option>
-                                @endforelse
-                        </select>
-                        <label>Module</label>
-                    </div>
+            <div style="display: flex; align-items: center;">
+                    <form action="{{route('mainParts.createChapitre')}}" method="post" class="col s12" >
+                            @csrf
+                            <div class="input-field col s4">
+                                <select name="filiereChapitre" id="filiereChapitre" >
+                                        <option value="m1" selected disabled>Filière</option>
+                                        @forelse ($filieres as $filiere)
+                                        <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
+                                        @empty
+                                        <option value="m1" selected disabled>Filière</option>
+                                        @endforelse
+                                </select>
+                                <label>Filière</label>
+                            </div>
+                            <div class="input-field col s4">
+                                    <select id="moduleChapitre" name="moduleChapitre"  >
+                                        <option value="m1" selected disabled>Module</option>
+                                        @forelse ($modules as $module)
+                                        <option value="{{$module->nom_module}}">{{$module->nom_module}}-{{$module->libelle}}</option>
+                                        @empty
+                                        <option value="m1" selected disabled>Module</option>
+                                        @endforelse
+            
+                                    </select>
+                                    <label>Module</label>
+                                </div>
+            
+                                <div class="input-field col s4 ">
+                                        <input id="chapitreIn" name="nom_chapitre" type="text"/>
+                                         <label for="chapitreIn">Chapitre</label>
+                                 </div>
+            
+                                
+            
+                                <div class="col s2 offset-s5">
+                                    <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                                </div>
+                </form>
+            
+            
+            </div>
+            <div class="row">
+                    <table class="centered">
+                        <thead>
+                            <tr>
+                                <th>Filière</th>
+                                <th>Module</th>
+                                <th>Chapitre</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                            <tr>
+                                <td>ISI</td>
+                                <td>MERISE</td>
+                                <td>DEMARCHE MCC</td>
+                                <td>
+                                    <a href="#modal1" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                        <div class="material-icons">edit</div>
+                                    </a>
+                                    <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                        <div class="material-icons">delete</div>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SD</td>
+                                <td>Machine Learning</td>
+                                <td>Bases Python</td>
+                                <td>
+                                    <a href="#" class="light-blue-text text-darken-4 tooltipped" data-position="top" data-tooltip="Mettre à jour">
+                                        <div class="material-icons">edit</div>
+                                    </a>
+                                    <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                        <div class="material-icons">delete</div>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                    <div class="input-field col s6 ">
-                            <input id="chapitreIn" name="nom_chapitre" type="text"/>
-                             <label for="chapitreIn">Chapitre</label>
-                     </div>
+       
+    </div>
+    @endsection
 
-                    
-
-                    <div class="col s2 offset-s5">
-                        <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
-                    </div>
-    </form>
-
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Mise à jour</h4>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="text" value="Licence"/>
+                    <label for="Niveau">Niveau</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="text" value="Professionnelle"/>
+                    <label for="Niveau">Type</label>
+                </div>
+            </div>
         </div>
-
-
-
-        @if(session()->has('status'))
-        <h6 style="color: green">
-            {{session()->get('status')}}
-            </h6>
-@endif
-@if(session()->has('errorStatus'))
-<h6 style="color: red">
-{{session()->get('errorStatus')}}
-</h6>
-@endif
-
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+            <a href="#!" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>
+        </div>
+    </div>
+    
+    <!-- Modal Structure -->
+    <div id="delete1" class="modal">
+        <div class="modal-content">
+            <h4>Suppression</h4>
+            <p>Voulez-vous vraiment supprimer ce Niveau?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+            <a href="#!" class="waves-effect waves-light btn-flat materialize-red white-text">Supprimer</a>
+        </div>
     </div>
 
-@endsection
+
+
+
+
+
+
+
+<!--Script de la génération du select modules par filiere-->
+
+    @section('script')
+    <script type="text/javascript">
+    $(document).ready(function() {
+    
+    $('select[name="filiereChapitre"]').on('change',function(){
+       var nom_filiere = $(this).val();
+       //$('#moduleChapitre').find('option').not(':first').remove();
+    
+       $.ajax({
+          url : '{{route('mainParts.modulesFiliere')}}',
+          data: {
+            "_token": "{{ csrf_token() }}",
+            "nom_filiere": nom_filiere
+            },
+          type: 'POST',
+          dataType: 'JSON',
+          success: function( result )
+          {
+            //var len = Object.keys(result).length;
+            var len = 0;
+                 if(result['data'] != null){
+                   len = result['data'].length;
+                   $('select[name="moduleChapitre"]').empty();
+                   //var o = new Option("Module", "m1");
+                   //$(o).html("Module");
+                   //$("#moduleChapitre").append(o);
+                   var s='<option value="m1" selected disabled>Module</option>';
+                   //$('#moduleChapitre').append($('<option>', {value: 'Module',text: 'Module'}));
+                   //var x = document.getElementById("moduleChapitre");
+                   /*while (x.hasChildNodes()) {  
+                   x.removeChild(x.firstChild);
+                  }
+                   /*var moduleChapitre=$("#moduleChapitre").empty();
+                   moduleChapitre.append('<option value="m1" selected disabled>Module</option>');*/
+                 }
+              //console.log(result);
+              //console.log(len);
+              //$("#moduleChapitre").empty();
+             for( var i = 0; i<len; i++){
+                        var id = result['data'][i].id;
+                        var name = result['data'][i].nom_module;
+                        s+='<option value="' + name + '">' + name + '</option>'; 
+                        $('select[name="moduleChapitre"]').html(s);  
+                        //console.log(document.getElementById("moduleChapitre"));
+                        //$('#moduleChapitre').append($('<option>', {value: name,text: name}));
+                        /*console.log(id);
+                        console.log(name);
+                        var option = new Option(name,name); 
+                        console.log(option);
+                        $(o).html(name);
+                        $('#moduleChapitre').append(option);
+                        //moduleChapitre.append(option);
+                        //console.log(x);
+                        /*var option = document.createElement("OPTION");
+                        var textOption = document.createTextNode(name);
+                        option.appendChild(textOption);
+                        option.id=id;
+                        option.value=name;
+                        console.log(option);
+                        x.appendChild(option);
+                        console.log(x);*/
+    
+                    }
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
+    });
+    
+    
+    });
+    </script>
+    
+    @endsection
