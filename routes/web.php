@@ -15,7 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/questions', 'QuestionController@create');
+
+Route::resource('/questions' , 'QuestionController');
+
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
 Route::Post('/mainparts/modulesFiliere', 'MainPartsController@modulesFiliere')->name('mainParts.modulesFiliere');
 Route::Post('/mainparts', 'MainPartsController@createNiveau')->name('mainParts.createNiveau');
