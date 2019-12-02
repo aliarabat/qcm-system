@@ -159,20 +159,6 @@ $assocFiliereModule=AssocFiliereModule::get()->where('filiere_id',$filiereExista
       array_push($data,$moduleExistant);
       
   }
-  /*
-//$output = [];
-$output = array();
-foreach( $data as $module )
-{
-//$output[$module->id] = $module->nom_module;
-$moduleId =$module->id ;
-    $moduleName = $module->nom_module;
-
-    $output[] = array("id" => $moduleId, "nom_module" => $moduleName);
-
-}
-//return $output;
-echo json_encode($output);*/
 $modulesData['data']=$data;
 return json_encode($modulesData);
     }

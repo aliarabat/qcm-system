@@ -274,7 +274,6 @@
 
         <!--Chapitre-->
         <div id="chapitre" class="col s12">
-            <div style="display: flex; align-items: center;">
                     <form action="{{route('mainParts.createChapitre')}}" method="post" class="col s12" >
                             @csrf
                             <div class="input-field col s4">
@@ -290,13 +289,6 @@
                             </div>
                             <div class="input-field col s4">
                                     <select id="moduleChapitre" name="moduleChapitre"  >
-                                        <option value="m1" selected disabled>Module</option>
-                                        @forelse ($modules as $module)
-                                        <option value="{{$module->nom_module}}">{{$module->nom_module}}-{{$module->libelle}}</option>
-                                        @empty
-                                        <option value="m1" selected disabled>Module</option>
-                                        @endforelse
-            
                                     </select>
                                     <label>Module</label>
                                 </div>
@@ -314,7 +306,7 @@
                 </form>
             
             
-            </div>
+            
             <div class="row">
                     <table class="centered">
                         <thead>
@@ -410,7 +402,6 @@
     
     $('select[name="filiereChapitre"]').on('change',function(){
        var nom_filiere = $(this).val();
-       //$('#moduleChapitre').find('option').not(':first').remove();
     
        $.ajax({
           url : '{{route('mainParts.modulesFiliere')}}',
@@ -418,54 +409,25 @@
             "_token": "{{ csrf_token() }}",
             "nom_filiere": nom_filiere
             },
-          type: 'POST',
+          type: 'GET',
           dataType: 'JSON',
           success: function( result )
           {
-            //var len = Object.keys(result).length;
             var len = 0;
                  if(result['data'] != null){
                    len = result['data'].length;
                    $('select[name="moduleChapitre"]').empty();
-                   //var o = new Option("Module", "m1");
-                   //$(o).html("Module");
-                   //$("#moduleChapitre").append(o);
                    var s='<option value="m1" selected disabled>Module</option>';
-                   //$('#moduleChapitre').append($('<option>', {value: 'Module',text: 'Module'}));
-                   //var x = document.getElementById("moduleChapitre");
-                   /*while (x.hasChildNodes()) {  
-                   x.removeChild(x.firstChild);
-                  }
-                   /*var moduleChapitre=$("#moduleChapitre").empty();
-                   moduleChapitre.append('<option value="m1" selected disabled>Module</option>');*/
                  }
-              //console.log(result);
-              //console.log(len);
-              //$("#moduleChapitre").empty();
+              console.log(result);
+              console.log(len);
              for( var i = 0; i<len; i++){
                         var id = result['data'][i].id;
                         var name = result['data'][i].nom_module;
                         s+='<option value="' + name + '">' + name + '</option>'; 
-                        $('select[name="moduleChapitre"]').html(s);  
-                        //console.log(document.getElementById("moduleChapitre"));
-                        //$('#moduleChapitre').append($('<option>', {value: name,text: name}));
-                        /*console.log(id);
-                        console.log(name);
-                        var option = new Option(name,name); 
-                        console.log(option);
-                        $(o).html(name);
-                        $('#moduleChapitre').append(option);
-                        //moduleChapitre.append(option);
-                        //console.log(x);
-                        /*var option = document.createElement("OPTION");
-                        var textOption = document.createTextNode(name);
-                        option.appendChild(textOption);
-                        option.id=id;
-                        option.value=name;
-                        console.log(option);
-                        x.appendChild(option);
-                        console.log(x);*/
-    
+                        $('select[name="moduleChapitre"]').html(s);
+                        $('select[name="moduleChapitre"]').material_select();
+                        console.log($('select[name="moduleChapitre"]'))
                     }
           },
           error: function()
