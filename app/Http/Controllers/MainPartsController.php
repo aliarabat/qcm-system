@@ -152,20 +152,7 @@ class MainPartsController extends Controller
             $moduleExistant = Module::get()->where('id', $filmol->module_id)->first();
             array_push($data, $moduleExistant);
         }
-        /*
-//$output = [];
-$output = array();
-foreach( $data as $module )
-{
-//$output[$module->id] = $module->nom_module;
-$moduleId =$module->id ;
-    $moduleName = $module->nom_module;
-
-    $output[] = array("id" => $moduleId, "nom_module" => $moduleName);
-
-}
-//return $output;
-echo json_encode($output);*/
-        return response()->json($data);
+        $modulesData['data'] = $data;
+        return json_encode($modulesData);
     }
 }
