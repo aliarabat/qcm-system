@@ -1,6 +1,7 @@
 @extends('layouts.mainLayout')
 @section('mainContent')
-    <form id="question-form" class="row">
+    <form id="question-form" class="row" method="POST" action="{{route('questions.store')}}">
+        @csrf
         <div id="question-create-form1" class="col-s12 z-depth-4 mt-p-1">
             <div class="row">
                 <div class="input-field col s6">
@@ -20,10 +21,10 @@
                     <label>Module</label>
                 </div>
                 <div class="input-field col s6 offset-s3">
-                    <select name="chapter">
-                        <option value="C1" selected>C1</option>
-                        <option value="C2">C2</option>
-                        <option value="C3">C3</option>
+                    <select id="chapitre" name="chapitre">
+                        <option  value="C1" >C1</option>
+                        <option  value="C2">C2</option>
+                        <option  value="C3">C3</option>
                     </select>
                     <label>Chapitre</label>
                 </div>
@@ -37,43 +38,44 @@
         </div>
         <div id="question-create-form2" hidden class="col-s12 z-depth-4 mt-p-1">
             <div class="row">
-                {{-- <div class="col s5" style="display: flex; align-items: center;">
-                    
-                    <p class="col s1" >
-                        <input type="checkbox" id="test5"  name=""/>
-                        <label for="test5">Unique</label>
+                <div class="col s6" style="display: flex; align-items: center; justify-content: flex-start">
+                    <div class="input-field col s10" style="padding: 0;">
+                        <input type="text" name="question" id="question">
+                        <label style="left: 0px;">Question</label>
+                    </div>
+                    <p class="col s2" >
+                        <input id="hidend" type="hidden" name="visibilite" value="0" >
+                        <input name="visibilite"  type="checkbox" id="test5" value="1" />
+                        <label for="test5" style="padding-left: 25px;">Visible</label>
                     </p>
-                </div> --}}
-                <div class="input-field col s6">
-                    <input type="text" name="question"/>
-                    <label>Question</label>
                 </div>
-                
                 <div class="input-field col s6">
-                    <input type="number" name="duration"/>
+                    <input name="duree" id="duree" type="number">
                     <label>Durée</label>
                 </div>
                 <div class="input-field col s6">
-                    <select name="difficulty_level" id="">
+                    <select name="difficulte" id="difficulte">
                         <option value="Facile">Facile</option>
                         <option value="Normal">Normal</option>
                         <option value="Difficile">Difficile</option>
                     </select>
-                    <label>Difficulté</label>
+                    <label>Difficulte</label>
                 </div>
                 <div class="input-field col s6">
-                    <input type="number" min="0" name="mark"/>
+                    <input name="note" id="note" type="number" min="0">
                     <label>Note</label>
                 </div>
             </div>
             <div class="row">
                 <div id="response1" style="display: flex; align-items: center;">
                     <div class="input-field col s6 offset-s3">
-                        <input type="text" name="response[0][suggestion]">
+                        <input type="text" name="proposition[]" id="proposition">
                         <label>Réponse 1</label>
                     </div>
-                    <p>
-                        <input type="checkbox" id="check1" value="false" name="response[0][checked]"/>
+                    <p class="">
+
+                    <input id="hiden" type="hidden" name="reponse[0]" value="0" >
+                    <input name="reponse[0]"  type="checkbox" id="check1"  value="1">
                         <label for="check1"></label>
                     </p>
                     <a href="#" class="red-text text-accent-4">
@@ -81,6 +83,11 @@
                     </a>
                 </div>
             </div>
+            <div  class="row" style="display: flex; justify-content: center">
+                    <button type="submit" class="btn btn-default">
+                        Ajouter
+                    </button>
+                </div>
             <div id="add-button" class="row" style="display: flex; justify-content: center">
                 <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
                     <i class="material-icons">add</i>
@@ -95,6 +102,7 @@
                         Créer
                     </button>
             </div>
-        </div>
+         
     </form>
+    
 @endsection

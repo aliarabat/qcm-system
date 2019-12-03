@@ -11,20 +11,37 @@
               <li class="tab col s3"><a href="#chapitre">Chapitre</a></li>
             </ul>
         </div>
-        <div id="niveau" class="col s12">
+
+        @if(session()->has('status'))
+            <h6 style="color: green">{{session()->get('status')}}</h6>
+        @endif
+        @if(session()->has('errorStatus'))
+            <h6 style="color: red">{{session()->get('errorStatus')}}</h6>
+        @endif
+
+        <!--Niveau-->
+        <div id="niveau" class="col s12" >
+
             <div style="display: flex; align-items: center;">
-                <div class="input-field col s5">
-                    <input type="text"/>
-                    <label for="">Niveau</label>
-                </div>
-                <div class="input-field col s5">
-                    <input type="text"/>
-                    <label for="">Type</label>
-                </div>
-                <div class="col s2">
-                    <button class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
-                </div>
+            
+                <form action="{{route('mainParts.createNiveau')}}" method="post" class="col s12" >
+                    @csrf  
+
+                    <div class="input-field col s6 ">
+                            <input id="niveauIn" name="niveau" type="text"/>
+                            <label for="niveauIn">Niveau</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input  id="typeIn" name="type" type="text"/>
+                        <label for="typeIn">Type</label>
+                    </div>
+                    <div class="col s2 offset-s5">
+                        <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
+                    </div>
+                </form>
+
             </div>
+
             <div class="row">
                 <table class="centered">
                     <thead>
@@ -40,10 +57,10 @@
                             <td>Licence</td>
                             <td>Professionnelle</td>
                             <td>
-                                <a href="#modal1" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                <a href="#modal1" onclick="return onUpdateNiveau(1, 'Licence', 'Professionnelle')" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                     <div class="material-icons">edit</div>
                                 </a>
-                                <a href="#delete1" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
+                                <a href="#delete1" onclick="return onDeleteNiveau(1)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
                                     <div class="material-icons">delete</div>
                                 </a>
                             </td>
@@ -52,7 +69,7 @@
                             <td>Master</td>
                             <td>Recherche</td>
                             <td>
-                                <a href="#" class="light-blue-text text-darken-4 tooltipped" data-position="top" data-tooltip="Mettre à jour">
+                                <a href="#modal1" onclick="return onUpdateNiveau(2, 'Master', 'Recherche')" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                     <div class="material-icons">edit</div>
                                 </a>
                                 <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
@@ -76,24 +93,41 @@
                 </table>
             </div>
         </div>
+
+        <!--Filiere -->
         <div id="filiere" class="col s12">
-            <div style="display: flex; align-items: center;">
-                <div class="input-field col s5">
-                    <select>
-                        <option value="m1" selected>N1</option>
-                        <option value="m2">N2</option>
-                        <option value="m3">N3</option>
-                    </select>
-                    <label>Niveau</label>
-                </div>
-                <div class="input-field col s5">
-                    <input type="text">
-                    <label>Filière</label>
-                </div>
-                <div class="col s2">
-                    <button class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
-                </div>
+            <div  style="display: flex; align-items: center;">
+
+                <form action="{{route('mainParts.createFiliere')}}" method="post" class="col s12" >
+                    @csrf  
+                    <div class="input-field col s4">
+                            <select name="niveauFiliere" id="niveauFiliere">
+                                    <option value="m1" selected disabled>Niveau</option>
+                                    @forelse ($niveaux as $niveau)
+                                    <option value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
+                                    @empty
+                                    <option value="m1" selected disabled>Niveau</option>
+                                    @endforelse
+                            </select>
+                            <label>Niveau</label>
+                        </div>
+
+                        <div class="input-field col s4 ">
+                                <input id="filiereIn" name="nom_filiere" type="text"/>
+                                 <label for="filiereIn">Filière</label>
+                         </div>
+
+                         <div class="input-field col s4">
+                             <input  id="libelleIn" name="libelle" type="text"/>
+                             <label for="libelleIn">Libellé</label>
+                         </div>
+
+                        <div class=" col s2 offset-s5">
+                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                        </div>
+        </form>
             </div>
+
             <div class="row">
                 <table class="centered">
                     <thead>
@@ -133,24 +167,40 @@
                 </table>
             </div>
         </div>
+
+        <!--Module-->
         <div id="module" class="col s12">
-            <div  style="display: flex; align-items: center;">
-                <div class="input-field col s5">
-                    <select>
-                        <option value="" disabled>Selectionner la filière</option>
-                        <option value="m1">F1</option>
-                        <option value="m2">F2</option>
-                        <option value="m3">F3</option>
-                    </select>
-                    <label>Filière</label>
-                </div>
-                <div class="input-field col s5">
-                    <input type="text">
-                    <label>Module</label>
-                </div>
-                <div class="col s2">
-                    <button class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
-                </div>
+
+            <div style="display: flex; align-items: center;">
+                <form action="{{route('mainParts.createModule')}}" method="post" class="col s12" >
+                    @csrf  
+                    <div class="input-field col s4">
+                            <select name="filiereModule" id="filiereModule">
+                                    <option value="m1" selected disabled>Filière</option>
+                                    @forelse ($filieres as $filiere)
+                                    <option value="{{$filiere->nom_filiere}}-{{$filiere->libelle}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
+                                    @empty
+                                    <option value="m1" selected disabled>Filière</option>
+                                    @endforelse
+                            </select>
+                            <label>Filière</label>
+                        </div>
+    
+                        <div class="input-field col s4 ">
+                                <input id="moduleIn" name="nom_module" type="text"/>
+                                 <label for="moduleIn">Module</label>
+                         </div>
+    
+                         <div class="input-field col s4">
+                             <input  id="libelleModuleIn" name="libelleModule" type="text"/>
+                             <label for="libelleModuleIn">Libellé</label>
+                         </div>
+    
+                        <div class="col s2 offset-s5">
+                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                        </div>
+        </form>
+            
             </div>
             <div class="row">
                 <table class="centered">
@@ -191,108 +241,256 @@
                 </table>
             </div>
         </div>
+
+        <!--Chapitre-->
         <div id="chapitre" class="col s12">
-            <div class="input-field col s4">
-                <select>
-                    <option value="" disabled>Selectionner la filière</option>
-                    <option value="m1">F1</option>
-                    <option value="m2">F2</option>
-                    <option value="m3">F3</option>
-                </select>
-                <label>Filière</label>
-            </div>
-            <div class="input-field col s4">
-                <select>
-                    <option value="" disabled>Selectionner le module</option>
-                    <option value="m1">F1</option>
-                    <option value="m2">F2</option>
-                    <option value="m3">F3</option>
-                </select>
-                <label>Module</label>
-            </div>
-            <div class="input-field col s4">
-                <input type="text">
-                <label>Chapitre</label>
-            </div>
-            <div class="col s2 offset-s5">
-                <button class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
+            <div style="display: flex; align-items: center;">
+                <form action="{{route('mainParts.createChapitre')}}" method="post" class="col s12" >
+                        @csrf
+                        <div class="input-field col s4">
+                            <select name="filiereChapitre" id="filiereChapitre" >
+                                    <option value="m1" selected disabled>Filière</option>
+                                    @forelse ($filieres as $filiere)
+                                        <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
+                                    @empty
+                                        {{-- <option value="m1" selected disabled>Filière</option> --}}
+                                    @endforelse
+                            </select>
+                            <label>Filière</label>
+                        </div>
+                        <div class="input-field col s4" id="moduleChapitre">
+                            <select name="moduleChapitre">
+                                <option value="m1" selected disabled>Module</option>
+                                {{-- @forelse ($modules as $module)
+                                    <option value="{{$module->nom_module}}">{{$module->nom_module}}-{{$module->libelle}}</option>
+                                @empty
+                                    <option value="m1" selected disabled>Module</option>
+                                @endforelse --}}
+                            </select>
+                            <label>Module</label>
+                        </div>
+                        <div class="input-field col s4 ">
+                            <input id="chapitreIn" name="nom_chapitre" type="text"/>
+                            <label for="chapitreIn">Chapitre</label>
+                            </div>
+                        <div class="col s2 offset-s5">
+                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                        </div>
+                </form>
             </div>
             <div class="row">
-                <table class="centered">
-                    <thead>
-                        <tr>
-                            <th>Filière</th>
-                            <th>Module</th>
-                            <th>Chapitre</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-            
-                    <tbody>
-                        <tr>
-                            <td>ISI</td>
-                            <td>MERISE</td>
-                            <td>DEMARCHE MCC</td>
-                            <td>
-                                <a href="#modal1" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
-                                    <div class="material-icons">edit</div>
-                                </a>
-                                <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
-                                    <div class="material-icons">delete</div>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>SD</td>
-                            <td>Machine Learning</td>
-                            <td>Bases Python</td>
-                            <td>
-                                <a href="#" class="light-blue-text text-darken-4 tooltipped" data-position="top" data-tooltip="Mettre à jour">
-                                    <div class="material-icons">edit</div>
-                                </a>
-                                <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
-                                    <div class="material-icons">delete</div>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class="centered">
+                        <thead>
+                            <tr>
+                                <th>Filière</th>
+                                <th>Module</th>
+                                <th>Chapitre</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                            <tr>
+                                <td>ISI</td>
+                                <td>MERISE</td>
+                                <td>DEMARCHE MCC</td>
+                                <td>
+                                    <a href="#modal1" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                        <div class="material-icons">edit</div>
+                                    </a>
+                                    <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                        <div class="material-icons">delete</div>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SD</td>
+                                <td>Machine Learning</td>
+                                <td>Bases Python</td>
+                                <td>
+                                    <a href="#" class="light-blue-text text-darken-4 tooltipped" data-position="top" data-tooltip="Mettre à jour">
+                                        <div class="material-icons">edit</div>
+                                    </a>
+                                    <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
+                                        <div class="material-icons">delete</div>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+
+       
     </div>
-
-@endsection
-
+    @endsection
 
 <!-- Modal Structure -->
 <div id="modal1" class="modal">
-    <div class="modal-content">
-        <h4>Mise à jour</h4>
-        <div class="row">
-            <div class="input-field col s12">
-                <input type="text" value="Licence"/>
-                <label for="Niveau">Niveau</label>
-            </div>
-            <div class="input-field col s12">
-                <input type="text" value="Professionnelle"/>
-                <label for="Niveau">Type</label>
+        <div class="modal-content">
+            <h4>Mise à jour</h4>
+            <div class="row">
+                <input type="hidden" name="id" value=" ">
+                <div class="input-field col s12">
+                    <input type="text" value=" "/>
+                    <label for="Niveau">Niveau</label>
+                </div>
+                <div class="input-field col s12">
+                    <input type="text" value=" "/>
+                    <label for="Niveau">Type</label>
+                </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+            <a onclick="return onUpdateNiveau(null, null, null, true)" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>
+        </div>
     </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-light btn-flat">Annuler</a>
-        <a href="#!" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>
+    
+    <!-- Modal Structure -->
+    <div id="delete1" class="modal">
+        <div class="modal-content">
+            <h4>Suppression</h4>
+            <p>Voulez-vous vraiment supprimer ce Niveau?</p>
+            <input type="hidden"/>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+            <a onclick="return onDeleteNiveau(null, true)" class="waves-effect waves-light btn-flat materialize-red white-text">Supprimer</a>
+        </div>
     </div>
-</div>
 
-<!-- Modal Structure -->
-<div id="delete1" class="modal">
-    <div class="modal-content">
-        <h4>Suppression</h4>
-        <p>Voulez-vous vraiment supprimer ce Niveau?</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-light btn-flat">Annuler</a>
-        <a href="#!" class="waves-effect waves-light btn-flat materialize-red white-text">Supprimer</a>
-    </div>
-</div>
+<!--Script de la génération du select modules par filiere-->
+
+    @section('script')
+    <script type="text/javascript">
+    $(document).ready(function() {
+    
+    $('#filiereChapitre').on('change',function(){
+       var nom_filiere = $(this).val();
+       console.log(nom_filiere);
+       //$('#moduleChapitre').find('option').not(':first').remove();
+    
+    //    $.ajax({
+    //       url : '{{route('mainParts.modulesFiliere')}}',
+    //       data: {
+    //         "_token": "{{ csrf_token() }}",
+    //         "nom_filiere": nom_filiere
+    //         },
+    //       type: 'POST',
+    //       dataType: 'JSON',
+    //       success: function( result )
+    //       {
+    //         //var len = Object.keys(result).length;
+    //         var len = 0;
+    //              if(result['data'] != null){
+    //                len = result['data'].length;
+    //                console.log(len);
+    //                $('#moduleChapitre').empty();
+    //                //var o = new Option("Module", "m1");
+    //                //$(o).html("Module");
+    //                //$("#moduleChapitre").append(o);
+    //                var s='<option value="m1" selected disabled>Module</option>';
+    //                //$('#moduleChapitre').append($('<option>', {value: 'Module',text: 'Module'}));
+    //                //var x = document.getElementById("moduleChapitre");
+    //                /*while (x.hasChildNodes()) {  
+    //                x.removeChild(x.firstChild);
+    //               }
+    //                /*var moduleChapitre=$("#moduleChapitre").empty();
+    //                moduleChapitre.append('<option value="m1" selected disabled>Module</option>');*/
+    //              }
+    //           //console.log(result);
+    //           //console.log(len);
+    //           //$("#moduleChapitre").empty();
+    //          for( var i = 0; i<len; i++){
+    //                     var id = result['data'][i].id;
+    //                     var name = result['data'][i].nom_module;
+    //                     s+='<option value="' + name + '">' + name + '</option>'; 
+    //                     $('select[name="moduleChapitre"]').html(s);  
+    //                     //console.log(document.getElementById("moduleChapitre"));
+    //                     //$('#moduleChapitre').append($('<option>', {value: name,text: name}));
+    //                     /*console.log(id);
+    //                     console.log(name);
+    //                     var option = new Option(name,name); 
+    //                     console.log(option);
+    //                     $(o).html(name);
+    //                     $('#moduleChapitre').append(option);
+    //                     //moduleChapitre.append(option);
+    //                     //console.log(x);
+    //                     /*var option = document.createElement("OPTION");
+    //                     var textOption = document.createTextNode(name);
+    //                     option.appendChild(textOption);
+    //                     option.id=id;
+    //                     option.value=name;
+    //                     console.log(option);
+    //                     x.appendChild(option);
+    //                     console.log(x);*/
+    
+    //                 }
+    //       },
+    //       error: function()
+    //      {
+    //          //handle errors
+    //          alert('error...');
+    //      }
+    //    });
+
+       $.post({
+           url: "{{route('mainParts.modulesFiliere')}}",
+           dataType: 'JSON',
+          data: {
+            "_token": "{{ csrf_token() }}",
+            "nom_filiere": nom_filiere
+            },
+            success: function(data){
+                data.forEach(el => {
+                    addOption(el)
+                });
+            },
+       });
+
+       $()
+    });
+
+    function addOption(data) {
+        var option= document.createElement('li');
+        var content=document.createTextNode(data.nom_module);
+        var span = document.createElement('span');
+        span.appendChild(content)
+        option.appendChild(span);
+        $("select[name='moduleChapitre']").appendTo(option);
+    }
+    
+    
+    });
+
+    //Mettre à jour le niveau
+    function onUpdateNiveau(id, niveau, type, updateInDb=false) {
+        if (updateInDb==false) {
+            $("#modal1 input[type='hidden']").val(id);
+            $("#modal1 input[type='text']:first").val(niveau);
+            $("#modal1 input[type='text']:last").val(type);
+            console.log('Opened Modal');
+        }else{
+            console.log('Called Ajax');
+            //mettre a jour avec Ajax
+            $.post({
+
+            });
+        }
+    }
+    function onDeleteNiveau(id, deleteFromDb=false) {
+        if (deleteFromDb==false) {
+            $("#delete1 input[type='hidden']").val(id);
+            console.log('delete modal opened');
+        } else {
+            console.log('Delete with ajax');
+            //Suppression d'un niveau avec ajax
+            $.ajax({
+                
+            });
+        }
+    }
+    </script>
+    
+    @endsection

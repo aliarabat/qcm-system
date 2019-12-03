@@ -22,7 +22,7 @@
         <ul id="slide-out" class="side-nav">
             <li><a class="subheader">QCM</a></li>
             <li><a class="waves-effect" href="/questions">Création des questions</a></li>
-            <li><a class="waves-effect" href="/mainparts">Création NFMC</a></li>
+            <li><a class="waves-effect" href="{{route('mainParts.create')}}">Création NFMC</a></li>
         </ul>
     <nav>
         <div class="nav-wrapper deep-orange accent-3">
@@ -57,5 +57,7 @@
 <script src="{{ asset('js/materialize.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/createquestion.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
+@yield('script')
+
 </body>
 </html>
