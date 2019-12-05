@@ -16,6 +16,46 @@
             padding: 1em;
             margin-top: 1em;    
         }
+        #delete1,#modal1{
+            width: 35% !important;
+        }
+        /* Extra small devices (phones, 600px and down) */
+        @media only screen and (max-width: 600px) {
+            #delete1,#modal1{
+                width: 90% !important;
+            }
+        } 
+
+        /* Small devices (portrait tablets and large phones, 600px and up) */
+        @media only screen and (min-width: 600px) {
+            #delete1,#modal1{
+                width: 70% !important;
+            }
+        } 
+
+        /* Medium devices (landscape tablets, 768px and up) */
+        @media only screen and (min-width: 768px) {
+            #delete1, #modal1{
+                width: 50% !important;
+            }
+        } 
+
+        /* Large devices (laptops/desktops, 992px and up) */
+        @media only screen and (min-width: 992px) {
+            #delete1, #modal1{
+                width: 40% !important;
+            }
+        } 
+
+        /* Extra large devices (large laptops and desktops, 1200px and up) */
+        @media only screen and (min-width: 1200px) {
+            #delete1, #modal1{
+                width: 40% !important;
+            }
+        }
+        .modal .modal-content{
+            padding: 24px 24 0px 24px;
+        }
     </style>
 </head>
 <body>
