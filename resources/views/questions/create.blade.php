@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="row">
-                <div id="response1" style="display: flex; align-items: center;">
+                <div id="response0" style="display: flex; align-items: center;">
                     <div class="input-field col s6 offset-s3">
                         <input type="text" name="proposition[]" id="proposition">
                         <label>Réponse 1</label>
@@ -75,10 +75,10 @@
                     <p class="">
 
                     <input id="hiden" type="hidden" name="reponse[0]" value="0" >
-                    <input name="reponse[0]"  type="checkbox" id="check1"  value="1">
-                        <label for="check1"></label>
+                    <input name="reponse[0]"  type="checkbox" id="check0"  value="1">
+                        <label for="check0"></label>
                     </p>
-                    <a href="#" onclick="return deleteResponse('response1')" class="red-text text-accent-4">
+                    <a href="#" onclick="return deleteResponse('response0')" class="red-text text-accent-4">
                         <i class="material-icons ">delete</i>
                     </a>
                 </div>

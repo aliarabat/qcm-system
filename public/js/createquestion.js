@@ -18,20 +18,22 @@ $(function () {
                 propsNumber++;
             }
         });
+        console.log('reponses', responsesLength);
+        console.log('propsNumber', propsNumber);
         if (propsNumber != responsesLength) {
             var $toastContent = $('<span>Atjibha ghir fkerrek wa3mmer</span>').add($('<button class="btn-flat toast-action">Undo</button>'));
             Materialize.toast($toastContent, 3000);
         } else {
-            var count = $('[id^="response"]').length + 1;
+            var count = $('[id^="response"]').length;
             const newResponse = `
                 <div id="response${count}" style="display: flex; align-items: center;">
                     <div class="input-field col s6 offset-s3">
                         <input type="text" name="proposition[]">
-                        <label>Réponse ${count}</label>
+                        <label>Réponse ${count + 1}</label>
                     </div>
                     <p class="">
-                    <input id="hiden" type="hidden" name="reponse[${count - 1}]" value="0" >
-                    <input name="reponse[${count - 1}]"  type="checkbox"  value="1" id="check${count}">
+                    <input id="hidden${count}" type="hidden" name="reponse[${count}]" value="0" >
+                    <input name="reponse[${count}]"  type="checkbox"  value="1" id="check${count}">
                         <label for="check${count}"></label>
                     </p>
                     <a href="#" onclick="return deleteResponse('response${count}')" class="red-text text-accent-4" style="cursor: pointer">
@@ -53,17 +55,22 @@ function deleteResponse(id) {
             $(this).remove();
             $('[id^="response"]').each(function (index) {
                 $(this).attr({
-                    id: 'response' + (index + 1)
+                    id: 'response' + index
                 });
-                $(`#response${index + 1} label:first`).text(`Réponse ${index + 1}`);
-                $(`#response${index + 1} input[name^='reponse']`).attr({
+                $(`#response${index} label:first`).text(`Réponse ${index + 1}`);
+                $(`#response${index} label:last`).attr({
+                    for: `check${index}`
+                });
+                $(`#response${index} input[name^='reponse']:first`).attr({
                     name: `reponse[${index}]`,
-                    id: function (index, oldValue) {
-                        return oldValue.startsWith('check') ? `check${index}` : `hidden${index}`;
-                    }
+                    id: `hidden${index}`
                 });
-                $(`#response${index + 1} a`).attr({
-                    onclick: `return deleteResponse('response${index + 1}')`
+                $(`#response${index} input:last`).attr({
+                    name: `reponse[${index}]`,
+                    id: `check${index}`
+                });
+                $(`#response${index} a`).attr({
+                    onclick: `return deleteResponse('response${index}')`
                 });
             });
         });
