@@ -1,33 +1,40 @@
 @extends('layouts.mainLayout')
 @section('mainContent')
-    <form id="question-form" class="row" method="POST" action="{{route('questions.store')}}">
+
+@if(session()->has('status'))
+<h6 style="color: green">{{session()->get('status')}}</h6>
+@endif
+@if(session()->has('errorStatus'))
+<h6 style="color: red">{{session()->get('errorStatus')}}</h6>
+@endif
+    <form id="question-form" class="row" method="POST" action="{{route('questions.createQuestion')}}">
         @csrf
         <div id="question-create-form1" class="col-s12 z-depth-4 mt-p-1">
             <div class="row">
-                <div class="input-field col s6">
-                    <select name="level">
-                        <option value="f1" selected>F1</option>
-                        <option value="f2">F2</option>
-                        <option value="f3">F3</option>
+                <div class="input-field col s4">
+                    <select name="filiereModule" id="filiereModule">
+                            
+                            <option value="m1" selected disabled>Filière</option>
+                            @forelse ($filieres as $filiere)
+                            <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
+                            @empty
+                            <option value="m1" selected disabled>Filière</option>
+                            @endforelse
                     </select>
                     <label>Filière</label>
                 </div>
-                <div class="input-field col s6">
-                    <select name="branch">
-                        <option value="m1" selected>M1</option>
-                        <option value="m2">M2</option>
-                        <option value="m3">M3</option>
-                    </select>
-                    <label>Module</label>
-                </div>
-                <div class="input-field col s6 offset-s3">
-                    <select id="chapitre" name="chapitre">
-                        <option  value="C1" >C1</option>
-                        <option  value="C2">C2</option>
-                        <option  value="C3">C3</option>
-                    </select>
-                    <label>Chapitre</label>
-                </div>
+                   <div class="input-field col s4" id="moduleChap">
+                            <select  name="moduleChap" id="moduleChap">
+                                   
+                            </select>
+                            <label>Module</label>
+                        </div>
+                        <div class="input-field col s4" id="chapitre">
+                                <select name="chapitre" id="chapitre">
+                                       
+                                </select>
+                                <label>Chapitre</label>
+                            </div>
             </div>
             <div class="row" style="display: flex; justify-content: center;">
                 <button id="arrow-forward" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
@@ -66,6 +73,11 @@
                     <label>Note</label>
                 </div>
             </div>
+            <div id="add-button" class="row" style="display: flex; justify-content: center">
+                    <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
             <div class="row">
                 <div id="response0" style="display: flex; align-items: center;">
                     <div class="input-field col s6 offset-s3">
@@ -88,21 +100,121 @@
                         Ajouter
                     </button>
                 </div>
-            <div id="add-button" class="row" style="display: flex; justify-content: center">
-                <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
-                    <i class="material-icons">add</i>
-                </button>
-            </div>
+          
             <div class="row" style="display: flex; justify-content: space-around;">
                     <a href="#" id="arrow-back" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
-                        <i class="material-icons left">arrow_back</i>
-                        Revenir
-                    </a>
-                    <button type="submit" id="save-question" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
-                        Créer
-                    </button>
+                        <i class="material-icons left">arrow_back</i>Revenir</a>
+                  
             </div>
          
     </form>
     
 @endsection
+<!--Script de la génération du select modules par filiere-->
+
+@section('script')
+<script type="text/javascript">
+$(document).ready(function() {
+
+$('#filiereModule').on('change',function(){
+    var sel = document.getElementById('filiereModule');
+   var nom_filiere= sel.value;
+ 
+   
+
+   $.ajax({
+       url: "{{route('questions.findModuleByFiliere')}}",
+       dataType: 'JSON',
+      data: {
+        "nom_filiere": nom_filiere
+        },
+      type: 'GET',
+      dataType: 'JSON',
+      success: function( result )
+      {
+        var len = 0;
+             if(result['data'] != null){
+               len = result['data'].length;
+            //    console.log(result['data']);
+            //    console.log(result['data'].length);
+               $('select[name="moduleChap"]').empty();
+               var s='<option value="m1" selected disabled>Module</option>';
+             }
+        //  console.log(result);
+        //   console.log(len);
+         for( var i = 0; i<len; i++){
+                    var id = result['data'][i].id;
+                    var name = result['data'][i].nom_module;
+                    s+='<option value="' + name + '">' + name + '</option>'; 
+                    $('select[name="moduleChap"]').html(s);
+                    $('select[name="moduleChap"]').material_select();
+                    
+                    
+                }
+      },
+      error: function()
+     {
+         //handle errors
+         //alert('error...');
+         console.log(error);
+     }
+   });
+
+   
+});
+
+
+$('#moduleChap').on('change',function(){
+
+   var sel = document.getElementById('moduleChap');
+   var nom_module = $("#moduleChap option:selected").val();
+   console.log(nom_module);
+   
+
+   $.ajax({
+       url: "{{route('questions.findChapitreByModule')}}",
+       dataType: 'JSON',
+      data: {
+        "nom_module": nom_module,
+        
+        },
+      type: 'GET',
+      dataType: 'JSON',
+      success: function( result )
+      {
+        var len = 0;
+             
+        if(result['data'] != null){
+               len = result['data'].length;
+               $('select[name="chapitre"]').empty();
+               var s='<option value="m1" selected disabled>Chapitre</option>';
+        }
+         for( var i = 0; i<len; i++){
+                    var id = result['data'][i].id;
+                     var name = result['data'][i].nom_chapitre;
+                    s+='<option value="' + name + '">' + name + '</option>'; 
+                    console.log(name)
+                    $('select[name="chapitre"]').html(s);
+                    $('select[name="chapitre"]').material_select();
+                    
+                }
+      },
+      error: function()
+     {
+         //handle errors
+         alert('error...');
+     
+     }
+   });
+
+   
+});
+
+});
+
+</script>
+
+@endsection
+
+
+

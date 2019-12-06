@@ -15,4 +15,9 @@ class Question extends Model
     public function typeQuestion(){
         return $this->belongsTo(TypeQuestion::class);
     }
+
+    public function chapitres()
+    {
+        return $this->hasMany(Chapitre::class);
+    }
 }
