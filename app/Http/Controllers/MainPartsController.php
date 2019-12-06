@@ -12,6 +12,12 @@ use Illuminate\Http\Request;
 
 class MainPartsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function create()
     {
         $niveaux = Niveau::all();

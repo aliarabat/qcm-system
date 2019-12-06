@@ -72,20 +72,44 @@
                 </a>
                 <a href="#">
                     <img src="{{asset('images/fssm.png')}}" alt="UCA Logo" style="width: 100px; height: 50px; filter: brightness(0) invert(1);padding-top: 10px;">
-                </a>    
+                </a>
             {{-- <div>
                 <a href="#!" class="breadcrumb">First</a>
                 <a href="#!" class="breadcrumb">Second</a>
                 <a href="#!" class="breadcrumb">Third</a>
             </div> --}}
         </div>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li>
-                <a href="#">
-                    <i class="material-icons">account_circle</i>
-                </a>
-            </li>
-          </ul>
+            <ul class="right">
+                <!-- Authentication Links -->
+                @guest
+                    <li class="">
+                        <a class="" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    </li>
+                    @if (Route::has('register'))
+                        <li class="">
+                            <a class="" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                    @endif
+                @else
+                    <li class="">
+                        <a id="" class="" href="#"  >
+                            {{ Auth::user()->name }} <span class=""></span>
+                        </a></li>
+
+                        <li>
+                            <a class="" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" >
+                                @csrf
+                            </form>
+
+                    </li>
+                @endguest
+            </ul>
         </div>
         </nav>
 
