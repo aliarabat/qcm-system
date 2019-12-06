@@ -12,4 +12,8 @@ class Chapitre extends Model
 public function module(){
         return $this->belongsTo(Module::class);
     }
+
+    public function question(){
+        return $this->belonhagsTo(Question::class);
+    }
 }
