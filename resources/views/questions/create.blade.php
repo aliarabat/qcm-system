@@ -78,7 +78,7 @@
                     <input name="reponse[0]"  type="checkbox" id="check1"  value="1">
                         <label for="check1"></label>
                     </p>
-                    <a href="#" class="red-text text-accent-4">
+                    <a href="#" onclick="return deleteResponse('response1')" class="red-text text-accent-4">
                         <i class="material-icons ">delete</i>
                     </a>
                 </div>
@@ -98,7 +98,7 @@
                         <i class="material-icons left">arrow_back</i>
                         Revenir
                     </a>
-                    <button type="submit" href="#" id="save-question" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
+                    <button type="submit" id="save-question" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
                         Créer
                     </button>
             </div>
