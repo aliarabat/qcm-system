@@ -153,6 +153,7 @@ class MainPartsController extends Controller
             array_push($data, $moduleExistant);
         }
         $modulesData['data'] = $data;
+        
         return json_encode($modulesData);
     }
 }

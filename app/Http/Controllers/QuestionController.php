@@ -7,6 +7,10 @@ use  App\Http\Controllers\Controller;
 
 use App\Question;
 use App\Proposition;
+use App\Filiere;
+use App\Module;
+use App\Chapitre;
+use App\AssocFiliereModule;
 
 class QuestionController extends Controller
 {
@@ -15,38 +19,36 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('questions.create');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+       
+        $filieres = Filiere::all();
+        $modules = Module::all();
+        $chapitres = Chapitre::all();
+        return view(
+            'questions.create',
+            ['filieres' => $filieres, 'modules' => $modules, 'chapitres'=>$chapitres]
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+ 
+    public function createQuestion(Request $request)
+    {     
 
+        $counts = array_count_values($request->reponse);
+
+        if(count($request->proposition) <=1){
+            $request->session()->flash('errorStatus', 'inserer aumoins deux proposition ');
+        }else{
         $question = new Question();
-        $question->chapitre = request('chapitre');
+        $chapitre = Chapitre::get()->where('nom_chapitre', mb_strtoupper(request('chapitre')))->first();
+        $question->chapitre_id=$chapitre->id;
         $question->question = request('question');
         $question->duree = request('duree');
         $question->difficulte = request('difficulte');
         $question->visibilite = request('visibilite');
         $question->note = request('note');
-        $counts = array_count_values($request->reponse);
+        
         if ($counts[1] > 1) {
             $question->type = 'multi';
         }
@@ -62,52 +64,45 @@ class QuestionController extends Controller
                     'reponse' => $request->reponse[$propositon]
                 );
                 Proposition::insert($propositions);
+                $request->session()->flash('status', 'creation avec success');
             }
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    return redirect()->route('questions.create');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function findModuleByFiliere(Request $request)
     {
-        //
+        $this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
+        $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nom_filiere')))->first();
+        $assocFiliereModule = AssocFiliereModule::get()->where('filiere_id', $filiereExistant->id);
+        $data = array();
+        foreach ($assocFiliereModule as $filmol) {
+            $moduleExistant = Module::get()->where('id', $filmol->module_id)->first();
+            array_push($data, $moduleExistant);
+        }
+        $modulesData['data'] = $data;
+        
+        return json_encode($modulesData);
+    }
+    
+
+
+    public function findChapitreByModule(Request $request)
+    {
+        $this->validate($request, ['nom_module' => 'required|exists:modules,nom_module']);
+        $modules = Module::get()->where('nom_module', mb_strtoupper($request->get('nom_module')))->first();
+        $data = array();
+        $chapitres = [];
+            $chapitres = Chapitre::get()->where('module_id', $modules->id);
+            
+           foreach( $chapitres as $chap){
+            array_push($data, $chap);
+    }
+        $chapitresData['data'] = $data;
+        
+        return json_encode($chapitresData);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

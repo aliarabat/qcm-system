@@ -15,8 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/questions', 'QuestionController@create')->name('questions.create');
+Route::Post('/questions/createQuestion', 'QuestionController@createQuestion')->name('questions.createQuestion');
+Route::Get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
+Route::Get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
 
-Route::resource('/questions' , 'QuestionController');
 
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
 Route::Get('/mainparts/modulesFiliere', 'MainPartsController@modulesFiliere')->name('mainParts.modulesFiliere');
