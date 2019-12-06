@@ -29,7 +29,7 @@
                             </select>
                             <label>Module</label>
                         </div>
-                        <div class="input-field col s4" id="chapitre">
+                        <div class="input-field col s4">
                                 <select name="chapitre" id="chapitre">
                                        
                                 </select>
@@ -37,7 +37,7 @@
                             </div>
             </div>
             <div class="row" style="display: flex; justify-content: center;">
-                <button id="arrow-forward" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
+                <button id="arrow-forward" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text disabled">
                     <i class="material-icons right">arrow_forward</i>
                     suivant
                 </button>
@@ -73,11 +73,6 @@
                     <label>Note</label>
                 </div>
             </div>
-            <div id="add-button" class="row" style="display: flex; justify-content: center">
-                    <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
-                        <i class="material-icons">add</i>
-                    </button>
-                </div>
             <div class="row">
                 <div id="response0" style="display: flex; align-items: center;">
                     <div class="input-field col s6 offset-s3">
@@ -95,16 +90,20 @@
                     </a>
                 </div>
             </div>
+            <div id="add-button" class="row" style="display: flex; justify-content: center">
+                <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
+                    <i class="material-icons">add</i>
+                </button>
+            </div>
             <div  class="row" style="display: flex; justify-content: center">
-                    <button type="submit" class="btn btn-default">
-                        Ajouter
-                    </button>
-                </div>
-          
-            <div class="row" style="display: flex; justify-content: space-around;">
-                    <a href="#" id="arrow-back" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
-                        <i class="material-icons left">arrow_back</i>Revenir</a>
-                  
+                <a href="#" id="arrow-back" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text mr-2">
+                    <i class="material-icons left">arrow_back</i>
+                    Revenir
+                </a>
+                <button type="submit" class="button-small btn-flat waves-effect waves-light deep-orange accent-3 white-text ml-2">
+                    <i class="material-icons left">storage</i>
+                    Créer
+                </button>
             </div>
          
     </form>
@@ -209,6 +208,16 @@ $('#moduleChap').on('change',function(){
 
    
 });
+
+    $('#chapitre').on('change', function (e) { 
+        e.preventDefault();
+        var chapitreValue=$(this).val();
+        if (chapitreValue!=='') {
+            $('#arrow-forward').removeClass('disabled');
+        }else{
+            $('#arrow-forward').addClass('disabled');
+        }
+     });
 
 });
 

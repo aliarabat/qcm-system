@@ -16,6 +16,18 @@
             padding: 1em;
             margin-top: 1em;    
         }
+        .mr-2{
+            margin-right: 2px;
+        }
+        .ml-2{
+            margin-left: 2px;
+        }
+        .mt-2{
+            margin-top: 2px;
+        }
+        .mb-2{
+            margin-bottom: 2px;
+        }
         #delete1,#modal1{
             width: 35% !important;
         }
