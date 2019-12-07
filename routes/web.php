@@ -17,9 +17,9 @@
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/questions', 'QuestionController@create')->name('questions.create');
-Route::Post('/questions/createQuestion', 'QuestionController@createQuestion')->name('questions.createQuestion');
-Route::Get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
-Route::Get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
+Route::post('/questions/createQuestion', 'QuestionController@createQuestion')->name('questions.createQuestion');
+Route::get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
+Route::get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
 
 //mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');

@@ -16,10 +16,13 @@ class MainPartsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->authorizeResource(Niveau::class, 'create');
+
     }
 
     public function create()
     {
+
         $niveaux = Niveau::all();
         $filieres = Filiere::all();
         $modules = Module::all();
