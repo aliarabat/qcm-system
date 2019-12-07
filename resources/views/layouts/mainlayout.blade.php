@@ -73,7 +73,9 @@
 <body>
         <ul id="slide-out" class="side-nav">
             <li><a class="subheader">QCM</a></li>
-            <li><a class="waves-effect" href="/questions">Création des questions</a></li>
+            @can('create', App\Question::class)
+                <li><a class="waves-effect" href="/questions">Création des questions</a></li>
+            @endcan
             <li><a class="waves-effect" href="{{route('mainParts.create')}}">Création NFMC</a></li>
         </ul>
     <nav>
