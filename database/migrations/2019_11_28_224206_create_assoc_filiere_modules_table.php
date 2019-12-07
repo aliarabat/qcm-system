@@ -16,9 +16,9 @@ class CreateAssocFiliereModulesTable extends Migration
         Schema::create('assoc_filiere_modules', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('filiere_id');
-            $table->foreign('filiere_id')->references('id')->on('filieres');
+            $table->foreign('filiere_id')->references('id')->on('filieres')->onDelete('cascade');;
             $table->unsignedBigInteger('module_id');
-            $table->foreign('module_id')->references('id')->on('modules');
+            $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');;
             $table->timestamps();
         });
     }

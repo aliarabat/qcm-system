@@ -21,13 +21,16 @@ Route::Post('/questions/createQuestion', 'QuestionController@createQuestion')->n
 Route::Get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
 Route::Get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
 
-
+//mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
 Route::Get('/mainparts/modulesFiliere', 'MainPartsController@modulesFiliere')->name('mainParts.modulesFiliere');
 Route::Post('/mainparts', 'MainPartsController@createNiveau')->name('mainParts.createNiveau');
 Route::Post('/mainparts/filiere', 'MainPartsController@createFiliere')->name('mainParts.createFiliere');
 Route::Post('/mainparts/module', 'MainPartsController@createModule')->name('mainParts.createModule');
 Route::Post('/mainparts/chapitre', 'MainPartsController@createChapitre')->name('mainParts.createChapitre');
+Route::Post('/mainparts/{idNiveau}/updateNiveau', 'MainPartsController@updateNiveau')->name('mainParts.updateNiveau');
+Route::Delete('/mainparts/{idNiveau}/deleteNiveau', 'MainPartsController@deleteNiveau')->name('mainParts.deleteNiveau');
+
 
 
 
