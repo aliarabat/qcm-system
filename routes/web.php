@@ -17,17 +17,17 @@
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/questions', 'QuestionController@create')->name('questions.create');
-Route::Post('/questions/createQuestion', 'QuestionController@createQuestion')->name('questions.createQuestion');
-Route::Get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
-Route::Get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
+Route::post('/questions/createQuestion', 'QuestionController@createQuestion')->name('questions.createQuestion');
+Route::get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
+Route::get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
 
 
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
-Route::Get('/mainparts/modulesFiliere', 'MainPartsController@modulesFiliere')->name('mainParts.modulesFiliere');
-Route::Post('/mainparts', 'MainPartsController@createNiveau')->name('mainParts.createNiveau');
-Route::Post('/mainparts/filiere', 'MainPartsController@createFiliere')->name('mainParts.createFiliere');
-Route::Post('/mainparts/module', 'MainPartsController@createModule')->name('mainParts.createModule');
-Route::Post('/mainparts/chapitre', 'MainPartsController@createChapitre')->name('mainParts.createChapitre');
+Route::get('/mainparts/modulesFiliere', 'MainPartsController@modulesFiliere')->name('mainParts.modulesFiliere');
+Route::post('/mainparts', 'MainPartsController@createNiveau')->name('mainParts.createNiveau');
+Route::post('/mainparts/filiere', 'MainPartsController@createFiliere')->name('mainParts.createFiliere');
+Route::post('/mainparts/module', 'MainPartsController@createModule')->name('mainParts.createModule');
+Route::post('/mainparts/chapitre', 'MainPartsController@createChapitre')->name('mainParts.createChapitre');
 
 
 

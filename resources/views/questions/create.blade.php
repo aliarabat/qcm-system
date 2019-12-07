@@ -96,11 +96,11 @@
                 </button>
             </div>
             <div  class="row" style="display: flex; justify-content: center">
-                <a href="#" id="arrow-back" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text mr-2">
+                <a href="#" id="arrow-back" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text mr-1">
                     <i class="material-icons left">arrow_back</i>
                     Revenir
                 </a>
-                <button type="submit" class="button-small btn-flat waves-effect waves-light deep-orange accent-3 white-text ml-2">
+                <button type="submit" class="button-small btn-flat waves-effect waves-light deep-orange accent-3 white-text">
                     <i class="material-icons left">storage</i>
                     Créer
                 </button>

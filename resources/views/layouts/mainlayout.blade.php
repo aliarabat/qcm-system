@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8"/>
     <title>UCA QCM | Dashboard</title>
@@ -16,17 +16,77 @@
             padding: 1em;
             margin-top: 1em;    
         }
-        .mr-2{
-            margin-right: 2px;
+        .mr-1{
+            margin-right: 1em;
         }
-        .ml-2{
-            margin-left: 2px;
+        .ml-1{
+            margin-left: 1em;
         }
-        .mt-2{
-            margin-top: 2px;
+        .mt-1{
+            margin-top: 1em;
         }
-        .mb-2{
-            margin-bottom: 2px;
+        .mb-1{
+            margin-bottom: 1em;
+        }
+        .m-1{
+            margin: 1em;
+        }
+        .p-1{
+            padding: 1em;
+        }
+        .d-flex{
+            display: flex;
+        }
+        .flex-column{
+            flex-direction: column;
+        }
+        .justify-content-start{
+            justify-content: flex-start;
+        }
+        .justify-content-center{
+            justify-content: center;
+        }
+        .justify-content-end{
+            justify-content: flex-end;
+        }
+        .justify-content-between{
+            justify-content: space-between;
+        }
+        .justify-content-around{
+            justify-content: space-around;
+        }
+        .align-items-start{
+            align-items: flex-start;
+        }
+        .align-items-center{
+            align-items: center;
+        }
+        .align-items-end{
+            align-items: flex-end;
+        }
+        .align-items-baseline{
+            align-items: baseline;
+        }
+        .align-items-stretch{
+            align-items: stretch;
+        }
+        .align-content-start{
+            align-content: flex-start;
+        }
+        .align-content-center{
+            align-content: center;
+        }
+        .align-content-end{
+            align-content: flex-end;
+        }
+        .align-content-around{
+            align-content: space-around;
+        }
+        .align-content-between{
+            align-content: space-between;
+        }
+        .align-content-stretch{
+            align-content: stretch;
         }
         #delete1,#modal1{
             width: 35% !important;
