@@ -131,6 +131,7 @@
     </style>
 </head>
 <body>
+        @if(\Illuminate\Support\Facades\Auth::check())
         <ul id="slide-out" class="side-nav">
             <li><a class="subheader">QCM</a></li>
             @can('create', App\Question::class)
@@ -138,12 +139,15 @@
             @endcan
             <li><a class="waves-effect" href="{{route('mainParts.create')}}">Création NFMC</a></li>
         </ul>
+        @endif
     <nav>
         <div class="nav-wrapper deep-orange accent-3">
             <div class="brand-logo left">
+                @if(\Illuminate\Support\Facades\Auth::check())
                 <a href="#" data-activates="slide-out" class="button button-collapse show-on-large">
                     <i class="material-icons">menu</i>
                 </a>
+                @endif
                 <a href="#">
                     <img src="{{asset('images/fssm.png')}}" alt="UCA Logo" style="width: 100px; height: 50px; filter: brightness(0) invert(1);padding-top: 10px;">
                 </a>
