@@ -9,12 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class QuestionPolicy
 {
     use HandlesAuthorization;
-//    public function before($user, $ability)
-//    {
-//        if ($user->role->name == 'PROFESSOR') {
-//            return true;
-//        }
-//    }
+
     /**
      * Determine whether the user can view any questions.
      *

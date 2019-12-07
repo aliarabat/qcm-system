@@ -137,7 +137,9 @@
             @can('create', App\Question::class)
                 <li><a class="waves-effect" href="/questions">Création des questions</a></li>
             @endcan
-            <li><a class="waves-effect" href="{{route('mainParts.create')}}">Création NFMC</a></li>
+            @can('create', App\Niveau::class)
+            <li><a class="waves-effect" href="{{route('mainParts.create')}}">Plan pédagogique</a></li>
+            @endcan
         </ul>
         @endif
     <nav>

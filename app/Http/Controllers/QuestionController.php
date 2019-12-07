@@ -23,9 +23,9 @@ class QuestionController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->authorizeResource(Question::class, 'create');
-//        $this->middleware('auth');
-//        $this->middleware('checkProf');
+
     }
 
     public function index()
