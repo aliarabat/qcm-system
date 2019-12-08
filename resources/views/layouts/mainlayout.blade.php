@@ -132,22 +132,30 @@
     </style>
 </head>
 <body>
+        @if(\Illuminate\Support\Facades\Auth::check())
         <ul id="slide-out" class="side-nav">
             <li><a class="subheader">QCM</a></li>
-            <li><a class="waves-effect" href="{{route('questions.create')}}">Création des questions</a></li>
-            <li><a class="waves-effect" href="{{route('mainParts.create')}}">Création NFMC</a></li>
+            @can('create', App\Question::class)
+                <li><a class="waves-effect" href="{{route('questions.create')}}">Création des questions</a></li>
+            @endcan
+            @can('create', App\Niveau::class)
+                <li><a class="waves-effect" href="{{route('mainParts.create')}}">Plan pédagogique</a></li>
+            @endcan
             <li><a class="subheader">Evaluations</a></li>
             <li><a class="waves-effect" href="{{route('evaluations.index')}}">Commencer</a></li>
             <li><a class="waves-effect" href="{{route('evaluations.start')}}">Evaluer</a></li>
         </ul>
+        @endif
     <nav>
         <div class="nav-wrapper deep-orange accent-3">
             <div class="brand-logo left">
-                <a href="#" data-activates="slide-out" class="button button-collapse show-on-large">
+                @if(\Illuminate\Support\Facades\Auth::check())
+                <a href="#" data-activates="slide-out" class="button button-collapse show-on-large" style="margin: 0 0 0 10px;">
                     <i class="material-icons">menu</i>
                 </a>
+                @endif
                 <a href="#">
-                    <img src="{{asset('images/fssm.png')}}" alt="UCA Logo" style="width: 100px; height: 50px; filter: brightness(0) invert(1);padding-top: 10px;">
+                    <img src="{{asset('images/fssm.png')}}" alt="UCA Logo" style="width: 100px; height: 50px; filter: brightness(0) invert(1);padding-top: 10px;margin-left: 10px;">
                 </a>
             {{-- <div>
                 <a href="#!" class="breadcrumb">First</a>
