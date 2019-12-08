@@ -29,7 +29,9 @@ Route::post('/mainparts/filiere', 'MainPartsController@createFiliere')->name('ma
 Route::post('/mainparts/module', 'MainPartsController@createModule')->name('mainParts.createModule');
 Route::post('/mainparts/chapitre', 'MainPartsController@createChapitre')->name('mainParts.createChapitre');
 
-
+//Evaluations routes
+Route::get('/evaluations', 'EvaluationController@index')->name('evaluations.index');
+Route::get('/evaluations/start', 'EvaluationController@start')->name('evaluations.start');
 
 
 

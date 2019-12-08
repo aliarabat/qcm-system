@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('css/materialize.min.css') }}" rel="stylesheet" type="text/css"/>
+    @yield('countdowncss')
     <link rel="shortcut icon" href="logos/favicon.ico"/>
     <style>
         .brand-logo a i{
@@ -135,6 +136,9 @@
             <li><a class="subheader">QCM</a></li>
             <li><a class="waves-effect" href="{{route('questions.create')}}">Création des questions</a></li>
             <li><a class="waves-effect" href="{{route('mainParts.create')}}">Création NFMC</a></li>
+            <li><a class="subheader">Evaluations</a></li>
+            <li><a class="waves-effect" href="{{route('evaluations.index')}}">Commencer</a></li>
+            <li><a class="waves-effect" href="{{route('evaluations.start')}}">Evaluer</a></li>
         </ul>
     <nav>
         <div class="nav-wrapper deep-orange accent-3">
