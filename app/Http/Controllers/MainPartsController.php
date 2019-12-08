@@ -122,6 +122,30 @@ class MainPartsController extends Controller
         }
     }
 
+    public function updateFiliere(Request $request,$idFiliere)
+    {
+        $filiereExistant = Filiere::findOrFail($idFiliere);
+        if ($filiereExistant) {
+            $allFilieres=Filiere::all();
+            $filiereExistant1 =Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nomFiliere')))->first();
+            if ($filiereExistant1) {
+                
+                return -1;
+            } else {
+                $selectNiveau = $request->get('niveau');
+                $infosNiveau = explode("-", $selectNiveau);
+                $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($infosNiveau[0]))->where('type', mb_strtoupper($infosNiveau[1]))->first();
+                $filiereExistant->nom_filiere = mb_strtoupper($request->get('nomFiliere'));
+                $filiereExistant->libelle = mb_strtoupper($request->get('libelle'));
+                $filiereExistant->niveau()->associate($niveauExistant)->save();
+                return 1;
+            }     
+        } 
+        else {
+            return -2;
+        }
+    }
+
 
 
     //Création d'un nouveau module

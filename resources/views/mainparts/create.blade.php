@@ -116,7 +116,7 @@
 
             <!-- list des Filieres-->
             <div class="row">
-                <table class="centered">
+                <table class="centered" id="tableFilieres">
                     <thead>
                         <tr>
                             <th>Niveau</th>
@@ -133,7 +133,7 @@
                                 <td>{{$filiere->nom_filiere}}</td>
                                 <td>{{$filiere->libelle}}</td>
                                 <td>
-                                    <a href="#modal2" onclick="return onUpdateFiliere({{$filiere->id}} , '{{$filiere->nom_filiere}}', '{{$filiere->libelle}}' , '{{App\Niveau::find($filiere->niveau_id)->niveau}}' , false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <a href="#modal2" onclick="return onUpdateFiliere({{$filiere->id}},'{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}','{{$filiere->nom_filiere}}','{{$filiere->libelle}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
                                     </a>
                                     <a href="#delete2" onclick="return onDeleteFiliere({{$filiere->id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
@@ -406,8 +406,6 @@
     $('#filiereChapitre').on('change',function(){
        var nom_filiere = $(this).val();
        //console.log(nom_filiere);
-       
-
        $.ajax({
            url: "{{route('mainParts.modulesFiliere')}}",
            dataType: 'JSON',
@@ -517,27 +515,63 @@
             else {
                 alert("Niveau introuvable");
             }
-           }
-           
-
-                
+           }                
             });
         }
     }
 
     //mettre a jour la filiere
-    function onUpdateFiliere(id, filiere, libelle,niveau, updateInDb) {
+    function onUpdateFiliere(id, niveau, filiere,libelle, updateInDb) {
         if (updateInDb==false) {
+            $("#modal2 input[type='hidden']").val(id);
+            $("#modal2 input[name='updatedFiliere']").val(filiere);
+            $("#modal2 input[type='text']:first").val(niveau);
+            $("#modal2 input[type='text']:last").val(libelle);
             console.log('Opened Modal');
-        }else{
+            console.log(niveau);
+        }
+        else{
             console.log('Called Ajax');
+
+            var idFiliere=$("#modal2 input[type='hidden']").val();
+            var nomFiliere=$("#modal2 input[name='updatedFiliere']").val();
+            var libelle=$("#modal2 input[type='text']:last").val();
+            var niveau=$("#modal2 input[type='text']:first").val();
+
+            $.post({
+           url: "http://127.0.0.1:8000/mainparts/"+idFiliere+"/updateFiliere",
+           dataType: 'JSON',
+           data: {
+            "_token": "{{ csrf_token() }}",
+            "nomFiliere": nomFiliere,
+            "libelle": libelle,
+            "niveau":niveau
+            },
+            success:function(result){
+            console.log(result);
+            if(result=1){
+                $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
+                $('#modal2').modal('close');
+
             }
+            else if(result=-1){
+                $('#modal2').modal('close');
+                alert("Filiere existe déja");
             }
+            else {
+                $('#modal2').modal('close');
+                alert("Filiere introuvable");
+            }
+           }
+            });
+            }
+    }
 
 
             //Delete le filiere
     function onDeleteFiliere(id, deleteFromDb) {
         if (deleteFromDb==false) {
+            $("#modal2 input[type='hidden']").val(id);
             console.log('delete modal opened');
         } else {
             console.log('Delete with ajax');

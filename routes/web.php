@@ -30,6 +30,9 @@ Route::Post('/mainparts/module', 'MainPartsController@createModule')->name('main
 Route::Post('/mainparts/chapitre', 'MainPartsController@createChapitre')->name('mainParts.createChapitre');
 Route::Post('/mainparts/{idNiveau}/updateNiveau', 'MainPartsController@updateNiveau')->name('mainParts.updateNiveau');
 Route::Delete('/mainparts/{idNiveau}/deleteNiveau', 'MainPartsController@deleteNiveau')->name('mainParts.deleteNiveau');
+Route::Post('/mainparts/{idFiliere}/updateFiliere', 'MainPartsController@updateFiliere')->name('mainParts.updateFiliere');
+Route::Delete('/mainparts/{idFiliere}/deleteFiliere', 'MainPartsController@deleteFiliere')->name('mainParts.deleteFiliere');
+
 
 
 
