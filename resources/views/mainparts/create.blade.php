@@ -538,9 +538,7 @@
                 $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $('#modal1').modal('close');
-                //$( "#niveauFiliere" ).load( "http://127.0.0.1:8000/mainparts #niveauFiliere" );
-                //$( "#updatedNiveauFiliere" ).load( "http://127.0.0.1:8000/mainparts #updatedNiveauFiliere" );
-                //window.location.reload();
+            // update les selects niveaux
                 $.ajax({
              url: "{{route('mainParts.refreshNiveaux')}}",
              type: 'GET',
@@ -549,15 +547,11 @@
           success: function( result )
           {
             console.log(result);
-            //$('select[name="niveauFiliere"]').empty();
-            //$('#modal2 input[name="updatedFiliere"]').empty();
             var len = 0;
             len = result['data'].length;
             console.log(len);
                  if(len!=0){
                      console.log("kayn");
-                   //$('select[name="niveauFiliere"]').empty();
-                   //$('#modal2 input[name="updatedFiliere"]').empty();
                    var s='<option value="m1" selected disabled>Niveau</option>';
                    for( var i = 0; i<len; i++){
                         var niveau = result['data'][i].niveau;
@@ -621,7 +615,47 @@
                 $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $('#delete1').modal('close');
-                //window.location.reload();
+                //update les selects niveaux
+                $.ajax({
+             url: "{{route('mainParts.refreshNiveaux')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Niveau</option>';
+                   for( var i = 0; i<len; i++){
+                        var niveau = result['data'][i].niveau;
+                        var type = result['data'][i].type;
+                        s+='<option value="'+ niveau+'-'+type+'">'+niveau+'-'+type+'</option>'; 
+                        $('select[name="niveauFiliere"]').html(s);
+                        $('select[name="niveauFiliere"]').material_select();
+                        $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                        $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Niveau</option>';
+                    $('select[name="niveauFiliere"]').html(s);
+                    $('select[name="niveauFiliere"]').material_select();
+                    $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                    $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
 
 
             }
@@ -663,9 +697,52 @@
             if(result=1){
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
-
                 $('#modal2').modal('close');
-                //window.location.reload();
+                //update select filieres
+                $.ajax({
+             url: "{{route('mainParts.refreshFilieres')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Filière</option>';
+                   for( var i = 0; i<len; i++){
+                        var filiere = result['data'][i].nom_filiere;
+                        var libelle = result['data'][i].libelle;
+                        s+='<option value="'+filiere+'">'+filiere+'-'+libelle+'</option>'; 
+                        $('select[name="filiereModule"]').html(s);
+                        $('select[name="filiereModule"]').material_select();
+                        $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                        $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                        $('select[name="filiereChapitre"]').html(s);
+                        $('select[name="filiereChapitre"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Filière</option>';
+                    $('select[name="filiereModule"]').html(s);
+                    $('select[name="filiereModule"]').material_select();
+                    $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                    $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                    $('select[name="filiereChapitre"]').html(s);
+                    $('select[name="filiereChapitre"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
 
 
             }
@@ -706,9 +783,52 @@
             if(result=1){
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
-
                 $('#delete2').modal('close');
-                //window.location.reload();
+                //update select filieres
+                $.ajax({
+             url: "{{route('mainParts.refreshFilieres')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Filière</option>';
+                   for( var i = 0; i<len; i++){
+                        var filiere = result['data'][i].nom_filiere;
+                        var libelle = result['data'][i].libelle;
+                        s+='<option value="'+filiere+'">'+filiere+'-'+libelle+'</option>'; 
+                        $('select[name="filiereModule"]').html(s);
+                        $('select[name="filiereModule"]').material_select();
+                        $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                        $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                        $('select[name="filiereChapitre"]').html(s);
+                        $('select[name="filiereChapitre"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Filière</option>';
+                    $('select[name="filiereModule"]').html(s);
+                    $('select[name="filiereModule"]').material_select();
+                    $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                    $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                    $('select[name="filiereChapitre"]').html(s);
+                    $('select[name="filiereChapitre"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
 
 
             }
