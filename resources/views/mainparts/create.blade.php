@@ -541,40 +541,50 @@
                 //$( "#niveauFiliere" ).load( "http://127.0.0.1:8000/mainparts #niveauFiliere" );
                 //$( "#updatedNiveauFiliere" ).load( "http://127.0.0.1:8000/mainparts #updatedNiveauFiliere" );
                 //window.location.reload();
-                /*$.ajax({
+                $.ajax({
              url: "{{route('mainParts.refreshNiveaux')}}",
              type: 'GET',
              "_token": "{{ csrf_token() }}",
              dataType: 'JSON',
           success: function( result )
           {
-            $('select[name="niveauFiliere"]').empty();
-            $('#modal2 input[name="updatedFiliere"]').empty();
+            console.log(result);
+            //$('select[name="niveauFiliere"]').empty();
+            //$('#modal2 input[name="updatedFiliere"]').empty();
             var len = 0;
-                 if(result['data'] != null){
-                   len = result['data'].length;
-                   $('select[name="niveauFiliere"]').empty();
-                   $('#modal2 input[name="updatedFiliere"]').empty();
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   //$('select[name="niveauFiliere"]').empty();
+                   //$('#modal2 input[name="updatedFiliere"]').empty();
                    var s='<option value="m1" selected disabled>Niveau</option>';
-                 }
-              console.log(result);
-              //console.log(len);
-             for( var i = 0; i<len; i++){
+                   for( var i = 0; i<len; i++){
                         var niveau = result['data'][i].niveau;
                         var type = result['data'][i].type;
-                        s+='<option value="' + niveau-type+'“>' + niveau-type + '</option>'; 
-                        $('#niveauFiliere').html(s);
-                        $('#niveauFiliere').material_select();
-                        $("#modal2 input[name='updatedNiveauFiliere']").html(s);
-                        $('#modal2 input[name="updatedNiveauFiliere"]').material_select();
+                        s+='<option value="'+ niveau+'-'+type+'">'+niveau+'-'+type+'</option>'; 
+                        $('select[name="niveauFiliere"]').html(s);
+                        $('select[name="niveauFiliere"]').material_select();
+                        $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                        $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
                     }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Niveau</option>';
+                    $('select[name="niveauFiliere"]').html(s);
+                    $('select[name="niveauFiliere"]').material_select();
+                    $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                    $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                 }
+             
           },
           error: function()
          {
              //handle errors
              alert('error...');
          }
-       });*/
+       });
             }
             else if(result=-1){
                 $('#modal1').modal('close');
