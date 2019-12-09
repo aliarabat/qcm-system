@@ -18,7 +18,7 @@ class CreateFilieresTable extends Migration
             $table->string('nom_filiere');
             $table->string('libelle');
             $table->unsignedBigInteger('niveau_id');
-            $table->foreign('niveau_id')->references('id')->on('niveaux');
+            $table->foreign('niveau_id')->references('id')->on('niveaux')->onDelete('cascade');
             $table->timestamps();
         });
     }
