@@ -32,6 +32,9 @@ Route::Post('/mainparts/{idNiveau}/updateNiveau', 'MainPartsController@updateNiv
 Route::Delete('/mainparts/{idNiveau}/deleteNiveau', 'MainPartsController@deleteNiveau')->name('mainParts.deleteNiveau');
 Route::Post('/mainparts/{idFiliere}/updateFiliere', 'MainPartsController@updateFiliere')->name('mainParts.updateFiliere');
 Route::Delete('/mainparts/{idFiliere}/deleteFiliere', 'MainPartsController@deleteFiliere')->name('mainParts.deleteFiliere');
+Route::Get('/mainparts/refreshNiveaux', 'MainPartsController@refreshNiveaux')->name('mainParts.refreshNiveaux');
+Route::Post('/mainparts/{idModule}/updateModule', 'MainPartsController@updateModule')->name('mainParts.updateModule');
+Route::Delete('/mainparts/{idModule}/deleteModule', 'MainPartsController@deleteModule')->name('mainParts.deleteModule');
 
 
 
