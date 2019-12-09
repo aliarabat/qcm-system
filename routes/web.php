@@ -38,7 +38,9 @@ Route::Delete('/mainparts/{idModule}/deleteModule', 'MainPartsController@deleteM
 
 
 
-
+//Evaluations routes
+Route::get('/evaluations', 'EvaluationController@index')->name('evaluations.index');
+Route::get('/evaluations/start', 'EvaluationController@start')->name('evaluations.start');
 
 
 

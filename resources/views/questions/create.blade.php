@@ -36,7 +36,7 @@
                                 <label>Chapitre</label>
                             </div>
             </div>
-            <div class="row" style="display: flex; justify-content: center;">
+            <div class="row center-align">
                 <button id="arrow-forward" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text disabled">
                     <i class="material-icons right">arrow_forward</i>
                     suivant
@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="row">
-                <div id="response0" style="display: flex; align-items: center;">
+                <div id="response0" class="d-flex align-items-center">
                     <div class="input-field col s6 offset-s3">
                         <input type="text" name="proposition[]" id="proposition">
                         <label>Réponse 1</label>
@@ -90,12 +90,12 @@
                     </a>
                 </div>
             </div>
-            <div id="add-button" class="row" style="display: flex; justify-content: center">
+            <div id="add-button" class="row center-align">
                 <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
                     <i class="material-icons">add</i>
                 </button>
             </div>
-            <div  class="row" style="display: flex; justify-content: center">
+            <div  class="center-align">
                 <a href="#" id="arrow-back" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text mr-1">
                     <i class="material-icons left">arrow_back</i>
                     Revenir
