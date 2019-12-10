@@ -13,10 +13,20 @@
         </div>
 
         @if(session()->has('status'))
-            <h6 style="color: green">{{session()->get('status')}}</h6>
+           @section('messages')
+                <script>
+                    var $toastContent = $("<span>{{session()->get('status')}}</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+                    Materialize.toast($toastContent, 3000);    
+                </script>
+           @endsection
         @endif
         @if(session()->has('errorStatus'))
-            <h6 style="color: red">{{session()->get('errorStatus')}}</h6>
+            @section('messages')
+                <script>
+                    var $toastContent = $("<span>{{session()->get('errorStatus')}}</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+                    Materialize.toast($toastContent, 3000);    
+                </script>
+           @endsection
         @endif
 
         <!--Niveau-->

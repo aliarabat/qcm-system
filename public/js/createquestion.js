@@ -21,7 +21,7 @@ $(function () {
         console.log('reponses', responsesLength);
         console.log('propsNumber', propsNumber);
         if (propsNumber != responsesLength) {
-            var $toastContent = $('<span>Atjibha ghir fkerrek wa3mmer</span>').add($('<button class="btn-flat toast-action">Undo</button>'));
+            var $toastContent = $('<span>Remplir toutes les réponses correspondantes</span>').add($('<button class="btn-flat toast-action">Annuler</button>'));
             Materialize.toast($toastContent, 3000);
         } else {
             var count = $('[id^="response"]').length;
@@ -48,7 +48,7 @@ $(function () {
 
 function deleteResponse(id) {
     if ($('[id^="response"]').length === 1) {
-        var $toastContent = $('<span>Ooopps non non zid zid</span>').add($('<button class="btn-flat toast-action">Undo</button>'));
+        var $toastContent = $('<span>Vous ne pouvez supprimer tous les réponses</span>').add($('<button class="btn-flat toast-action">Annuler</button>'));
         Materialize.toast($toastContent, 3000);
     } else {
         $('#' + id).slideUp('fast', function () {
