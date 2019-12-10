@@ -34,7 +34,7 @@
 
             <div style="display: flex; align-items: center;">
             
-                <form action="{{route('mainParts.createNiveau')}}" method="post" class="col s12" >
+                <form id="niveau-form" method="post" class="col s12" >
                     @csrf  
 
                     <div class="input-field col s6 ">
@@ -46,7 +46,7 @@
                         <label for="typeIn">Type</label>
                     </div>
                     <div class="col s2 offset-s5">
-                        <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
+                        <button id="niveauSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
                     </div>
                 </form>
             </div>
@@ -87,8 +87,6 @@
             <!-- END - list des Niveaux-->
 
         </div>
-
-
 
         <!--Filiere -->
         <div id="filiere" class="col s12">
@@ -516,7 +514,108 @@
 
     });
 
-    
+    if ($("#niveau-form").length > 0) {
+    $("#niveau-form").validate({
+      
+    rules: {
+        niveau: {
+        required: true,
+        maxlength: 60,
+      },
+      type: {
+            required: true,
+            maxlength: 100,      
+        },    
+    },
+    messages: {
+        niveau: {
+        required: "Veuillez saisir le niveau",
+      },
+      type: {
+        required: "Veuillez saisir le type du niveau", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#submit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createNiveau')}}' ,
+        type: "POST",
+        data: $('#niveau-form').serialize(),
+        success: function( response ) {
+            $('#niveauSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#niveauIn' ).val("");
+            $( '#typeIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
+            // update les selects niveaux
+                $.ajax({
+             url: "{{route('mainParts.refreshNiveaux')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Niveau</option>';
+                   for( var i = 0; i<len; i++){
+                        var niveau = result['data'][i].niveau;
+                        var type = result['data'][i].type;
+                        s+='<option value="'+ niveau+'-'+type+'">'+niveau+'-'+type+'</option>'; 
+                        $('select[name="niveauFiliere"]').html(s);
+                        $('select[name="niveauFiliere"]').material_select();
+                        $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                        $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Niveau</option>';
+                    $('select[name="niveauFiliere"]').html(s);
+                    $('select[name="niveauFiliere"]').material_select();
+                    $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                    $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
+        }
+      });
+
+      
+    }
+  })
+}
     
     
     });

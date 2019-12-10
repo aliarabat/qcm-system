@@ -68,14 +68,14 @@ class MainPartsController extends Controller
         $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($request->input('niveau')))->where('type', mb_strtoupper($request->input('type')))->first();
         if ($niveauExistant) {
             $request->session()->flash('errorStatus', 'Ce Niveau est déja créé');
-            return redirect()->route('mainParts.create');
+            return -1;
         } else {
             $niveau = new Niveau();
             $niveau->niveau = mb_strtoupper($request->input('niveau'));
             $niveau->type = mb_strtoupper($request->input('type'));
             $niveau->save();
             $request->session()->flash('status', 'Le Niveau a été créé');
-            return redirect()->route('mainParts.create');
+            return 1;
         }
     }
 
