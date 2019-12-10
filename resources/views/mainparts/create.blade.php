@@ -2,7 +2,7 @@
 
 @section('mainContent')
 
-    <div class="row z-depth-4 mt-p-1">
+    <div class="row z-depth-5 mt-p-1">
         <div class="col s12">
             <ul class="tabs deep-orange-text text-accent-3">
               <li class="tab col s3"><a class="active" href="#niveau">Niveau</a></li>
@@ -40,10 +40,10 @@
                     </div>
                 </form>
             </div>
-
+<br>
             <!-- list des Niveaux-->
             <div class="row">
-                <table class="centered" id="tableNiveaux">
+                <table class="centered"  id="tableNiveaux">
                     <thead>
                         <tr>
                             <th>Niveau</th>
@@ -113,15 +113,14 @@
                         </div>
         </form>
             </div>
-
+<br>
             <!-- list des Filieres-->
             <div class="row">
-                <table class="centered" id="tableFilieres">
+                <table class="centered"  id="tableFilieres">
                     <thead>
                         <tr>
                             <th>Niveau</th>
                             <th>Filière</th>
-                            <th>Libellé</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -130,8 +129,7 @@
                             @forelse ($filieres as $filiere)
                             <tr>
                                 <td>{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}</td>
-                                <td>{{$filiere->nom_filiere}}</td>
-                                <td>{{$filiere->libelle}}</td>
+                                <td>{{$filiere->nom_filiere}}-{{$filiere->libelle}}</td>
                                 <td>
                                     <a href="#modal2" onclick="return onUpdateFiliere({{$filiere->id}},'{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}','{{$filiere->nom_filiere}}','{{$filiere->libelle}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
@@ -187,6 +185,7 @@
         </form>
             
             </div>
+            <br>
                         <!-- list des Modules-->
             <div class="row">
                 <table class="centered" id="tableModules">
@@ -255,6 +254,7 @@
                 </form>
             </div>
             <div class="row">
+                <br>
                 <!-- list des Chapitres-->
                     <table class="centered" id="tableChapitres">
                         <thead>
