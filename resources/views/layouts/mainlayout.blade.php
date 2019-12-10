@@ -206,6 +206,7 @@
 <script src="{{ asset('js/createquestion.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
 @yield('script')
+@yield('messages')
 
 </body>
 </html>
