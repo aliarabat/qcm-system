@@ -133,7 +133,7 @@ class MainPartsController extends Controller
         $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->input('nom_filiere')))->first();
         if ($filiereExistant) {
             $request->session()->flash('errorStatus', 'Cette filière est déja créée');
-            return redirect()->route('mainParts.create');
+            return -1;
         } else {
             $filiere = new Filiere();
             $filiere->nom_filiere = mb_strtoupper($request->input('nom_filiere'));
@@ -145,7 +145,7 @@ class MainPartsController extends Controller
             $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($infosNiveau[0]))->where('type', mb_strtoupper($infosNiveau[1]))->first();
             $filiere->niveau()->associate($niveauExistant)->save();
             $request->session()->flash('status', 'Filière a été créée');
-            return redirect()->route('mainParts.create');
+            return 1;
         }
     }
 
@@ -223,7 +223,7 @@ class MainPartsController extends Controller
             $assocFiliereModule = AssocFiliereModule::get()->where('filiere_id', $filiereExistant->id)->where('module_id', $moduleExistant->id)->first();
             if ($assocFiliereModule) {
                 $request->session()->flash('errorStatus', 'Ce module est déja associé à cette filière');
-                return redirect()->route('mainParts.create');
+                return -1;
             } else {
                 $assocFilieresModules = AssocFiliereModule::get()->where('module_id', $moduleExistant->id)->first();
                 $filiereExistant1 = Filiere::get()->where('id', $assocFilieresModules->filiere_id)->first();
@@ -233,11 +233,11 @@ class MainPartsController extends Controller
                 $assocFiliereModuleNew->module()->associate($moduleExistant);
                 $assocFiliereModuleNew->save();
                 $request->session()->flash('status', 'Ce module a été associé à cette filière');
-                return redirect()->route('mainParts.create');
+                return 1;
                 }
                 else{
                     $request->session()->flash('errorStatus', 'Ce module est déja associé à un certain niveau');
-                    return redirect()->route('mainParts.create');
+                    return -2;
                 }
                 
             }
@@ -255,7 +255,7 @@ class MainPartsController extends Controller
             $assocFiliereModuleNew->save();
 
             $request->session()->flash('status', 'module a été créée');
-            return redirect()->route('mainParts.create');
+            return 2;
         }
     }
 
@@ -373,24 +373,22 @@ class MainPartsController extends Controller
         $chapitre = new Chapitre();
         $chapitre->nom_chapitre = mb_strtoupper($request->input('nom_chapitre'));
         $selectModule = $request->input('moduleChapitre');
-        //dd($selectModule);
         $moduleExistant = Module::get()->where('nom_module', mb_strtoupper($selectModule))->first();
-        //dd($moduleExistant);
         $chapitresExistant = Chapitre::get()->where('module_id', $moduleExistant->id);
         if ($chapitresExistant) {
             foreach ($chapitresExistant as $chapitreItem) {
                 if ($chapitreItem->nom_chapitre == $chapitre->nom_chapitre) {
                     $request->session()->flash('errorStatus', 'Ce Chapitre est déja associé à ce module');
-                    return redirect()->route('mainParts.create');
+                    return -1;
                 }
             }
             $chapitre->module()->associate($moduleExistant)->save();
             $request->session()->flash('status', 'Ce Chapitre a été associé à ce module');
-            return redirect()->route('mainParts.create');
+            return 1;
         } else {
             $chapitre->module()->associate($moduleExistant)->save();
             $request->session()->flash('status', 'Le nouveau chapitre a été associé à ce module');
-            return redirect()->route('mainParts.create');
+            return 2;
         }
     }
 

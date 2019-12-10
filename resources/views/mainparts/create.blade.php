@@ -45,6 +45,7 @@
                         <input  id="typeIn" name="type" type="text"/>
                         <label for="typeIn">Type</label>
                     </div>
+                    <br>
                     <div class="col s2 offset-s5">
                         <button id="niveauSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
                     </div>
@@ -92,7 +93,7 @@
         <div id="filiere" class="col s12">
             <div  style="display: flex; align-items: center;">
 
-                <form action="{{route('mainParts.createFiliere')}}" method="post" class="col s12" >
+                <form  id="filiere-form" method="post" class="col s12" >
                     @csrf  
                     <div class="input-field col s4">
                             <select name="niveauFiliere" id="niveauFiliere">
@@ -117,7 +118,7 @@
                          </div>
 
                         <div class=" col s2 offset-s5">
-                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                            <button id="filiereSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
                         </div>
         </form>
             </div>
@@ -163,7 +164,7 @@
         <div id="module" class="col s12">
 
             <div style="display: flex; align-items: center;">
-                <form action="{{route('mainParts.createModule')}}" method="post" class="col s12" >
+                <form id="module-form" method="post" class="col s12" >
                     @csrf  
                     <div class="input-field col s4">
                             <select name="filiereModule" id="filiereModule">
@@ -188,7 +189,7 @@
                          </div>
     
                         <div class="col s2 offset-s5">
-                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                            <button id="moduleSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
                         </div>
         </form>
             
@@ -233,7 +234,7 @@
         <!--Chapitre-->
         <div id="chapitre" class="col s12">
             <div style="display: flex; align-items: center;">
-                <form action="{{route('mainParts.createChapitre')}}" method="post" class="col s12" >
+                <form id="chapitre-form" method="post" class="col s12" >
                         @csrf
                         <div class="input-field col s4">
                             <select name="filiereChapitre" id="filiereChapitre" >
@@ -257,7 +258,7 @@
                             <label for="chapitreIn">Chapitre</label>
                             </div>
                         <div class="col s2 offset-s5">
-                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                            <button id="chapitreSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
                         </div>
                 </form>
             </div>
@@ -550,7 +551,7 @@
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
       });
-      $('#submit').html('Sending..');
+      $('#niveauSubmit').html('Sending..');
       $.ajax({
         url: '{{route('mainParts.createNiveau')}}' ,
         type: "POST",
@@ -609,6 +610,268 @@
              alert('error...');
          }
        });
+        }
+      });
+
+      
+    }
+  })
+}
+
+
+if ($("#filiere-form").length > 0) {
+    $("#filiere-form").validate({
+      
+    rules: {
+        niveauFiliere: {
+        required: function() {
+                              return $('#niveauFiliere').val() != 'Niveau';
+                        },
+      },
+      agree: 'required',
+      nom_filiere: {
+            required: true,
+            maxlength: 100,      
+        },  
+        libelle: {
+            required: true,
+            maxlength: 10,      
+        },    
+    },
+    messages: {
+        niveauFiliere: {
+        required: "Veuillez choisir le niveau",
+      },
+      nom_filiere: {
+        required: "Veuillez saisir le nom de la filière", 
+      },
+      libelle: {
+        required: "Veuillez saisir le libellé de la filière", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#filiereSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createFiliere')}}' ,
+        type: "POST",
+        data: $('#filiere-form').serialize(),
+        success: function( response ) {
+            $('#filiereSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#filiereIn' ).val("");
+            $( '#libelleIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
+            // update les selects filieres
+            $.ajax({
+             url: "{{route('mainParts.refreshFilieres')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Filière</option>';
+                   for( var i = 0; i<len; i++){
+                        var filiere = result['data'][i].nom_filiere;
+                        var libelle = result['data'][i].libelle;
+                        s+='<option value="'+filiere+'">'+filiere+'-'+libelle+'</option>'; 
+                        $('select[name="filiereModule"]').html(s);
+                        $('select[name="filiereModule"]').material_select();
+                        $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                        $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                        $('select[name="filiereChapitre"]').html(s);
+                        $('select[name="filiereChapitre"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Filière</option>';
+                    $('select[name="filiereModule"]').html(s);
+                    $('select[name="filiereModule"]').material_select();
+                    $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                    $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                    $('select[name="filiereChapitre"]').html(s);
+                    $('select[name="filiereChapitre"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
+          
+        }
+      });
+
+      
+    }
+  })
+}
+
+
+if ($("#module-form").length > 0) {
+    $("#module-form").validate({
+      
+    rules: {
+        filiereModule: {
+        required: function() {
+                              return $('#filiereModule').val() != 'Filière';
+                        },
+      },
+      agree: 'required',
+      nom_module: {
+            required: true,
+            maxlength: 100,      
+        },  
+        libelleModule: {
+            required: true,
+            maxlength: 10,      
+        },    
+    },
+    messages: {
+        filiereModule: {
+        required: "Veuillez choisir la filière",
+      },
+      nom_module: {
+        required: "Veuillez saisir le nom du module", 
+      },
+      libelleModule: {
+        required: "Veuillez saisir le libellé du module", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#moduleSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createModule')}}' ,
+        type: "POST",
+        data: $('#module-form').serialize(),
+        success: function( response ) {
+            $('#moduleSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#moduleIn' ).val("");
+            $( '#libelleModuleIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
+        }
+      });
+
+      
+    }
+  })
+}
+
+
+if ($("#chapitre-form").length > 0) {
+    $("#chapitre-form").validate({
+      
+    rules: {
+        filiereChapitre: {
+        required: function() {
+                              return $('#filiereChapitre').val() != 'Filière';
+                        },
+      },
+        moduleChapitre: {
+        required: function() {
+                              return $('#moduleChapitre').val() != 'Module';
+                        },
+      },
+      agree: 'required',
+      nom_chapitre: {
+            required: true,
+            maxlength: 100,      
+        },  
+    },
+    messages: {
+        filiereChapitre: {
+        required: "Veuillez choisir la filière",
+      },
+      moduleChapitre: {
+        required: "Veuillez choisir le module", 
+      },
+      nom_chapitre: {
+        required: "Veuillez saisir le nom du chapitre", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#chapitreSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createChapitre')}}' ,
+        type: "POST",
+        data: $('#chapitre-form').serialize(),
+        success: function( response ) {
+            $('#chapitreSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#chapitreIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
         }
       });
 
