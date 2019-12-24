@@ -67,15 +67,18 @@ class MainPartsController extends Controller
     {
         $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($request->input('niveau')))->where('type', mb_strtoupper($request->input('type')))->first();
         if ($niveauExistant) {
-            $request->session()->flash('errorStatus', 'Ce Niveau est déja créé');
-            return -1;
+            //$request->session()->flash('errorStatus', 'Ce Niveau est déja créé');
+            $messagePane='Ce Niveau est déjà créé';
+            return $messagePane;
         } else {
             $niveau = new Niveau();
             $niveau->niveau = mb_strtoupper($request->input('niveau'));
             $niveau->type = mb_strtoupper($request->input('type'));
             $niveau->save();
-            $request->session()->flash('status', 'Le Niveau a été créé');
-            return 1;
+            $messagePane='Le Niveau a été créé';
+            return $messagePane;
+            //$request->session()->flash('status', 'Le Niveau a été créé');
+            //return 1;
         }
     }
 
@@ -85,17 +88,23 @@ class MainPartsController extends Controller
         if ($niveauExistant) {
             $niveauExistant1 = Niveau::get()->where('niveau', mb_strtoupper($request->get('nomNiveau')))->where('type', mb_strtoupper($request->get('typeNiveau')))->first();
             if ($niveauExistant1) {
-                return -1;
+            //$messagePane='Ce Niveau est déjà existant';
+            //return $messagePane;
+            return -1;
             } else {
                 $niveauExistant->niveau = mb_strtoupper($request->get('nomNiveau'));
                 $niveauExistant->type = mb_strtoupper($request->get('typeNiveau'));
                 $niveauExistant->save();
                 //return json_encode($niveauExistant);
+                //$messagePane='Le Niveau a été modifié';
+                //return $messagePane;
                 return 1;
             }     
         } 
         else {
-            return -2;
+            //$messagePane='Erreur inconnue';
+            //return $messagePane; 
+            return -2;       
         }
     }
 
@@ -116,11 +125,15 @@ class MainPartsController extends Controller
             foreach ($data as $itemModule) {
                     Module::destroy($itemModule->id);
             }
+            //$messagePane='Le Niveau a été supprimé';
+            //return $messagePane;
             return 1;
         } 
         else {
-            return -2;
-        }
+            //$messagePane='Erreur inconnue';
+            //return $messagePane;
+            return -1;       
+          }
     }
 
 
@@ -132,8 +145,11 @@ class MainPartsController extends Controller
     {
         $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->input('nom_filiere')))->first();
         if ($filiereExistant) {
-            $request->session()->flash('errorStatus', 'Cette filière est déja créée');
-            return -1;
+            //$request->session()->flash('errorStatus', 'Cette filière est déja créée');
+            //return -1;
+            $messagePane='Cette filière est déja créée';
+            return $messagePane;
+
         } else {
             $filiere = new Filiere();
             $filiere->nom_filiere = mb_strtoupper($request->input('nom_filiere'));
@@ -144,8 +160,10 @@ class MainPartsController extends Controller
             //dd($infosNiveau[0].$infosNiveau[1]);
             $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($infosNiveau[0]))->where('type', mb_strtoupper($infosNiveau[1]))->first();
             $filiere->niveau()->associate($niveauExistant)->save();
-            $request->session()->flash('status', 'Filière a été créée');
-            return 1;
+            //$request->session()->flash('status', 'Filière a été créée');
+            //return 1;
+            $messagePane='Filière a été créée';
+            return $messagePane;
         }
     }
 
@@ -222,8 +240,10 @@ class MainPartsController extends Controller
             $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($infosFiliere[0]))->first();
             $assocFiliereModule = AssocFiliereModule::get()->where('filiere_id', $filiereExistant->id)->where('module_id', $moduleExistant->id)->first();
             if ($assocFiliereModule) {
-                $request->session()->flash('errorStatus', 'Ce module est déja associé à cette filière');
-                return -1;
+                //$request->session()->flash('errorStatus', 'Ce module est déja associé à cette filière');
+                //return -1;
+                $messagePane='Ce module est déjà associé à cette filière';
+                return $messagePane;
             } else {
                 $assocFilieresModules = AssocFiliereModule::get()->where('module_id', $moduleExistant->id)->first();
                 $filiereExistant1 = Filiere::get()->where('id', $assocFilieresModules->filiere_id)->first();
@@ -232,12 +252,16 @@ class MainPartsController extends Controller
                 $assocFiliereModuleNew->filiere()->associate($filiereExistant);
                 $assocFiliereModuleNew->module()->associate($moduleExistant);
                 $assocFiliereModuleNew->save();
-                $request->session()->flash('status', 'Ce module a été associé à cette filière');
-                return 1;
+                //$request->session()->flash('status', 'Ce module a été associé à cette filière');
+                //return 1;
+                $messagePane='Ce module a été associé à cette filière';
+                return $messagePane;
                 }
                 else{
-                    $request->session()->flash('errorStatus', 'Ce module est déja associé à un certain niveau');
-                    return -2;
+                    //$request->session()->flash('errorStatus', 'Ce module est déja associé à un certain niveau');
+                    //return -2;
+                $messagePane='Ce module est déjà associé à un certain niveau';
+                return $messagePane;
                 }
                 
             }
@@ -253,9 +277,10 @@ class MainPartsController extends Controller
             $assocFiliereModuleNew->filiere()->associate($filiereExistant);
             $assocFiliereModuleNew->module()->associate($module);
             $assocFiliereModuleNew->save();
-
-            $request->session()->flash('status', 'module a été créée');
-            return 2;
+            //$request->session()->flash('status', 'module a été créée');
+            //return 2;
+            $messagePane='Module a été créée';
+            return $messagePane;
         }
     }
 
@@ -378,17 +403,23 @@ class MainPartsController extends Controller
         if ($chapitresExistant) {
             foreach ($chapitresExistant as $chapitreItem) {
                 if ($chapitreItem->nom_chapitre == $chapitre->nom_chapitre) {
-                    $request->session()->flash('errorStatus', 'Ce Chapitre est déja associé à ce module');
-                    return -1;
+                    //$request->session()->flash('errorStatus', 'Ce Chapitre est déja associé à ce module');
+                    //return -1;
+                    $messagePane='Ce Chapitre est déjà associé à ce module';
+                    return $messagePane;
                 }
             }
             $chapitre->module()->associate($moduleExistant)->save();
-            $request->session()->flash('status', 'Ce Chapitre a été associé à ce module');
-            return 1;
+            //$request->session()->flash('status', 'Ce Chapitre a été associé à ce module');
+            //return 1;
+            $messagePane='Ce Chapitre a été associé au module';
+            return $messagePane;
         } else {
             $chapitre->module()->associate($moduleExistant)->save();
-            $request->session()->flash('status', 'Le nouveau chapitre a été associé à ce module');
-            return 2;
+            //$request->session()->flash('status', 'Le nouveau chapitre a été associé à ce module');
+            //return 2;
+            $messagePane='Le nouveau chapitre a été associé au module';
+            return $messagePane;
         }
     }
 
