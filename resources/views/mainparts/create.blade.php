@@ -2,7 +2,7 @@
 
 @section('mainContent')
 
-    <div class="row z-depth-4 mt-p-1">
+    <div class="row z-depth-5 mt-p-1">
         <div class="col s12">
             <ul class="tabs deep-orange-text text-accent-3">
               <li class="tab col s3"><a class="active" href="#niveau">Niveau</a></li>
@@ -13,10 +13,20 @@
         </div>
 
         @if(session()->has('status'))
-            <h6 style="color: green">{{session()->get('status')}}</h6>
+           @section('messages')
+                <script>
+                    var $toastContent = $("<span>{{session()->get('status')}}</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+                    Materialize.toast($toastContent, 3000);    
+                </script>
+           @endsection
         @endif
         @if(session()->has('errorStatus'))
-            <h6 style="color: red">{{session()->get('errorStatus')}}</h6>
+            @section('messages')
+                <script>
+                    var $toastContent = $("<span>{{session()->get('errorStatus')}}</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+                    Materialize.toast($toastContent, 3000);    
+                </script>
+           @endsection
         @endif
 
         <!--Niveau-->
@@ -24,7 +34,7 @@
 
             <div style="display: flex; align-items: center;">
             
-                <form action="{{route('mainParts.createNiveau')}}" method="post" class="col s12" >
+                <form id="niveau-form" method="post" class="col s12" >
                     @csrf  
 
                     <div class="input-field col s6 ">
@@ -35,15 +45,16 @@
                         <input  id="typeIn" name="type" type="text"/>
                         <label for="typeIn">Type</label>
                     </div>
+                    <br>
                     <div class="col s2 offset-s5">
-                        <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
+                        <button id="niveauSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
                     </div>
                 </form>
             </div>
-
+<br>
             <!-- list des Niveaux-->
             <div class="row">
-                <table class="centered" id="tableNiveaux">
+                <table class="centered"  id="tableNiveaux">
                     <thead>
                         <tr>
                             <th>Niveau</th>
@@ -78,13 +89,11 @@
 
         </div>
 
-
-
         <!--Filiere -->
         <div id="filiere" class="col s12">
             <div  style="display: flex; align-items: center;">
 
-                <form action="{{route('mainParts.createFiliere')}}" method="post" class="col s12" >
+                <form  id="filiere-form" method="post" class="col s12" >
                     @csrf  
                     <div class="input-field col s4">
                             <select name="niveauFiliere" id="niveauFiliere">
@@ -109,19 +118,18 @@
                          </div>
 
                         <div class=" col s2 offset-s5">
-                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                            <button id="filiereSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
                         </div>
         </form>
             </div>
-
+<br>
             <!-- list des Filieres-->
             <div class="row">
-                <table class="centered" id="tableFilieres">
+                <table class="centered"  id="tableFilieres">
                     <thead>
                         <tr>
                             <th>Niveau</th>
                             <th>Filière</th>
-                            <th>Libellé</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -130,8 +138,7 @@
                             @forelse ($filieres as $filiere)
                             <tr>
                                 <td>{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}</td>
-                                <td>{{$filiere->nom_filiere}}</td>
-                                <td>{{$filiere->libelle}}</td>
+                                <td>{{$filiere->nom_filiere}}-{{$filiere->libelle}}</td>
                                 <td>
                                     <a href="#modal2" onclick="return onUpdateFiliere({{$filiere->id}},'{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}','{{$filiere->nom_filiere}}','{{$filiere->libelle}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
@@ -157,7 +164,7 @@
         <div id="module" class="col s12">
 
             <div style="display: flex; align-items: center;">
-                <form action="{{route('mainParts.createModule')}}" method="post" class="col s12" >
+                <form id="module-form" method="post" class="col s12" >
                     @csrf  
                     <div class="input-field col s4">
                             <select name="filiereModule" id="filiereModule">
@@ -182,11 +189,12 @@
                          </div>
     
                         <div class="col s2 offset-s5">
-                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                            <button id="moduleSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
                         </div>
         </form>
             
             </div>
+            <br>
                         <!-- list des Modules-->
             <div class="row">
                 <table class="centered" id="tableModules">
@@ -201,10 +209,10 @@
                     <tbody>
                         @forelse ($assocfilmod as $assoc)
                             <tr>
-                                <td>{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}-{{App\Filiere::find($assoc->filiere_id)->libelle}}</td>
+                                <td id="{{$assoc->module_id}}-{{$assoc->filiere_id}}">{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}</td>
                                 <td>{{App\Module::find($assoc->module_id)->nom_module}}</td>
                                 <td>
-                                    <a href="#modal3" onclick="return onUpdateModule({{$assoc->module_id}},'{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}','{{App\Module::find($assoc->module_id)->nom_module}}','{{App\Module::find($assoc->module_id)->libelle}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <a href="#modal3" onclick="return onUpdateModule({{$assoc->module_id}},'{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}','{{App\Module::find($assoc->module_id)->nom_module}}','{{App\Module::find($assoc->module_id)->libelle}}','{{$assoc->module_id}}-{{$assoc->filiere_id}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
                                     </a>
                                     <a href="#delete3" onclick="return onDeleteModule({{$assoc->module_id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
@@ -226,7 +234,7 @@
         <!--Chapitre-->
         <div id="chapitre" class="col s12">
             <div style="display: flex; align-items: center;">
-                <form action="{{route('mainParts.createChapitre')}}" method="post" class="col s12" >
+                <form id="chapitre-form" method="post" class="col s12" >
                         @csrf
                         <div class="input-field col s4">
                             <select name="filiereChapitre" id="filiereChapitre" >
@@ -250,15 +258,16 @@
                             <label for="chapitreIn">Chapitre</label>
                             </div>
                         <div class="col s2 offset-s5">
-                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                            <button id="chapitreSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
                         </div>
                 </form>
             </div>
             <div class="row">
-                    <table class="centered">
+                <br>
+                <!-- list des Chapitres-->
+                    <table class="centered" id="tableChapitres">
                         <thead>
                             <tr>
-                                <th>Filière</th>
                                 <th>Module</th>
                                 <th>Chapitre</th>
                                 <th>Actions</th>
@@ -266,35 +275,26 @@
                         </thead>
                 
                         <tbody>
-                            <tr>
-                                <td>ISI</td>
-                                <td>MERISE</td>
-                                <td>DEMARCHE MCC</td>
-                                <td>
-                                    <a href="#modal1" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
-                                        <div class="material-icons">edit</div>
-                                    </a>
-                                    <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
-                                        <div class="material-icons">delete</div>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>SD</td>
-                                <td>Machine Learning</td>
-                                <td>Bases Python</td>
-                                <td>
-                                    <a href="#" class="light-blue-text text-darken-4 tooltipped" data-position="top" data-tooltip="Mettre à jour">
-                                        <div class="material-icons">edit</div>
-                                    </a>
-                                    <a href="#" class="red-text text-accent-4 tooltipped" data-position="top" data-tooltip="Supprimer">
-                                        <div class="material-icons">delete</div>
-                                    </a>
-                                </td>
-                            </tr>
+                                @forelse ($chapitres as $chapitre)
+                                <tr>
+                                    <td>{{App\Module::find($chapitre->module_id)->nom_module}}</td>
+                                    <td>{{$chapitre->nom_chapitre}}</td>
+                                    <td>
+                                        <a href="#modal4" onclick="return onUpdateChapitre({{$chapitre->id}},'{{$chapitre->nom_chapitre}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                            <div class="material-icons">edit</div>
+                                        </a>
+                                        <a href="#delete4" onclick="return onDeleteChapitre({{$chapitre->id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
+                                            <div class="material-icons">delete</div>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>Pas de Chapitres</tr>
+                                @endforelse
                         </tbody>
                     </table>
                 </div>
+                   <!-- end des Chapitres-->
             </div>
 
        
@@ -307,11 +307,6 @@
 
 
 <!-- Modals-->
-
-
-
-
-
 <!-- Modal Structure -->
 <div id="modal1" class="modal">
         <div class="modal-content">
@@ -386,7 +381,7 @@
                         </div>
                     <div class="input-field col s12">
                         <input type="text" name="updatedModule" value=" "/>
-                        <label for="filiere">Module</label>
+                        <label for="module">Module</label>
                     </div>
                     <div class="input-field col s12">
                         <input type="text" name="updatedlibelleModule" value=" "/>
@@ -395,10 +390,27 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
-                <a onclick="return onUpdateModule(null, null, null,null, true)" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>
             </div>
         </div>
+
+
+
+        <div id="modal4" class="modal">
+                <div class="modal-content">
+                    <h4>Mise à jour</h4>
+                    <div class="row">
+                        <input type="hidden" name="id" value=" ">
+                        <div class="input-field col s12">
+                            <input type="text" name="updatedChapitre" value=" "/>
+                            <label for="chapitre">Chapitre</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+                <a onclick="return onUpdateChapitre(null, null,true)" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>
+                </div>
+            </div>
     
     <!-- Modal Structure -->
     <div id="delete1" class="modal">
@@ -429,7 +441,7 @@
         <div id="delete3" class="modal">
             <div class="modal-content">
                 <h4>Suppression</h4>
-                <p>Voulez-vous vraiment supprimer cette Filière?</p>
+                <p>Voulez-vous vraiment supprimer ce Module?</p>
                 <input type="hidden"/>
             </div>
             <div class="modal-footer">
@@ -437,6 +449,18 @@
                 <a onclick="return onDeleteModule(null, true)" class="waves-effect waves-light btn-flat materialize-red white-text">Supprimer</a>
             </div>
         </div>
+
+        <div id="delete4" class="modal">
+                <div class="modal-content">
+                    <h4>Suppression</h4>
+                    <p>Voulez-vous vraiment supprimer ce Chapitre?</p>
+                    <input type="hidden"/>
+                </div>
+                <div class="modal-footer">
+                    <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+                    <a onclick="return onDeleteChapitre(null, true)" class="waves-effect waves-light btn-flat materialize-red white-text">Supprimer</a>
+                </div>
+            </div>
     
 <!--Script de la génération du select modules par filiere-->
 
@@ -459,20 +483,28 @@
           success: function( result )
           {
             var len = 0;
-                 if(result['data'] != null){
-                   len = result['data'].length;
-                   $('select[name="moduleChapitre"]').empty();
+            len = result['data'].length;
+            console.log(len);
+
+                 if(len!=0){
+                   //len = result['data'].length;
+                   //console.log(len);
+                   //$('select[name="moduleChapitre"]').empty();
                    var s='<option value="m1" selected disabled>Module</option>';
-                 }
-              //console.log(result);
-              //console.log(len);
-             for( var i = 0; i<len; i++){
+                   for( var i = 0; i<len; i++){
                         var id = result['data'][i].id;
                         var name = result['data'][i].nom_module;
                         s+='<option value="' + name + '">' + name + '</option>'; 
                         $('select[name="moduleChapitre"]').html(s);
                         $('select[name="moduleChapitre"]').material_select();
                     }
+                 }
+                 else{
+                    //$('select[name="moduleChapitre"]').empty();
+                    var s='<option value="m1" selected disabled>Module</option>';
+                    $('select[name="moduleChapitre"]').html(s);
+                    $('select[name="moduleChapitre"]').material_select();
+                 }             
           },
           error: function()
          {
@@ -483,7 +515,370 @@
 
     });
 
-    
+    if ($("#niveau-form").length > 0) {
+    $("#niveau-form").validate({
+      
+    rules: {
+        niveau: {
+        required: true,
+        maxlength: 60,
+      },
+      type: {
+            required: true,
+            maxlength: 100,      
+        },    
+    },
+    messages: {
+        niveau: {
+        required: "Veuillez saisir le niveau",
+      },
+      type: {
+        required: "Veuillez saisir le type du niveau", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#niveauSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createNiveau')}}' ,
+        type: "POST",
+        data: $('#niveau-form').serialize(),
+        success: function( response ) {
+            $('#niveauSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#niveauIn' ).val("");
+            $( '#typeIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
+            // update les selects niveaux
+                $.ajax({
+             url: "{{route('mainParts.refreshNiveaux')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Niveau</option>';
+                   for( var i = 0; i<len; i++){
+                        var niveau = result['data'][i].niveau;
+                        var type = result['data'][i].type;
+                        s+='<option value="'+ niveau+'-'+type+'">'+niveau+'-'+type+'</option>'; 
+                        $('select[name="niveauFiliere"]').html(s);
+                        $('select[name="niveauFiliere"]').material_select();
+                        $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                        $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Niveau</option>';
+                    $('select[name="niveauFiliere"]').html(s);
+                    $('select[name="niveauFiliere"]').material_select();
+                    $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                    $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
+        }
+      });
+
+      
+    }
+  })
+}
+
+
+if ($("#filiere-form").length > 0) {
+    $("#filiere-form").validate({
+      
+    rules: {
+        niveauFiliere: {
+        required: function() {
+                              return $('#niveauFiliere').val() != 'Niveau';
+                        },
+      },
+      agree: 'required',
+      nom_filiere: {
+            required: true,
+            maxlength: 100,      
+        },  
+        libelle: {
+            required: true,
+            maxlength: 10,      
+        },    
+    },
+    messages: {
+        niveauFiliere: {
+        required: "Veuillez choisir le niveau",
+      },
+      nom_filiere: {
+        required: "Veuillez saisir le nom de la filière", 
+      },
+      libelle: {
+        required: "Veuillez saisir le libellé de la filière", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#filiereSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createFiliere')}}' ,
+        type: "POST",
+        data: $('#filiere-form').serialize(),
+        success: function( response ) {
+            $('#filiereSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#filiereIn' ).val("");
+            $( '#libelleIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
+            // update les selects filieres
+            $.ajax({
+             url: "{{route('mainParts.refreshFilieres')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Filière</option>';
+                   for( var i = 0; i<len; i++){
+                        var filiere = result['data'][i].nom_filiere;
+                        var libelle = result['data'][i].libelle;
+                        s+='<option value="'+filiere+'">'+filiere+'-'+libelle+'</option>'; 
+                        $('select[name="filiereModule"]').html(s);
+                        $('select[name="filiereModule"]').material_select();
+                        $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                        $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                        $('select[name="filiereChapitre"]').html(s);
+                        $('select[name="filiereChapitre"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Filière</option>';
+                    $('select[name="filiereModule"]').html(s);
+                    $('select[name="filiereModule"]').material_select();
+                    $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                    $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                    $('select[name="filiereChapitre"]').html(s);
+                    $('select[name="filiereChapitre"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
+          
+        }
+      });
+
+      
+    }
+  })
+}
+
+
+if ($("#module-form").length > 0) {
+    $("#module-form").validate({
+      
+    rules: {
+        filiereModule: {
+        required: function() {
+                              return $('#filiereModule').val() != 'Filière';
+                        },
+      },
+      agree: 'required',
+      nom_module: {
+            required: true,
+            maxlength: 100,      
+        },  
+        libelleModule: {
+            required: true,
+            maxlength: 10,      
+        },    
+    },
+    messages: {
+        filiereModule: {
+        required: "Veuillez choisir la filière",
+      },
+      nom_module: {
+        required: "Veuillez saisir le nom du module", 
+      },
+      libelleModule: {
+        required: "Veuillez saisir le libellé du module", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#moduleSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createModule')}}' ,
+        type: "POST",
+        data: $('#module-form').serialize(),
+        success: function( response ) {
+            $('#moduleSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#moduleIn' ).val("");
+            $( '#libelleModuleIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
+        }
+      });
+
+      
+    }
+  })
+}
+
+
+if ($("#chapitre-form").length > 0) {
+    $("#chapitre-form").validate({
+      
+    rules: {
+        filiereChapitre: {
+        required: function() {
+                              return $('#filiereChapitre').val() != 'Filière';
+                        },
+      },
+        moduleChapitre: {
+        required: function() {
+                              return $('#moduleChapitre').val() != 'Module';
+                        },
+      },
+      agree: 'required',
+      nom_chapitre: {
+            required: true,
+            maxlength: 100,      
+        },  
+    },
+    messages: {
+        filiereChapitre: {
+        required: "Veuillez choisir la filière",
+      },
+      moduleChapitre: {
+        required: "Veuillez choisir le module", 
+      },
+      nom_chapitre: {
+        required: "Veuillez saisir le nom du chapitre", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#chapitreSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createChapitre')}}' ,
+        type: "POST",
+        data: $('#chapitre-form').serialize(),
+        success: function( response ) {
+            $('#chapitreSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#chapitreIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
+        }
+      });
+
+      
+    }
+  })
+}
     
     
     });
@@ -515,47 +910,47 @@
                 $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $('#modal1').modal('close');
-                //$( "#niveauFiliere" ).load( "http://127.0.0.1:8000/mainparts #niveauFiliere" );
-                //$( "#updatedNiveauFiliere" ).load( "http://127.0.0.1:8000/mainparts #updatedNiveauFiliere" );
-                //window.location.reload();
-                /*$.ajax({
+            // update les selects niveaux
+                $.ajax({
              url: "{{route('mainParts.refreshNiveaux')}}",
              type: 'GET',
              "_token": "{{ csrf_token() }}",
              dataType: 'JSON',
           success: function( result )
           {
-            $('select[name="niveauFiliere"]').empty();
-            $('#modal2 input[name="updatedFiliere"]').empty();
+            console.log(result);
             var len = 0;
-                 if(result['data'] != null){
-                   len = result['data'].length;
-                   $('select[name="niveauFiliere"]').empty();
-                   $('#modal2 input[name="updatedFiliere"]').empty();
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
                    var s='<option value="m1" selected disabled>Niveau</option>';
-                 }
-              console.log(result);
-              //console.log(len);
-             for( var i = 0; i<len; i++){
+                   for( var i = 0; i<len; i++){
                         var niveau = result['data'][i].niveau;
                         var type = result['data'][i].type;
-                        s+='<option value="' + niveau-type+'“>' + niveau-type + '</option>'; 
-                        $('#niveauFiliere').html(s);
-                        $('#niveauFiliere').material_select();
-                        $("#modal2 input[name='updatedNiveauFiliere']").html(s);
-                        $('#modal2 input[name="updatedNiveauFiliere"]').material_select();
+                        s+='<option value="'+ niveau+'-'+type+'">'+niveau+'-'+type+'</option>'; 
+                        $('select[name="niveauFiliere"]').html(s);
+                        $('select[name="niveauFiliere"]').material_select();
+                        $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                        $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
                     }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Niveau</option>';
+                    $('select[name="niveauFiliere"]').html(s);
+                    $('select[name="niveauFiliere"]').material_select();
+                    $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                    $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                 }
+             
           },
           error: function()
          {
              //handle errors
              alert('error...');
          }
-       });*/
-
-                
-
-
+       });
             }
             else if(result=-1){
                 $('#modal1').modal('close');
@@ -592,7 +987,47 @@
                 $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $('#delete1').modal('close');
-                //window.location.reload();
+                //update les selects niveaux
+                $.ajax({
+             url: "{{route('mainParts.refreshNiveaux')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Niveau</option>';
+                   for( var i = 0; i<len; i++){
+                        var niveau = result['data'][i].niveau;
+                        var type = result['data'][i].type;
+                        s+='<option value="'+ niveau+'-'+type+'">'+niveau+'-'+type+'</option>'; 
+                        $('select[name="niveauFiliere"]').html(s);
+                        $('select[name="niveauFiliere"]').material_select();
+                        $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                        $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Niveau</option>';
+                    $('select[name="niveauFiliere"]').html(s);
+                    $('select[name="niveauFiliere"]').material_select();
+                    $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                    $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
 
 
             }
@@ -634,9 +1069,52 @@
             if(result=1){
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
-
                 $('#modal2').modal('close');
-                //window.location.reload();
+                //update select filieres
+                $.ajax({
+             url: "{{route('mainParts.refreshFilieres')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Filière</option>';
+                   for( var i = 0; i<len; i++){
+                        var filiere = result['data'][i].nom_filiere;
+                        var libelle = result['data'][i].libelle;
+                        s+='<option value="'+filiere+'">'+filiere+'-'+libelle+'</option>'; 
+                        $('select[name="filiereModule"]').html(s);
+                        $('select[name="filiereModule"]').material_select();
+                        $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                        $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                        $('select[name="filiereChapitre"]').html(s);
+                        $('select[name="filiereChapitre"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Filière</option>';
+                    $('select[name="filiereModule"]').html(s);
+                    $('select[name="filiereModule"]').material_select();
+                    $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                    $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                    $('select[name="filiereChapitre"]').html(s);
+                    $('select[name="filiereChapitre"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
 
 
             }
@@ -677,9 +1155,52 @@
             if(result=1){
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
-
                 $('#delete2').modal('close');
-                //window.location.reload();
+                //update select filieres
+                $.ajax({
+             url: "{{route('mainParts.refreshFilieres')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Filière</option>';
+                   for( var i = 0; i<len; i++){
+                        var filiere = result['data'][i].nom_filiere;
+                        var libelle = result['data'][i].libelle;
+                        s+='<option value="'+filiere+'">'+filiere+'-'+libelle+'</option>'; 
+                        $('select[name="filiereModule"]').html(s);
+                        $('select[name="filiereModule"]').material_select();
+                        $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                        $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                        $('select[name="filiereChapitre"]').html(s);
+                        $('select[name="filiereChapitre"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Filière</option>';
+                    $('select[name="filiereModule"]').html(s);
+                    $('select[name="filiereModule"]').material_select();
+                    $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                    $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                    $('select[name="filiereChapitre"]').html(s);
+                    $('select[name="filiereChapitre"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
 
 
             }
@@ -694,18 +1215,25 @@
 
 
     //mettre a jour le module
-    function onUpdateModule(id, filiere, module,libelle, updateInDb) {
-        var oldFiliere=filiere;
+    function onUpdateModule(id, filiere, module,libelle,moduleFiliere, updateInDb) {
+        var oldFiliere=document.getElementById(moduleFiliere).innerHTML;
         if (updateInDb==false) {
             $("#modal3 input[type='hidden']").val(id);
             $("#modal3 input[name='updatedModule']").val(module);
             $("#modal3 input[type='text']:first").val(filiere);
             $("#modal3 input[type='text']:last").val(libelle);
+            //if ($("#modal3 div[class='modal-footer']").children().length<2) {
+                var s='<a class="modal-close waves-effect waves-light btn-flat">Annuler</a>';
+                s+='<a onclick="return onUpdateModule('+id+',\''+filiere+'\',\''+module+'\',\''+libelle+'\',\''+moduleFiliere+'\','+true+')" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>';
+                $("#modal3 div[class='modal-footer']").html(s);
+            //}
+
+            console.log(oldFiliere);
             console.log('Opened Modal');
         }
         else{
             console.log('Called Ajax');
-
+            console.log(oldFiliere);
             var idModule=$("#modal3 input[type='hidden']").val();
             var nomModule=$("#modal3 input[name='updatedModule']").val();
             var libelle=$("#modal3 input[type='text']:last").val();
@@ -725,6 +1253,7 @@
                 console.log(result);
             if(result=1){
                 $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
+                $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
                 $('#modal3').modal('close');
                 //window.location.reload();
 
@@ -743,7 +1272,7 @@
             }
     }
 
-     //Delete le filiere
+     //Delete le module
      function onDeleteModule(id, deleteFromDb) {
         if (deleteFromDb==false) {
             $("#delete3 input[type='hidden']").val(id);
@@ -771,6 +1300,78 @@
             }
             else {
                 alert("Module introuvable");
+            }
+           }                
+            });        
+            }
+    }
+
+
+    //mettre a jour le chapitre
+    function onUpdateChapitre(id, chapitre, updateInDb) {
+        if (updateInDb==false) {
+            $("#modal4 input[type='hidden']").val(id);
+            $("#modal4 input[type='text']:first").val(chapitre);
+            console.log('Opened Modal');
+        }
+        else{
+            console.log('Called Ajax');
+
+            var idChapitre=$("#modal4 input[type='hidden']").val();
+            var chapitre=$("#modal4 input[type='text']:first").val();
+
+            $.post({
+           url: "http://127.0.0.1:8000/mainparts/"+idChapitre+"/updateChapitre",
+           dataType: 'JSON',
+           data: {
+            "_token": "{{ csrf_token() }}",
+            "chapitre":chapitre
+            },
+            success:function(result){
+                console.log(result);
+            if(result=1){
+                $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
+                $('#modal4').modal('close');
+                //window.location.reload();
+            }
+            else if(result=-1){
+                $('#modal4').modal('close');
+                alert("Chapitre existe déja");
+            }
+            else {
+                $('#modal4').modal('close');
+                alert("Chapitre introuvable");
+            }
+           }
+            });
+            }
+    }
+
+     //Delete le chapitre
+     function onDeleteChapitre(id, deleteFromDb) {
+        if (deleteFromDb==false) {
+            $("#delete4 input[type='hidden']").val(id);
+            console.log('delete modal opened');
+            //console.log(id);
+        } else {
+            console.log('Delete with ajax');
+            //Suppression d'un niveau avec ajax
+            var idChapitre=$("#delete4 input[type='hidden']").val();
+            $.ajax({
+           url: "http://127.0.0.1:8000/mainparts/"+idChapitre+"/deleteChapitre",
+           dataType: 'JSON',
+           data: {
+            "_token": "{{ csrf_token() }}"
+            },
+            type: 'DELETE',
+            success:function(result){
+            console.log(result);
+            if(result=1){
+                $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
+                $('#delete4').modal('close');
+            }
+            else {
+                alert("Chapitre introuvable");
             }
            }                
             });        
