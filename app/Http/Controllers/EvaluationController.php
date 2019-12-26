@@ -36,6 +36,10 @@ class EvaluationController extends Controller
     {
         $qcm=[];
         $qcm['questions']=Question::all()->shuffle();
+     
+        foreach ($qcm['questions'] as $key => $question) {
+            $question->propositions=$question->propositions->shuffle();
+        }
         $qcm['wholeTime']=30;
         return view('evaluations.evaluate', compact(['qcm']));
     }
