@@ -61,7 +61,7 @@
                         <div class="col s10 offset-s1">
                             @foreach ($question->propositions as $proposition)
                             <p>
-                                <input type="checkbox" onclick="return answerQuestion({{$loop->parent->index}})" name="question[{{$loop->parent->index}}]['proposition']" id="check{{$loop->parent->index}}{{$loop->index}}" value="{{$proposition->id}}"/>
+                                <input type="checkbox" class="filled-in" onclick="return answerQuestion({{$loop->parent->index}})" name="question[{{$loop->parent->index}}]['proposition']" id="check{{$loop->parent->index}}{{$loop->index}}" value="{{$proposition->id}}"/>
                                 <label class="black-text" for="check{{$loop->parent->index}}{{$loop->index}}">{{$proposition->proposition}}</label>
                             </p>
                             @endforeach

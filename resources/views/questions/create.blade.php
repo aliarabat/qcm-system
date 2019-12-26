@@ -79,7 +79,7 @@
                     <p class="">
 
                     <input id="hidden" type="hidden" name="reponse[0]" value="0" >
-                    <input name="reponse[0]"  type="checkbox" id="check0"  value="1">
+                    <input name="reponse[0]"  type="checkbox" class="filled-in" id="check0"  value="1">
                         <label for="check0"></label>
                     </p>
                     <a href="#" onclick="return deleteResponse('response0')" class="red-text text-accent-4">

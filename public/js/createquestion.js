@@ -33,7 +33,7 @@ $(function () {
                     </div>
                     <p class="">
                     <input id="hidden${count}" type="hidden" name="reponse[${count}]" value="0" >
-                    <input name="reponse[${count}]"  type="checkbox"  value="1" id="check${count}">
+                    <input name="reponse[${count}]" type="checkbox" class="filled-in" value="1" id="check${count}">
                         <label for="check${count}"></label>
                     </p>
                     <a href="#" onclick="return deleteResponse('response${count}')" class="red-text text-accent-4" style="cursor: pointer">
