@@ -25,7 +25,7 @@
             </div>
             <div class="col s12 d-flex align-items-start">
                 <div class="progress col s11">
-                    <div class="determinate"></div>
+                    <div class="determinate" style="width: 0px;"></div>
                 </div>
                 <div id="answered-questions" onchange="return onProgressChange()" class="col s1">0/{{count($qcm['questions'])}}</div>
             </div>
@@ -127,7 +127,7 @@
                     answeredQuestions--;
                     $('.progress .determinate').css('width', (answeredQuestions*100/totalQuestions)+"%");
                     $('#answered-questions').text(answeredQuestions+'/'+totalQuestions);
-                    $('#qcm-form button[type="submit"]').attr('disabled');
+                    $('#qcm-form button[type="submit"]').attr('disabled', true);
                     return;
                 }
             } 
@@ -143,7 +143,6 @@
             }else{
                 $('#qcm-form button[type="submit"]').attr('disabled');
             }
-            console.log(totalQuestions==answeredQuestions)
         }
 
         
