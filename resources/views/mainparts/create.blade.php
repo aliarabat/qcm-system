@@ -34,7 +34,7 @@
 
             <div style="display: flex; align-items: center;">
             
-                <form action="{{route('mainParts.createNiveau')}}" method="post" class="col s12" >
+                <form id="niveau-form" method="post" class="col s12" >
                     @csrf  
 
                     <div class="input-field col s6 ">
@@ -45,15 +45,16 @@
                         <input  id="typeIn" name="type" type="text"/>
                         <label for="typeIn">Type</label>
                     </div>
+                    <br>
                     <div class="col s2 offset-s5">
-                        <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
+                        <button id="niveauSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
                     </div>
                 </form>
             </div>
-
+<br>
             <!-- list des Niveaux-->
             <div class="row">
-                <table class="centered" id="tableNiveaux">
+                <table class="centered"  id="tableNiveaux">
                     <thead>
                         <tr>
                             <th>Niveau</th>
@@ -88,13 +89,11 @@
 
         </div>
 
-
-
         <!--Filiere -->
         <div id="filiere" class="col s12">
             <div  style="display: flex; align-items: center;">
 
-                <form action="{{route('mainParts.createFiliere')}}" method="post" class="col s12" >
+                <form  id="filiere-form" method="post" class="col s12" >
                     @csrf  
                     <div class="input-field col s4">
                             <select name="niveauFiliere" id="niveauFiliere">
@@ -119,19 +118,18 @@
                          </div>
 
                         <div class=" col s2 offset-s5">
-                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                            <button id="filiereSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
                         </div>
         </form>
             </div>
-
+<br>
             <!-- list des Filieres-->
-            <div class="row">
-                <table class="centered" id="tableFilieres">
+            <div class="row" >
+                <table class="centered"  id="tableFilieres">
                     <thead>
                         <tr>
                             <th>Niveau</th>
                             <th>Filière</th>
-                            <th>Libellé</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -140,8 +138,7 @@
                             @forelse ($filieres as $filiere)
                             <tr>
                                 <td>{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}</td>
-                                <td>{{$filiere->nom_filiere}}</td>
-                                <td>{{$filiere->libelle}}</td>
+                                <td>{{$filiere->nom_filiere}}-{{$filiere->libelle}}</td>
                                 <td>
                                     <a href="#modal2" onclick="return onUpdateFiliere({{$filiere->id}},'{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}','{{$filiere->nom_filiere}}','{{$filiere->libelle}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
@@ -167,7 +164,7 @@
         <div id="module" class="col s12">
 
             <div style="display: flex; align-items: center;">
-                <form action="{{route('mainParts.createModule')}}" method="post" class="col s12" >
+                <form id="module-form" method="post" class="col s12" >
                     @csrf  
                     <div class="input-field col s4">
                             <select name="filiereModule" id="filiereModule">
@@ -192,11 +189,12 @@
                          </div>
     
                         <div class="col s2 offset-s5">
-                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                            <button id="moduleSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
                         </div>
         </form>
             
             </div>
+            <br>
                         <!-- list des Modules-->
             <div class="row">
                 <table class="centered" id="tableModules">
@@ -236,7 +234,7 @@
         <!--Chapitre-->
         <div id="chapitre" class="col s12">
             <div style="display: flex; align-items: center;">
-                <form action="{{route('mainParts.createChapitre')}}" method="post" class="col s12" >
+                <form id="chapitre-form" method="post" class="col s12" >
                         @csrf
                         <div class="input-field col s4">
                             <select name="filiereChapitre" id="filiereChapitre" >
@@ -260,11 +258,12 @@
                             <label for="chapitreIn">Chapitre</label>
                             </div>
                         <div class="col s2 offset-s5">
-                            <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
+                            <button id="chapitreSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
                         </div>
                 </form>
             </div>
             <div class="row">
+                <br>
                 <!-- list des Chapitres-->
                     <table class="centered" id="tableChapitres">
                         <thead>
@@ -516,7 +515,413 @@
 
     });
 
-    
+    if ($("#niveau-form").length > 0) {
+    $("#niveau-form").validate({
+      
+    rules: {
+        niveau: {
+        required: true,
+        maxlength: 60,
+      },
+      type: {
+            required: true,
+            maxlength: 100,      
+        },    
+    },
+    messages: {
+        niveau: {
+        required: "Veuillez saisir le niveau",
+      },
+      type: {
+        required: "Veuillez saisir le type du niveau", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#niveauSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createNiveau')}}' ,
+        type: "POST",
+        data: $('#niveau-form').serialize(),
+        success: function( response ) {
+            $('#niveauSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#niveauIn' ).val("");
+            $( '#typeIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            if(response=="Le Niveau a été créé"){
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);    
+            $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
+            // update les selects niveaux
+                $.ajax({
+             url: "{{route('mainParts.refreshNiveaux')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Niveau</option>';
+                   for( var i = 0; i<len; i++){
+                        var niveau = result['data'][i].niveau;
+                        var type = result['data'][i].type;
+                        s+='<option value="'+ niveau+'-'+type+'">'+niveau+'-'+type+'</option>'; 
+                        $('select[name="niveauFiliere"]').html(s);
+                        $('select[name="niveauFiliere"]').material_select();
+                        $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                        $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Niveau</option>';
+                    $('select[name="niveauFiliere"]').html(s);
+                    $('select[name="niveauFiliere"]').material_select();
+                    $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
+                    $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                    
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
+            }
+            else{
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000); 
+            }
+        }
+      });
+
+      
+    }
+  })
+}
+
+
+if ($("#filiere-form").length > 0) {
+    $("#filiere-form").validate({
+      
+    rules: {
+        niveauFiliere: {
+        required: function() {
+                              return $('#niveauFiliere').val() != 'Niveau';
+                        },
+      },
+      agree: 'required',
+      nom_filiere: {
+            required: true,
+            maxlength: 100,      
+        },  
+        libelle: {
+            required: true,
+            maxlength: 10,      
+        },    
+    },
+    messages: {
+        niveauFiliere: {
+        required: "Veuillez choisir le niveau",
+      },
+      nom_filiere: {
+        required: "Veuillez saisir le nom de la filière", 
+      },
+      libelle: {
+        required: "Veuillez saisir le libellé de la filière", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#filiereSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createFiliere')}}' ,
+        type: "POST",
+        data: $('#filiere-form').serialize(),
+        success: function( response ) {
+            $('#filiereSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#filiereIn' ).val("");
+            $( '#libelleIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            if(response=="Filière a été créée"){
+                $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
+                var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+                Materialize.toast($toastContent, 3000); 
+            // update les selects filieres
+            $.ajax({
+             url: "{{route('mainParts.refreshFilieres')}}",
+             type: 'GET',
+             "_token": "{{ csrf_token() }}",
+             dataType: 'JSON',
+          success: function( result )
+          {
+            console.log(result);
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+                 if(len!=0){
+                     console.log("kayn");
+                   var s='<option value="m1" selected disabled>Filière</option>';
+                   for( var i = 0; i<len; i++){
+                        var filiere = result['data'][i].nom_filiere;
+                        var libelle = result['data'][i].libelle;
+                        s+='<option value="'+filiere+'">'+filiere+'-'+libelle+'</option>'; 
+                        $('select[name="filiereModule"]').html(s);
+                        $('select[name="filiereModule"]').material_select();
+                        $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                        $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                        $('select[name="filiereChapitre"]').html(s);
+                        $('select[name="filiereChapitre"]').material_select();
+                    }
+                 }
+                 else{
+                    console.log("makaynch");
+                    var s='<option value="m1" selected disabled>Filière</option>';
+                    $('select[name="filiereModule"]').html(s);
+                    $('select[name="filiereModule"]').material_select();
+                    $('#modal3 select[name="updatedFiliereModule"]').html(s);
+                    $('#modal3 select[name="updatedFiliereModule"]').material_select();
+                    $('select[name="filiereChapitre"]').html(s);
+                    $('select[name="filiereChapitre"]').material_select();
+                 }
+             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
+            }
+            else{
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000); 
+            }
+            
+          
+        }
+      });
+
+      
+    }
+  })
+}
+
+
+if ($("#module-form").length > 0) {
+    $("#module-form").validate({
+      
+    rules: {
+        filiereModule: {
+        required: function() {
+                              return $('#filiereModule').val() != 'Filière';
+                        },
+      },
+      agree: 'required',
+      nom_module: {
+            required: true,
+            maxlength: 100,      
+        },  
+        libelleModule: {
+            required: true,
+            maxlength: 10,      
+        },    
+    },
+    messages: {
+        filiereModule: {
+        required: "Veuillez choisir la filière",
+      },
+      nom_module: {
+        required: "Veuillez saisir le nom du module", 
+      },
+      libelleModule: {
+        required: "Veuillez saisir le libellé du module", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#moduleSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createModule')}}' ,
+        type: "POST",
+        data: $('#module-form').serialize(),
+        success: function( response ) {
+            $('#moduleSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#moduleIn' ).val("");
+            $( '#libelleModuleIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            if(response=="Ce module a été associé à cette filière"){
+            $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+            else if(response=="Module a été créée"){
+            $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+            else{
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+        }
+      });
+
+      
+    }
+  })
+}
+
+
+if ($("#chapitre-form").length > 0) {
+    $("#chapitre-form").validate({
+      
+    rules: {
+        filiereChapitre: {
+        required: function() {
+                              return $('#filiereChapitre').val() != 'Filière';
+                        },
+      },
+        moduleChapitre: {
+        required: function() {
+                              return $('#moduleChapitre').val() != 'Module';
+                        },
+      },
+      agree: 'required',
+      nom_chapitre: {
+            required: true,
+            maxlength: 100,      
+        },  
+    },
+    messages: {
+        filiereChapitre: {
+        required: "Veuillez choisir la filière",
+      },
+      moduleChapitre: {
+        required: "Veuillez choisir le module", 
+      },
+      nom_chapitre: {
+        required: "Veuillez saisir le nom du chapitre", 
+      },
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#chapitreSubmit').html('Sending..');
+      $.ajax({
+        url: '{{route('mainParts.createChapitre')}}' ,
+        type: "POST",
+        data: $('#chapitre-form').serialize(),
+        success: function( response ) {
+            $('#chapitreSubmit').html('Créer');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+            $( '#chapitreIn' ).val("");
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
+            console.log(response);
+            if(response=="Le nouveau chapitre a été associé au module"){
+            $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+            else if(response=="Ce Chapitre a été associé au module"){
+            $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+            else{
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+        }
+      });
+
+      
+    }
+  })
+}
     
     
     });
@@ -545,9 +950,13 @@
             success:function(result){
             console.log(result);
             if(result=1){
+                
                 $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $('#modal1').modal('close');
+                //var $toastContent = $("<span>"+result+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+                //Materialize.toast($toastContent, 3000); 
+            
             // update les selects niveaux
                 $.ajax({
              url: "{{route('mainParts.refreshNiveaux')}}",
@@ -591,12 +1000,12 @@
        });
             }
             else if(result=-1){
-                $('#modal1').modal('close');
-                alert("Niveau existe déja");
+            //var $toastContent = $("<span>"+result+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            //Materialize.toast($toastContent, 3000);
             }
             else {
-                $('#modal1').modal('close');
-                alert("Niveau introuvable");
+            //var $toastContent = $("<span>"+result+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            //Materialize.toast($toastContent, 3000);
             }
            }
             });
