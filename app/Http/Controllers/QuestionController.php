@@ -25,6 +25,7 @@ class QuestionController extends Controller
     {
         $this->middleware('auth');
         $this->authorizeResource(Question::class, 'create');
+        $this->authorizeResource(Question::class, 'update');
 
     }
 
@@ -122,5 +123,10 @@ class QuestionController extends Controller
         $chapitresData['data'] = $data;
 
         return json_encode($chapitresData);
+    }
+
+    public function editQuestion()
+    {
+        return view('questions.edit');
     }
 }

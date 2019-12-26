@@ -19,7 +19,7 @@ const setterBtns = document.querySelectorAll('button[data-setter]');
 
 let intervalTimer;
 let timeLeft;
-let wholeTime = 0.5 * 600; // manage this to set the whole time 
+let wholeTime = 60 * parseInt($('#wholeTime').text()); // manage this to set the whole time 
 let isPaused = false;
 let isStarted = false;
 
@@ -80,22 +80,22 @@ function pauseTimer(event){
   if(isStarted === false){
     timer(wholeTime);
     isStarted = true;
-    this.classList.remove('play');
-    this.classList.add('pause');
+    // this.classList.remove('play');
+    // this.classList.add('pause');
     
-    setterBtns.forEach(function(btn){
-      btn.disabled = true;
-      btn.style.opacity = 0.5;
-    });
+    // setterBtns.forEach(function(btn){
+    //   btn.disabled = true;
+    //   btn.style.opacity = 0.5;
+    // });
 
   }else if(isPaused){
-    this.classList.remove('play');
-    this.classList.add('pause');
+    // this.classList.remove('play');
+    // this.classList.add('pause');
     timer(timeLeft);
     isPaused = isPaused ? false : true
   }else{
-    this.classList.remove('pause');
-    this.classList.add('play');
+    // this.classList.remove('pause');
+    // this.classList.add('play');
     clearInterval(intervalTimer);
     isPaused = isPaused ? false : true ;
   }
@@ -108,5 +108,3 @@ function displayTimeLeft (timeLeft){ //displays time on the input
   displayOutput.textContent = displayString;
   update(timeLeft, wholeTime);
 }
-
-pauseBtn.addEventListener('click',pauseTimer);

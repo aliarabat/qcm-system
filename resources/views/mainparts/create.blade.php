@@ -307,9 +307,9 @@
 
 
 
-<!-- Modals-->
-<!-- Modal Structure -->
-<div id="modal1" class="modal">
+    <!-- Modals-->
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
         <div class="modal-content">
             <h4>Mise à jour</h4>
             <div class="row">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Question;
 use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
@@ -25,8 +26,25 @@ class EvaluationController extends Controller
     {
         return view('evaluations.start');
     }
+
+    public function create()
+    {
+        return view('evaluations.create');
+    }
+
     public function start()
     {
-        return view('evaluations.evaluate');
+        $qcm=[];
+        $qcm['questions']=Question::all()->shuffle();
+        $qcm['wholeTime']=30;
+        return view('evaluations.evaluate', compact(['qcm']));
     }
+
+    public function end(Request $request)
+    {
+        $data=$request->input('data');
+        return response()->json(compact('data'));   
+    }
+
+
 }

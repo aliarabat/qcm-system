@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('css/materialize.min.css') }}" rel="stylesheet" type="text/css"/>
-    @yield('countdowncss')
+    @yield('css')
     <link rel="shortcut icon" href="logos/favicon.ico"/>
     <style>
         .brand-logo a i{
@@ -129,21 +129,39 @@
         .modal .modal-content{
             padding: 24px 24 0px 24px;
         }
+        .pagination li.answered{
+            background-color: green;
+        }
+        .progress{
+            background-color: #f3cbbf !important;
+        }
+        .progress .determinate{
+            background-color: #ff3d00 !important;
+        }
+        .pagination li.active{
+            background-color: #d50000;
+        }
     </style>
 </head>
-<body>
+<body onload="void pauseTimer(event)">
         @if(\Illuminate\Support\Facades\Auth::check())
         <ul id="slide-out" class="side-nav">
             <li><a class="subheader">QCM</a></li>
-            @can('create', App\Question::class)
+            @can(['create'], App\Question::class)
                 <li><a class="waves-effect" href="{{route('questions.create')}}">Création des questions</a></li>
             @endcan
+            <li><a class="waves-effect" href="{{route('questions.edit')}}">Editer la question</a></li>
             @can('create', App\Niveau::class)
                 <li><a class="waves-effect" href="{{route('mainParts.create')}}">Plan pédagogique</a></li>
             @endcan
             <li><a class="subheader">Evaluations</a></li>
+            <li><a class="waves-effect" href="{{route('evaluations.create')}}">Création</a></li>
             <li><a class="waves-effect" href="{{route('evaluations.index')}}">Commencer</a></li>
             <li><a class="waves-effect" href="{{route('evaluations.start')}}">Evaluer</a></li>
+            <li><a class="subheader">Professeurs</a></li>
+            <li><a class="waves-effect" href="{{route('professors.create')}}">Création</a></li>
+            <li><a class="subheader">Etudiants</a></li>
+            <li><a class="waves-effect" href="{{route('students.create')}}">Création</a></li>
         </ul>
         @endif
     <nav>

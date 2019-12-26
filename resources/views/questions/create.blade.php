@@ -13,28 +13,25 @@
             <div class="row">
                 <div class="input-field col s4">
                     <select name="filiereModule" id="filiereModule">
-                            
-                            <option value="m1" selected disabled>Filière</option>
-                            @forelse ($filieres as $filiere)
-                            <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
-                            @empty
-                            <option value="m1" selected disabled>Filière</option>
-                            @endforelse
+                        <option value="m1" selected disabled>Filière</option>
+                        @forelse ($filieres as $filiere)
+                        <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
+                        @empty
+                        {{-- <option value="m1" selected disabled>Filière</option> --}}
+                        @endforelse
                     </select>
                     <label>Filière</label>
                 </div>
-                   <div class="input-field col s4" id="moduleChap">
-                            <select  name="moduleChap" id="moduleChap">
-                                   
-                            </select>
-                            <label>Module</label>
-                        </div>
-                        <div class="input-field col s4">
-                                <select name="chapitre" id="chapitre">
-                                       
-                                </select>
-                                <label>Chapitre</label>
-                            </div>
+                <div class="input-field col s4" id="moduleChap">
+                    <select  name="moduleChap" id="moduleChap">
+                    </select>
+                    <label>Module</label>
+                </div>
+                <div class="input-field col s4">
+                    <select name="chapitre" id="chapitre">
+                    </select>
+                    <label>Chapitre</label>
+                </div>
             </div>
             <div class="row center-align">
                 <button id="arrow-forward" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text disabled">
@@ -81,7 +78,7 @@
                     </div>
                     <p class="">
 
-                    <input id="hiden" type="hidden" name="reponse[0]" value="0" >
+                    <input id="hidden" type="hidden" name="reponse[0]" value="0" >
                     <input name="reponse[0]"  type="checkbox" id="check0"  value="1">
                         <label for="check0"></label>
                     </p>
