@@ -1,52 +1,52 @@
 @extends('layouts.mainLayout')
 @section('mainContent')
 
-@if(session()->has('status'))
-<h6 style="color: green">{{session()->get('status')}}</h6>
-@endif
-@if(session()->has('errorStatus'))
-<h6 style="color: red">{{session()->get('errorStatus')}}</h6>
-@endif
+
     <form id="question-form" class="row" method="POST" action="{{route('questions.createQuestion')}}">
         @csrf
         <div id="question-create-form1" class="col-s12 z-depth-4 mt-p-1">
             <div class="row">
                 <div class="input-field col s4">
                     <select name="filiereModule" id="filiereModule">
-                        <option value="m1" selected disabled>Filière</option>
-                        @forelse ($filieres as $filiere)
-                        <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
-                        @empty
-                        {{-- <option value="m1" selected disabled>Filière</option> --}}
-                        @endforelse
+                            
+                            <option value="m1" selected disabled>Filière</option>
+                            @forelse ($filieres as $filiere)
+                            <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
+                            @empty
+                            <option value="m1" selected disabled>Filière</option>
+                            @endforelse
                     </select>
                     <label>Filière</label>
                 </div>
-                <div class="input-field col s4" id="moduleChap">
-                    <select  name="moduleChap" id="moduleChap">
-                    </select>
-                    <label>Module</label>
-                </div>
-                <div class="input-field col s4">
-                    <select name="chapitre" id="chapitre">
-                    </select>
-                    <label>Chapitre</label>
-                </div>
+                   <div class="input-field col s4" id="moduleChap">
+                            <select  name="moduleChap" id="moduleChap">
+                                   
+                            </select>
+                            <label>Module</label>
+                        </div>
+                        <div class="input-field col s4" id="chapitre">
+                                <select name="chapitre" id="chapitre">
+                                       
+                                </select>
+                                <label>Chapitre</label>
+                            </div>
             </div>
-            <div class="row center-align">
-                <button id="arrow-forward" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text disabled">
+            <div class="row" style="display: flex; justify-content: center;">
+                <button id="arrow-forward" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
                     <i class="material-icons right">arrow_forward</i>
                     suivant
                 </button>
             </div>
         </div>
-        <div id="question-create-form2" hidden class="col-s12 z-depth-4 mt-p-1">
+        <div id="question-create-form2" class="form2" hidden class="col-s12 z-depth-4 mt-p-1">
             <div class="row">
                 <div class="col s6" style="display: flex; align-items: center; justify-content: flex-start">
                     <div class="input-field col s10" style="padding: 0;">
-                        <input type="text" name="question" id="question">
+                        <input type="text" onfocus="this.value=''" name="question" id="question">
                         <label style="left: 0px;">Question</label>
                     </div>
+                    
+
                     <p class="col s2" >
                         <input id="hidend" type="hidden" name="visibilite" value="0" >
                         <input name="visibilite"  type="checkbox" id="test5" value="1" />
@@ -54,8 +54,8 @@
                     </p>
                 </div>
                 <div class="input-field col s6">
-                    <input name="duree" id="duree" type="number">
                     <label>Durée</label>
+                    <input name="duree" id="duree" type="number">
                 </div>
                 <div class="input-field col s6">
                     <select name="difficulte" id="difficulte">
@@ -70,38 +70,39 @@
                     <label>Note</label>
                 </div>
             </div>
-            <div class="row">
-                <div id="response0" class="d-flex align-items-center">
-                    <div class="input-field col s6 offset-s3">
-                        <input type="text" name="proposition[]" id="proposition">
-                        <label>Réponse 1</label>
+                <div class="row">
+                    <div id="response0" class="d-flex align-items-center">
+                        <div class="input-field col s6 offset-s3">
+                            <input type="text" name="proposition[]" id="proposition">
+                            <label>Réponse 1</label>
+                        </div>
+                        <p class="">
+    
+                        <input id="hidden" type="hidden" name="reponse[0]" value="0" >
+                        <input name="reponse[0]"  type="checkbox" class="filled-in" id="check0"  value="1">
+                            <label for="check0"></label>
+                        </p>
+                        <a href="#" onclick="return deleteResponse('response0')" class="red-text text-accent-4">
+                            <i class="material-icons ">delete</i>
+                        </a>
                     </div>
-                    <p class="">
-
-                    <input id="hidden" type="hidden" name="reponse[0]" value="0" >
-                    <input name="reponse[0]"  type="checkbox" class="filled-in" id="check0"  value="1">
-                        <label for="check0"></label>
-                    </p>
-                    <a href="#" onclick="return deleteResponse('response0')" class="red-text text-accent-4">
-                        <i class="material-icons ">delete</i>
-                    </a>
                 </div>
-            </div>
-            <div id="add-button" class="row center-align">
-                <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
-                    <i class="material-icons">add</i>
-                </button>
-            </div>
-            <div  class="center-align">
-                <a href="#" id="arrow-back" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text mr-1">
-                    <i class="material-icons left">arrow_back</i>
-                    Revenir
-                </a>
-                <button type="submit" class="button-small btn-flat waves-effect waves-light deep-orange accent-3 white-text">
-                    <i class="material-icons left">storage</i>
-                    Créer
-                </button>
-            </div>
+                <div id="add-button" class="row center-align">
+                    <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+                <div  class="center-align">
+                    <a href="#" id="arrow-back" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text mr-1">
+                        <i class="material-icons left">arrow_back</i>
+                        Revenir
+                    </a>
+                    <button type="submit" id="submit" class="button-small btn-flat waves-effect waves-light deep-orange accent-3 white-text">
+                        <i class="material-icons left">storage</i>
+                        Créer
+                    </button>
+                </div>
+    
          
     </form>
     
@@ -206,17 +207,129 @@ $('#moduleChap').on('change',function(){
    
 });
 
-    $('#chapitre').on('change', function (e) { 
-        e.preventDefault();
-        var chapitreValue=$(this).val();
-        if (chapitreValue!=='') {
-            $('#arrow-forward').removeClass('disabled');
-        }else{
-            $('#arrow-forward').addClass('disabled');
+if ($("#question-form").length > 0) {
+    $("#question-form").validate({
+      
+    rules: {
+        question: {
+        required: true,
+        maxlength: 100,
+      },
+  
+      duree: {
+            required: true,
+            digits:true,
+            min: 1,
+           
+        },
+        difficulte: {
+                required: true,
+                maxlength: 50,
+            },   
+            note: {
+                required: true,
+                number:true,
+                max: 20,
+                min: 1,
+            }, 
+            'proposition[]': {
+                required: true,
+                
+            },  
+            
+    },
+    messages: {
+        
+        question: {
+        required: "Please enter question",
+      },
+      duree: {
+        required: "Please enter duree",
+        digits: "Please enter only numbers",
+        min:"Please enter duration greater than or equal to 1",
+         
+      },
+      difficulte: {
+          required: "Please enter difficulte",
+        
+        },
+        note: {
+          required: "Please enter note",
+          max:"Please enter note less than or equal to 20",
+          min:"Please enter note greater than or equal to 1",
+          
+        },
+        'propostion[]': {
+          required: "Please enter proposition",
+        },
+        
+    },
+    errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        },
+    submitHandler: function(form) {
+     $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $('#submit').html('Sending..');
+      $.ajax({
+        url: '{{route('questions.createQuestion')}}' ,
+        type: "POST",
+        data: $('#question-form').serialize(),
+        success: function( response ) {
+            $('#submit').html('Ajouter');
+            $('#res_message').show();
+            $('#res_message').html(response.msg);
+            $('#msg_div').removeClass('d-none');
+ 
+           //document.getElementById("question-create-form2").empty(); 
+           $('[id^=response]').each(function(index){
+               if(index!=0){
+                   $(this).remove()
+                                  }else{
+                                    $( '#proposition' ).val("");
+                                   //console.log('#response'+index)
+                                   document.getElementById("check1").checked = false;
+                                  }
+           });
+           $( '#question' ).val("");
+           $( '#duree' ).val("");
+           $( '#note' ).val("");
+          
+            setTimeout(function(){
+            $('#res_message').hide();
+            $('#msg_div').hide();
+            },10000);
         }
-     });
+      });
+
+      
+    }
+  })
+}
+
+// $('#chapitre').on('change', function (e) { 
+//         e.preventDefault();
+//         var chapitreValue=$(this).val();
+//         if (chapitreValue!=='') {
+//             $('#arrow-forward').removeClass('disabled');
+//         }else{
+//             $('#arrow-forward').addClass('disabled');
+//         }
+//      });
+
 
 });
+
+
 
 </script>
 

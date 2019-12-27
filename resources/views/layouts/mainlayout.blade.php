@@ -10,6 +10,10 @@
     @yield('css')
     <link rel="shortcut icon" href="logos/favicon.ico"/>
     <style>
+      .error {
+      color: red;
+      
+      }
         .brand-logo a i{
             padding-left: 10px;
         }
