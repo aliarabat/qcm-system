@@ -22,6 +22,7 @@ Route::post('/questions/creation', 'QuestionController@createQuestion')->name('q
 Route::get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
 Route::get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
 Route::get('/questions/edition', 'QuestionController@editQuestion')->name('questions.edit');
+Route::get('/questions/validations', 'QuestionController@validateQuestions')->name('questions.validations');
 
 //mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
