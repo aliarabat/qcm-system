@@ -17,7 +17,7 @@ class CreateChapitresTable extends Migration
             $table->bigIncrements('id');
             $table->string('nom_chapitre');
             $table->unsignedBigInteger('module_id');
-            $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');;
+            $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
             $table->timestamps();
         });
     }

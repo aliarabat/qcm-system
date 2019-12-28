@@ -18,7 +18,7 @@ class CreateQuestionsTable extends Migration
             $table->string('type')->default('unique'); 
             $table->string('question'); 
             $table->unsignedBigInteger('chapitre_id');
-            $table->foreign('chapitre_id')->references('id')->on('chapitres');            
+            $table->foreign('chapitre_id')->references('id')->on('chapitres')->onDelete('cascade');            
             $table->Integer('duree');
             $table->string('difficulte'); 
             $table->boolean('visibilite')->default(0);

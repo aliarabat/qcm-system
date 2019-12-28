@@ -2,7 +2,7 @@
 
 @section('mainContent')
 
-    <div class="row z-depth-5 mt-p-1">
+    <div class="row z-depth-4 mt-p-1">
         <div class="col s12">
             <ul class="tabs deep-orange-text text-accent-3">
               <li class="tab col s3"><a class="active" href="#niveau">Niveau</a></li>
@@ -124,7 +124,7 @@
             </div>
 <br>
             <!-- list des Filieres-->
-            <div class="row">
+            <div class="row" >
                 <table class="centered"  id="tableFilieres">
                     <thead>
                         <tr>
@@ -306,9 +306,9 @@
 
 
 
-<!-- Modals-->
-<!-- Modal Structure -->
-<div id="modal1" class="modal">
+    <!-- Modals-->
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
         <div class="modal-content">
             <h4>Mise à jour</h4>
             <div class="row">
@@ -567,7 +567,9 @@
             $('#res_message').hide();
             $('#msg_div').hide();
             },10000);
-            console.log(response);
+            if(response=="Le Niveau a été créé"){
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);    
             $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
             // update les selects niveaux
                 $.ajax({
@@ -601,6 +603,7 @@
                     $('select[name="niveauFiliere"]').material_select();
                     $('#modal2 select[name="updatedNiveauFiliere"]').html(s);
                     $('#modal2 select[name="updatedNiveauFiliere"]').material_select();
+                    
                  }
              
           },
@@ -610,6 +613,11 @@
              alert('error...');
          }
        });
+            }
+            else{
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000); 
+            }
         }
       });
 
@@ -681,7 +689,10 @@ if ($("#filiere-form").length > 0) {
             $('#msg_div').hide();
             },10000);
             console.log(response);
-            $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
+            if(response=="Filière a été créée"){
+                $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
+                var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+                Materialize.toast($toastContent, 3000); 
             // update les selects filieres
             $.ajax({
              url: "{{route('mainParts.refreshFilieres')}}",
@@ -727,6 +738,12 @@ if ($("#filiere-form").length > 0) {
              alert('error...');
          }
        });
+            }
+            else{
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000); 
+            }
+            
           
         }
       });
@@ -799,7 +816,20 @@ if ($("#module-form").length > 0) {
             $('#msg_div').hide();
             },10000);
             console.log(response);
+            if(response=="Ce module a été associé à cette filière"){
             $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+            else if(response=="Module a été créée"){
+            $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+            else{
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
         }
       });
 
@@ -871,7 +901,20 @@ if ($("#chapitre-form").length > 0) {
             $('#msg_div').hide();
             },10000);
             console.log(response);
+            if(response=="Le nouveau chapitre a été associé au module"){
             $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+            else if(response=="Ce Chapitre a été associé au module"){
+            $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
+            else{
+            var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            Materialize.toast($toastContent, 3000);
+            }
         }
       });
 
@@ -907,9 +950,13 @@ if ($("#chapitre-form").length > 0) {
             success:function(result){
             console.log(result);
             if(result=1){
+                
                 $( "#tableNiveaux" ).load( "http://127.0.0.1:8000/mainparts #tableNiveaux" );
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 $('#modal1').modal('close');
+                //var $toastContent = $("<span>"+result+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+                //Materialize.toast($toastContent, 3000); 
+            
             // update les selects niveaux
                 $.ajax({
              url: "{{route('mainParts.refreshNiveaux')}}",
@@ -953,12 +1000,12 @@ if ($("#chapitre-form").length > 0) {
        });
             }
             else if(result=-1){
-                $('#modal1').modal('close');
-                alert("Niveau existe déja");
+            //var $toastContent = $("<span>"+result+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            //Materialize.toast($toastContent, 3000);
             }
             else {
-                $('#modal1').modal('close');
-                alert("Niveau introuvable");
+            //var $toastContent = $("<span>"+result+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            //Materialize.toast($toastContent, 3000);
             }
            }
             });
