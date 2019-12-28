@@ -94,5 +94,9 @@
         function deleteQCMQuestions(id) {
             $('#'+id).remove();
         }
+
+        // function createQCM() {
+        //     $('#tableQCM tbody tr').each(function (param) {  })
+        // }
     </script>
 @endsection

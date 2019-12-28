@@ -141,28 +141,40 @@
         .pagination li.active{
             background-color: #d50000;
         }
+        .collapsible .collapsible-body a{
+            margin-left: 2em;
+            color: #ff3d00;
+            transition-duration: 500ms;
+        }
+        .collapsible .collapsible-body a:hover{
+            margin-left: 3em;
+        }
     </style>
 </head>
-<body onload="void pauseTimer(event)">
+<body>
         @if(\Illuminate\Support\Facades\Auth::check())
-        <ul id="slide-out" class="side-nav">
-            <li><a class="subheader">QCM</a></li>
+        <ul id="slide-out" class="side-nav collapsible" data-collapsible="accordion">
+            <li><div class=" collapsible-header"><i class="material-icons">dashboard</i>QCM</div>
             @can(['create'], App\Question::class)
-                <li><a class="waves-effect" href="{{route('questions.create')}}">Création des questions</a></li>
+                <div class="collapsible-body"><a href="{{route('questions.create')}}">Création des questions</a></div>
             @endcan
-            <li><a class="waves-effect" href="{{route('questions.edit')}}">Editer la question</a></li>
+            <div class="collapsible-body"><a href="{{route('questions.edit')}}">Editer la question</a></div>
             @can('create', App\Niveau::class)
-                <li><a class="waves-effect" href="{{route('mainParts.create')}}">Plan pédagogique</a></li>
+                <div class="collapsible-body"><a href="{{route('mainParts.create')}}">Plan pédagogique</a></div>
             @endcan
-            <li><a class="subheader">Evaluations</a></li>
-            <li><a class="waves-effect" href="{{route('evaluations.create')}}">Création</a></li>
-            <li><a class="waves-effect" href="{{route('evaluations.index')}}">Commencer</a></li>
-            <li><a class="waves-effect" href="{{route('evaluations.start')}}">Evaluer</a></li>
-            <li><a class="subheader">Professeurs</a></li>
-            <li><a class="waves-effect" href="{{route('professors.create')}}">Création</a></li>
-            <li><a class="subheader">Etudiants</a></li>
-            <li><a class="waves-effect" href="{{route('students.create')}}">Création</a></li>
-        </ul>
+            </li>
+            <li><div class=" collapsible-header"><i class="material-icons">work</i>Evaluations</div>
+            <div class="collapsible-body"><a href="{{route('evaluations.create')}}">Création</a></div>
+            <div class="collapsible-body"><a href="{{route('evaluations.index')}}">Commencer</a></div>
+            <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div>
+            </li>
+            <li><div class=" collapsible-header"><i class="material-icons">supervisor_account</i>Professeurs</div>
+            <div class="collapsible-body"><a href="{{route('professors.create')}}">Création</a></div>
+            </li>
+            <li><div class=" collapsible-header"><i class="material-icons">supervised_user_circle</i>Etudiants</div>
+            <div class="collapsible-body"><a href="{{route('students.create')}}">Création</a></li>
+            </li>
+            </ul>
         @endif
     <nav>
         <div class="nav-wrapper deep-orange accent-3">
@@ -219,13 +231,17 @@
             @yield('mainContent')
         </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <script src="{{ asset('js/materialize.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/createquestion.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
 @yield('script')
 @yield('messages')
-
+        <script>
+            $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+        </script>
 </body>
 </html>

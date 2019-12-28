@@ -1,7 +1,7 @@
 @extends('layouts.mainlayout')
 
 @section('mainContent')
-    <div class="row z-depth-4 mt-p-1">
+    <div class="row z-depth-4 mt-p-1" id="Hello" onload="alert('wakhdmmmet');">
         <div class="col-s12">
             <div class="col s12 d-flex justify-content-between align-items-center">
                 <h4>Evaluation de Web</></h4>
@@ -70,7 +70,7 @@
                     </div>
                 @endforeach
                 <div class="col s12 d-flex justify-content-end">
-                    <button type="submit" class="btn-flat waves-effect waves-light deep-orange accent-3 white-text tooltipped" data-position="top" data-tooltip="Terminer l'évaluation" disabled>Terminer</button>
+                    <button onclick="return submitQCM();" class="btn-flat waves-effect waves-light deep-orange accent-3 white-text tooltipped" data-position="top" data-tooltip="Terminer l'évaluation" disabled>Terminer</button>
                 </div>
             </form>
         </div>
@@ -92,8 +92,25 @@
 
 
 @section('script')
-    <script src="{{asset('js/countdown.js')}}"></script>
-    <script>
+    
+    <script type="text/javascript">
+        window.addEventListener('beforeunload', function (e) { 
+            e.preventDefault();
+            e.returnValue='';
+        });
+        $(function () { 
+            
+            $('body').attr('onload', 'return pauseTimer("event")');
+            $.post({
+               async: true,
+               data:{
+                   '_token': '{{csrf_token()}}',
+                   'data': 'user_id'
+               }, 
+               dataType: 'JSON',
+               url: '{{route("registerUser")}}'
+            });
+        });
         function changeQuestion(id) {
             $('[id^="question"]').each(function(index){
                 if (parseInt(id.substr(8))!==index) {
@@ -127,7 +144,7 @@
                     answeredQuestions--;
                     $('.progress .determinate').css('width', (answeredQuestions*100/totalQuestions)+"%");
                     $('#answered-questions').text(answeredQuestions+'/'+totalQuestions);
-                    $('#qcm-form button[type="submit"]').attr('disabled', true);
+                    $('#qcm-form button').attr('disabled', true);
                     return;
                 }
             } 
@@ -139,57 +156,55 @@
             $('#answered-questions').text(answeredQuestions+'/'+totalQuestions);
 
             if(totalQuestions==answeredQuestions){
-                $('#qcm-form button[type="submit"]').removeAttr('disabled');
-            }else{
-                $('#qcm-form button[type="submit"]').attr('disabled');
+                $('#qcm-form button').removeAttr('disabled');
             }
         }
 
-        
-
-        $(function () { 
+        function submitQCM(e=event) {
+            if (e!=null) {
+                e.preventDefault();
+            }
             var form = $('#qcm-form');
-            form.submit(function (e) {
-                e.preventDefault(); 
-                var questions=[];
-                var i=0;
-                while (i<form.serializeArray().length) {
-                    var row=form.serializeArray()[i];
-                    if(row.name.endsWith('[\'id\']')){
-                        var question={
-                            question_id: parseInt(row.value),
-                            proposition:[]
-                        };
-                        questions.push({...question});
-                    }else{
-                        questions.forEach(function (question, index){
-                            if(index===parseInt(row.name.replace(/[^0-9]/g, ""))){
-                                question.proposition.push(parseInt(row.value));
-                            }
-                        });
-                    }
-                    i++;
+            var questions=[];
+            var i=0;
+            while (i<form.serializeArray().length) {
+                var row=form.serializeArray()[i];
+                if(row.name.endsWith('[\'id\']')){
+                    var question={
+                        question_id: parseInt(row.value),
+                        propositions:[]
+                    };
+                    questions.push({...question});
+                }else{
+                    questions.forEach(function (question, index){
+                        if(index===parseInt(row.name.replace(/[^0-9]/g, ""))){
+                            question.propositions.push(parseInt(row.value));
+                        }
+                    });
                 }
-                $.post({
-                    url: form.data('route'),
-                    data:{
-                        "_token":"{{csrf_token()}}",
-                        "data": questions
-                    },
-                    dataType: 'JSON',
-                    beforeSend: function () { 
-                        console.log("before send");
-                    },
-                    error: function (e) {
-                        console.log(e);
-                    }, 
-                    success: function (data) { 
-                        console.log(data);
-                    }
-                })
+                i++;
+            }
+            questions.sort(function (q1,q2) { return q1.question_id-q2.question_id ;});
+            $.post({
+                url: form.data('route'),
+                data:{
+                    "_token":"{{csrf_token()}}",
+                    "data": questions
+                },
+                dataType: 'JSON',
+                beforeSend: function () { 
+                    console.log("before send");
+                },
+                error: function (e) {
+                    console.log(e);
+                }, 
+                success: function (data) { 
+                    console.log(data);
+                }
             });
-        });
+        }
     </script>
+    <script src="{{asset('js/countdown.js')}}"></script>
 @endsection
 
 @section('css')

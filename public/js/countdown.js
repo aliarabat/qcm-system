@@ -10,6 +10,11 @@ function update(value, timePercent) {
   var offset = - length - length * value / (timePercent);
   progressBar.style.strokeDashoffset = offset; 
   pointer.style.transform = `rotate(${360 * value / (timePercent)}deg)`; 
+  if (timeLeft==0) {
+    console.log('finished');
+    submitQCM();
+    isPaused=true;
+  }
 };
 
 //circle ends
@@ -62,15 +67,16 @@ function timer (seconds){ //counts time, takes seconds
   intervalTimer = setInterval(function(){
     timeLeft = Math.round((remainTime - Date.now()) / 1000);
     if(timeLeft < 0){
-      clearInterval(intervalTimer);
+      // clearInterval(intervalTimer);
       isStarted = false;
-      setterBtns.forEach(function(btn){
-        btn.disabled = false;
-        btn.style.opacity = 1;
-      });
-      displayTimeLeft(wholeTime);
-      pauseBtn.classList.remove('pause');
-      pauseBtn.classList.add('play');
+      isPaused = true;
+      // setterBtns.forEach(function(btn){
+      //   btn.disabled = false;
+      //   btn.style.opacity = 1;
+      // });
+      // displayTimeLeft(wholeTime);
+      // pauseBtn.classList.remove('pause');
+      // pauseBtn.classList.add('play');
       return ;
     }
     displayTimeLeft(timeLeft);
@@ -80,24 +86,13 @@ function pauseTimer(event){
   if(isStarted === false){
     timer(wholeTime);
     isStarted = true;
-    // this.classList.remove('play');
-    // this.classList.add('pause');
-    
-    // setterBtns.forEach(function(btn){
-    //   btn.disabled = true;
-    //   btn.style.opacity = 0.5;
-    // });
 
   }else if(isPaused){
-    // this.classList.remove('play');
-    // this.classList.add('pause');
-    timer(timeLeft);
-    isPaused = isPaused ? false : true
+    // timer(timeLeft);
+    // isPaused = isPaused ? false : true
   }else{
-    // this.classList.remove('pause');
-    // this.classList.add('play');
-    clearInterval(intervalTimer);
-    isPaused = isPaused ? false : true ;
+    // clearInterval(intervalTimer);
+    // isPaused = isPaused ? false : true ;
   }
 }
 

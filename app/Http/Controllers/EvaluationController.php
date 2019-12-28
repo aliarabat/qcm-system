@@ -40,7 +40,7 @@ class EvaluationController extends Controller
         foreach ($qcm['questions'] as $key => $question) {
             $question->propositions=$question->propositions->shuffle();
         }
-        $qcm['wholeTime']=30;
+        $qcm['wholeTime']=1;
         return view('evaluations.evaluate', compact(['qcm']));
     }
 
