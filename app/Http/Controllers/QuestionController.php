@@ -64,7 +64,6 @@ class QuestionController extends Controller
         $question->question = request('question');
         $question->duree = request('duree');
         $question->difficulte = request('difficulte');
-        $question->visibilite = request('visibilite');
         $question->note = request('note');
         
         if ($counts[1] > 1) {
@@ -127,5 +126,10 @@ class QuestionController extends Controller
     public function editQuestion()
     {
         return view('questions.edit');
+    }
+
+    public function validateQuestions()
+    {
+        return view('questions.validations');
     }
 }

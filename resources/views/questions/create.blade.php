@@ -24,7 +24,7 @@
                             </select>
                             <label>Module</label>
                         </div>
-                        <div class="input-field col s4" id="chapitre">
+                        <div class="input-field col s4">
                                 <select name="chapitre" id="chapitre">
                                        
                                 </select>
@@ -32,26 +32,17 @@
                             </div>
             </div>
             <div class="row" style="display: flex; justify-content: center;">
-                <button id="arrow-forward" class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
+                <button id="arrow-forward" disabled class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text">
                     <i class="material-icons right">arrow_forward</i>
                     suivant
                 </button>
             </div>
         </div>
-        <div id="question-create-form2" class="form2" hidden class="col-s12 z-depth-4 mt-p-1">
+        <div id="question-create-form2" class="col-s12 z-depth-4 mt-p-1" hidden>
             <div class="row">
-                <div class="col s6" style="display: flex; align-items: center; justify-content: flex-start">
-                    <div class="input-field col s10" style="padding: 0;">
-                        <input type="text" onfocus="this.value=''" name="question" id="question">
-                        <label style="left: 0px;">Question</label>
-                    </div>
-                    
-
-                    <p class="col s2" >
-                        <input id="hidend" type="hidden" name="visibilite" value="0" >
-                        <input name="visibilite"  type="checkbox" id="test5" value="1" />
-                        <label for="test5" style="padding-left: 25px;">Visible</label>
-                    </p>
+                <div class="input-field col s6">
+                    <input type="text" onfocus="this.value=''" name="question" id="question">
+                    <label for="question">Question</label>
                 </div>
                 <div class="input-field col s6">
                     <label>Durée</label>
@@ -316,15 +307,14 @@ if ($("#question-form").length > 0) {
   })
 }
 
-// $('#chapitre').on('change', function (e) { 
-//         e.preventDefault();
-//         var chapitreValue=$(this).val();
-//         if (chapitreValue!=='') {
-//             $('#arrow-forward').removeClass('disabled');
-//         }else{
-//             $('#arrow-forward').addClass('disabled');
-//         }
-//      });
+    $('#chapitre').on('change', function (e) { 
+        var chapitreValue=$(this).val();
+        if (chapitreValue!=='') {
+            $('#arrow-forward').removeAttr('disabled');
+        }else{
+            $('#arrow-forward').attr('disabled', true);
+        }
+     });
 
 
 });

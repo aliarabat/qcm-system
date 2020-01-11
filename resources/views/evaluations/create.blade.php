@@ -5,12 +5,12 @@
     <div class="row z-depth-4 mt-p-1">
         <div class="col-s12">
             <div class="input-field col s4">
-                <input type="text" name="libelle" id="libelle"/>
-                <label for="libelle">Libellé</label>
+                <input type="text" name="description" id="description"/>
+                <label for="description">Libellé</label>
             </div>
             <div class="input-field col s4">
-                <input type="text" name="nbrQuestions" id="nbrQuestions"/>
-                <label for="nbrQuestions">Nombre de questions</label>
+                <input type="number" name="duree" id="duree"/>
+                <label for="duree">Durée</label>
             </div>
             <div class="input-field col s4">
                 <input type="number" name="difficulte" id="difficulte"/>
@@ -55,7 +55,7 @@
                 </tbody>
             </table>
             <div class="col s12 d-flex justify-content-center mt-1">
-                <button type="submit" class="btn btn-flat waves-effect waves-light deep-orange accent-3 white-text">
+                <button onclick="return createQCM()" class="btn btn-flat waves-effect waves-light deep-orange accent-3 white-text">
                     <i class="material-icons left">storage</i>
                     Créer
                 </button>
@@ -95,8 +95,24 @@
             $('#'+id).remove();
         }
 
-        // function createQCM() {
-        //     $('#tableQCM tbody tr').each(function (param) {  })
-        // }
+        function createQCM() {
+            var questions=[];
+            $('#tableQCM tbody tr').each(function (index, elem) { 
+                var question={
+                    "chapitreId": parseInt($(this).children('td').eq(1).text()),
+                    "nbrQuestion": parseInt($(this).children('td').eq(2).text())
+                };
+                questions.push(question);
+            });
+            var qcm={
+                "description": $('#description').val(),
+                "duree": $('#duree').val(),
+                "difficulte": $('#difficulte').val(),
+                "questions": questions,
+            }
+
+            console.log(qcm);
+
+        }
     </script>
 @endsection
