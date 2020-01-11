@@ -16,10 +16,13 @@
 //});
 Route::get('/', 'HomeController@index')->name('home');
 
+//Questions
 Route::get('/questions', 'QuestionController@create')->name('questions.create');
-Route::post('/questions/createQuestion', 'QuestionController@createQuestion')->name('questions.createQuestion');
+Route::post('/questions/creation', 'QuestionController@createQuestion')->name('questions.createQuestion');
 Route::get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
 Route::get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
+Route::get('/questions/edition', 'QuestionController@editQuestion')->name('questions.edit');
+Route::get('/questions/validations', 'QuestionController@validateQuestions')->name('questions.validations');
 
 //mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
@@ -43,9 +46,16 @@ Route::Get('/mainparts/refreshFilieres', 'MainPartsController@refreshFilieres')-
 
 //Evaluations routes
 Route::get('/evaluations', 'EvaluationController@index')->name('evaluations.index');
-Route::get('/evaluations/start', 'EvaluationController@start')->name('evaluations.start');
+Route::get('/evaluations/creation', 'EvaluationController@create')->name('evaluations.create');
+Route::get('/evaluations/commencer', 'EvaluationController@start')->name('evaluations.start');
+Route::post('/evaluations/terminer', 'EvaluationController@end')->name('evaluations.end');
+
+//professors
+Route::get('/professeurs', 'ProfessorController@create')->name('professors.create');
 
 
+//students
+Route::get('/etudiants', 'StudentController@createStudent')->name('students.create');
 
 
 Auth::routes();

@@ -1,0 +1,5 @@
+function onUpdateQuestion() {
+}
+
+function onDeleteQuestion() {
+}

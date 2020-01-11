@@ -7,9 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('css/materialize.min.css') }}" rel="stylesheet" type="text/css"/>
-    @yield('countdowncss')
+    @yield('css')
     <link rel="shortcut icon" href="logos/favicon.ico"/>
     <style>
+      .error {
+      color: red;
+      
+      }
         .brand-logo a i{
             padding-left: 10px;
         }
@@ -129,22 +133,53 @@
         .modal .modal-content{
             padding: 24px 24 0px 24px;
         }
+        .pagination li.answered{
+            background-color: green;
+        }
+        .progress{
+            background-color: #f3cbbf !important;
+        }
+        .progress .determinate{
+            background-color: #ff3d00 !important;
+        }
+        .pagination li.active{
+            background-color: #d50000;
+        }
+        .collapsible .collapsible-body a{
+            margin-left: 2em;
+            color: #ff3d00;
+            transition-duration: 500ms;
+        }
+        .collapsible .collapsible-body a:hover{
+            margin-left: 3em;
+        }
     </style>
 </head>
 <body>
         @if(\Illuminate\Support\Facades\Auth::check())
-        <ul id="slide-out" class="side-nav">
-            <li><a class="subheader">QCM</a></li>
-            @can('create', App\Question::class)
-                <li><a class="waves-effect" href="{{route('questions.create')}}">Création des questions</a></li>
+        <ul id="slide-out" class="side-nav collapsible" data-collapsible="accordion">
+            <li><div class=" collapsible-header"><i class="material-icons">dashboard</i>QCM</div>
+            @can(['create'], App\Question::class)
+                <div class="collapsible-body"><a href="{{route('questions.create')}}">Création des questions</a></div>
             @endcan
+            <div class="collapsible-body"><a href="{{route('questions.edit')}}">Editer la question</a></div>
             @can('create', App\Niveau::class)
-                <li><a class="waves-effect" href="{{route('mainParts.create')}}">Plan pédagogique</a></li>
+            <div class="collapsible-body"><a href="{{route('mainParts.create')}}">Plan pédagogique</a></div>
             @endcan
-            <li><a class="subheader">Evaluations</a></li>
-            <li><a class="waves-effect" href="{{route('evaluations.index')}}">Commencer</a></li>
-            <li><a class="waves-effect" href="{{route('evaluations.start')}}">Evaluer</a></li>
-        </ul>
+            <div class="collapsible-body"><a href="{{route('questions.validations')}}">Validations</a></div>
+            </li>
+            <li><div class=" collapsible-header"><i class="material-icons">work</i>Evaluations</div>
+            <div class="collapsible-body"><a href="{{route('evaluations.create')}}">Création</a></div>
+            <div class="collapsible-body"><a href="{{route('evaluations.index')}}">Commencer</a></div>
+            <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div>
+            </li>
+            <li><div class=" collapsible-header"><i class="material-icons">supervisor_account</i>Professeurs</div>
+            <div class="collapsible-body"><a href="{{route('professors.create')}}">Création</a></div>
+            </li>
+            <li><div class=" collapsible-header"><i class="material-icons">supervised_user_circle</i>Etudiants</div>
+            <div class="collapsible-body"><a href="{{route('students.create')}}">Création</a></li>
+            </li>
+            </ul>
         @endif
     <nav>
         <div class="nav-wrapper deep-orange accent-3">
@@ -201,13 +236,17 @@
             @yield('mainContent')
         </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <script src="{{ asset('js/materialize.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/createquestion.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
 @yield('script')
 @yield('messages')
-
+        <script>
+            $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+        </script>
 </body>
 </html>
