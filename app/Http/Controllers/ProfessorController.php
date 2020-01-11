@@ -6,8 +6,15 @@ use Illuminate\Http\Request;
 
 class ProfessorController extends Controller
 {
-    public function create()
+    public function index()
     {
-        return view('professors.create');
+        return view('professors.index');
+    }
+    
+    public function create(Request $request)
+    {
+        $token=$request->input('_token');
+
+        return response()->json(compact('token'));
     }
 }
