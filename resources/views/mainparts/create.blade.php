@@ -96,12 +96,12 @@
                 <form  id="filiere-form" method="post" class="col s12" >
                     @csrf  
                     <div class="input-field col s4">
-                            <select name="niveauFiliere" id="niveauFiliere">
-                                    <option value="m1" selected disabled>Niveau</option>
+                            <select name="niveauFiliere" id="niveauFiliere" >
+                                    <option  value="Niveau" selected disabled>Niveau</option>
                                     @forelse ($niveaux as $niveau)
-                                    <option value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
+                                    <option  value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
                                     @empty
-                                    <option value="m1" selected disabled>Niveau</option>
+                                    <option value="Niveau"  selected disabled>Niveau</option>
                                     @endforelse
                             </select>
                             <label>Niveau</label>
@@ -466,8 +466,7 @@
 
     @section('script')
     <script type="text/javascript">
-    $(document).ready(function() {
-    
+    $(document).ready(function() {  
     $('#filiereChapitre').on('change',function(){
        var nom_filiere = $(this).val();
        //console.log(nom_filiere);
@@ -628,15 +627,11 @@
 
 
 if ($("#filiere-form").length > 0) {
+    //$('#niveauFiliere').val($('.optionFiliere').val());
+    //console.log($('.optionFiliere').val());
     $("#filiere-form").validate({
       
     rules: {
-        niveauFiliere: {
-        required: function() {
-                              return $('#niveauFiliere').val() != 'Niveau';
-                        },
-      },
-      agree: 'required',
       nom_filiere: {
             required: true,
             maxlength: 100,      
@@ -678,6 +673,7 @@ if ($("#filiere-form").length > 0) {
         type: "POST",
         data: $('#filiere-form').serialize(),
         success: function( response ) {
+            //console.log($('#niveauFiliere').val());
             $('#filiereSubmit').html('Créer');
             $('#res_message').show();
             $('#res_message').html(response.msg);
