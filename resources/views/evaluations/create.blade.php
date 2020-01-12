@@ -105,14 +105,27 @@
                 questions.push(question);
             });
             var qcm={
+                "_token": '{{csrf_token()}}',
                 "description": $('#description').val(),
                 "duree": $('#duree').val(),
                 "difficulte": $('#difficulte').val(),
-                "questions": questions,
+                "chapitres": questions,
             }
 
-            console.log(qcm);
+            $.post({
+                url: "{{route('evaluations.store')}}",
+                data: qcm,
+                dataType: 'JSON',
+                success: function (data) { 
+                    console.log(data);
+                },
+                error: function (error) { 
 
+                },
+                beforeSend: function () { 
+
+                }  
+            });
         }
     </script>
 @endsection

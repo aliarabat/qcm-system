@@ -28,6 +28,7 @@ Route::post('/questions/validate', 'QuestionController@changeValidation')->name(
 //mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
 Route::Get('/mainparts/modulesFiliere', 'MainPartsController@modulesFiliere')->name('mainParts.modulesFiliere');
+Route::Get('/mainparts/semestresFiliere', 'MainPartsController@semestresFiliere')->name('mainParts.semestresFiliere');
 Route::Post('/mainparts', 'MainPartsController@createNiveau')->name('mainParts.createNiveau');
 Route::Post('/mainparts/filiere', 'MainPartsController@createFiliere')->name('mainParts.createFiliere');
 Route::Post('/mainparts/module', 'MainPartsController@createModule')->name('mainParts.createModule');
@@ -48,6 +49,7 @@ Route::get('/evaluations', 'EvaluationController@index')->name('evaluations.inde
 Route::get('/evaluations/creation', 'EvaluationController@create')->name('evaluations.create');
 Route::get('/evaluations/commencer', 'EvaluationController@start')->name('evaluations.start');
 Route::post('/evaluations/terminer', 'EvaluationController@end')->name('evaluations.end');
+Route::post('/evaluations/store', 'EvaluationController@store')->name('evaluations.store');
 
 //professors
 Route::get('/professeurs', 'ProfessorController@index')->name('professors.index');
