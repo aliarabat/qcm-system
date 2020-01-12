@@ -49,6 +49,7 @@ Route::get('/evaluations', 'EvaluationController@index')->name('evaluations.inde
 Route::get('/evaluations/creation', 'EvaluationController@create')->name('evaluations.create');
 Route::get('/evaluations/commencer', 'EvaluationController@start')->name('evaluations.start');
 Route::post('/evaluations/terminer', 'EvaluationController@end')->name('evaluations.end');
+Route::post('/evaluations/store', 'EvaluationController@store')->name('evaluations.store');
 
 //professors
 Route::get('/professeurs', 'ProfessorController@index')->name('professors.index');
