@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAssocFiliereModulesTable extends Migration
+class CreateSemestreModulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateAssocFiliereModulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('assoc_filiere_modules', function (Blueprint $table) {
+        Schema::create('semestre_modules', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('filiere_id');
-            $table->foreign('filiere_id')->references('id')->on('filieres')->onDelete('cascade');
+            $table->unsignedBigInteger('semestre_id');
+            $table->foreign('semestre_id')->references('id')->on('semestres')->onDelete('cascade');
             $table->unsignedBigInteger('module_id');
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
+            $table->string('anneeUniversitaire');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateAssocFiliereModulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assoc_filiere_modules');
+        Schema::dropIfExists('semestre_modules');
     }
 }
