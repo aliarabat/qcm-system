@@ -24,7 +24,7 @@ class MainPartsController extends Controller
     private $niveaux;
     private $filieres;
     private $modules;
-    private $allAssocFilieresModules;
+    private $allAssocSemestreModules;
     private $chapitres;
 
     
@@ -33,12 +33,12 @@ class MainPartsController extends Controller
         $this->niveaux=Niveau::all();
         $this->filieres=Filiere::all();
         $this->modules=Module::all();
-        $this->allAssocFilieresModules=AssocFiliereModule::all();
-        $this->allAssocFilieresModules=AssocFiliereModule::all();
+        //$this->allAssocFilieresModules=AssocFiliereModule::all();
+        $this->allAssocSemestreModules=semestreModule::all();
         $this->chapitres=Chapitre::all();
         return view(
             'mainparts.create',
-            ['modules' => $this->modules, 'filieres' => $this->filieres, 'niveaux' => $this->niveaux,'assocfilmod' => $this->allAssocFilieresModules,'chapitres' => $this->chapitres]
+            ['modules' => $this->modules, 'filieres' => $this->filieres, 'niveaux' => $this->niveaux,'assocSemestreModule' => $this->allAssocSemestreModules,'chapitres' => $this->chapitres]
         );
     }
 
