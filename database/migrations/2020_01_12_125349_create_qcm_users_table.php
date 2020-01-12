@@ -18,8 +18,8 @@ class CreateQcmUsersTable extends Migration
             $table->boolean('is_passed');
             $table->double('note');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('qcm_id');
             // $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('qcm_id');
             // $table->foreign('qcm_id')->references('id')->on('qcms');
             $table->timestamps();
         });

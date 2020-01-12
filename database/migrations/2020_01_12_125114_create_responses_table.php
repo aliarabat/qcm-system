@@ -15,7 +15,7 @@ class CreateResponsesTable extends Migration
     {
         Schema::create('responses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('responses');
+            $table->string('responses');
             $table->unsignedBigInteger('qcm_users_id');
             // $table->foreign('qcm_users_id')->references('id')->on('qcm_users');
             $table->unsignedBigInteger('question_id');
