@@ -8,6 +8,7 @@ use App\Filiere;
 use App\Module;
 use App\Niveau;
 use App\Semestre;
+use App\semestreModule;
 
 use Illuminate\Http\Request;
 
@@ -32,6 +33,7 @@ class MainPartsController extends Controller
         $this->niveaux=Niveau::all();
         $this->filieres=Filiere::all();
         $this->modules=Module::all();
+        $this->allAssocFilieresModules=AssocFiliereModule::all();
         $this->allAssocFilieresModules=AssocFiliereModule::all();
         $this->chapitres=Chapitre::all();
         return view(
@@ -257,31 +259,23 @@ class MainPartsController extends Controller
             $selectFiliere = $request->input('filiereModule');
             $infosFiliere = explode("-", $selectFiliere);
             $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($infosFiliere[0]))->first();
-            $assocFiliereModule = AssocFiliereModule::get()->where('filiere_id', $filiereExistant->id)->where('module_id', $moduleExistant->id)->first();
+            $selectedSemestre = $request->input('semestreFiliere');
+            $semestreExistant = Semestre::get()->where('libelle', mb_strtoupper($selectedSemestre))->where('filiere_id', $filiereExistant->id)->first();
+            $assocSemestreModule = semestreModule::get()->where('semestre_id', $semestreExistant->id)->where('module_id', $moduleExistant->id)->first();
             if ($assocFiliereModule) {
-                //$request->session()->flash('errorStatus', 'Ce module est déja associé à cette filière');
-                //return -1;
-                $messagePane='Ce module est déjà associé à cette filière';
+                $messagePane='Ce module est déjà associé à cette filière pour un semestre';
                 return $messagePane;
             } else {
-                $assocFilieresModules = AssocFiliereModule::get()->where('module_id', $moduleExistant->id)->first();
-                $filiereExistant1 = Filiere::get()->where('id', $assocFilieresModules->filiere_id)->first();
-                if($filiereExistant1->niveau_id == $filiereExistant->niveau_id){
-                $assocFiliereModuleNew = new AssocFiliereModule();
-                $assocFiliereModuleNew->filiere()->associate($filiereExistant);
-                $assocFiliereModuleNew->module()->associate($moduleExistant);
-                $assocFiliereModuleNew->save();
-                //$request->session()->flash('status', 'Ce module a été associé à cette filière');
-                //return 1;
+                
+                $assocSemestreModuleNew = new semestreModule();
+                $assocSemestreModuleNew->semestre()->associate($semestreExistant);
+                $assocSemestreModuleNew->module()->associate($moduleExistant);
+                //$assocSemestreModuleNew->professor()->associate(null);
+                //$assocSemestreModuleNew->anneeUniversitaire=null;
+                $assocSemestreModuleNew->save();
                 $messagePane='Ce module a été associé à cette filière';
                 return $messagePane;
-                }
-                else{
-                    //$request->session()->flash('errorStatus', 'Ce module est déja associé à un certain niveau');
-                    //return -2;
-                $messagePane='Ce module est déjà associé à un certain niveau';
-                return $messagePane;
-                }
+                    
                 
             }
         } else {
@@ -292,12 +286,14 @@ class MainPartsController extends Controller
             $selectFiliere = $request->input('filiereModule');
             $infosFiliere = explode("-", $selectFiliere);
             $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($infosFiliere[0]))->first();
-            $assocFiliereModuleNew = new AssocFiliereModule();
-            $assocFiliereModuleNew->filiere()->associate($filiereExistant);
-            $assocFiliereModuleNew->module()->associate($module);
-            $assocFiliereModuleNew->save();
-            //$request->session()->flash('status', 'module a été créée');
-            //return 2;
+            $selectedSemestre = $request->input('semestreFiliere');
+            $semestreExistant = Semestre::get()->where('libelle', mb_strtoupper($selectedSemestre))->where('filiere_id', $filiereExistant->id)->first();
+            $$assocSemestreModuleNew = new semestreModule();
+            $assocSemestreModuleNew->semestre()->associate($semestreExistant);
+            $assocSemestreModuleNew->module()->associate($module);
+            //$assocSemestreModuleNew->professor()->associate(null);
+            //$assocSemestreModuleNew->anneeUniversitaire=null;
+            $assocSemestreModuleNew->save();
             $messagePane='Module a été créée';
             return $messagePane;
         }
