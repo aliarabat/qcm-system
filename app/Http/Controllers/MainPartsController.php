@@ -143,12 +143,12 @@ class MainPartsController extends Controller
 
     public function createFiliere(Request $request)
     {
-        $testSelectNiveau = $request->input('niveauFiliere');
+        /*$testSelectNiveau = $request->input('niveauFiliere');
         if($testSelectNiveau == null){
             $messagePane='Veuillez choisir la filière';
             return $messagePane;
         }
-        else{
+        else{*/
             $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->input('nom_filiere')))->first();
             if ($filiereExistant) {
                 //$request->session()->flash('errorStatus', 'Cette filière est déja créée');
@@ -171,7 +171,7 @@ class MainPartsController extends Controller
                 $messagePane='Filière a été créée';
                 return $messagePane;
             }
-       }
+       //}
         
     }
 

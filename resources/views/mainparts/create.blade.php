@@ -89,7 +89,7 @@
                                     @endforelse
                             </select>
                             <label>Niveau</label>
-                            <span class="error"><p id="nameFiliere_error"></p></span>
+                            <span class="error"><p id="nameNiveau_error"></p></span>
                         </div>
 
                         <div class="input-field col s4 ">
@@ -162,6 +162,7 @@
                                     @endforelse
                             </select>
                             <label>Filière</label>
+                            <span class="error"><p id="nameFiliere_error"></p></span>
                         </div>
     
                         <div class="input-field col s4 ">
@@ -232,12 +233,14 @@
                                     @endforelse
                             </select>
                             <label>Filière</label>
+                            <span class="error"><p id="nameFiliereChapitre_error"></p></span>
                         </div>
                         <div class="input-field col s4" id="moduleChapitre">
                             <select name="moduleChapitre">
                                 
                             </select>
                             <label>Module</label>
+                            <span class="error"><p id="nameModule_error"></p></span>
                         </div>
                         <div class="input-field col s4 ">
                             <input id="chapitreIn" name="nom_chapitre" type="text"/>
@@ -454,8 +457,44 @@
     <script type="text/javascript">
     $(document).ready(function() {
         $('#niveauFiliere').on('change',function(){
+            document.getElementById('nameNiveau_error').innerHTML = '';            
+        });
+        $( "#filiereSubmit" ).click(function() {
+        if(document.getElementById('nameNiveau_error').nodeValue==null){
+            document.getElementById('nameNiveau_error').innerHTML = 'Veuillez choisir le niveau';            
+        }
+        });
+        $('#filiereModule').on('change',function(){
             document.getElementById('nameFiliere_error').innerHTML = '';            
         });
+        $( "#moduleSubmit" ).click(function() {
+        if(document.getElementById('nameFiliere_error').nodeValue==null){
+            document.getElementById('nameFiliere_error').innerHTML = 'Veuillez choisir la filière';            
+        }
+        });
+
+        $('#filiereChapitre').on('change',function(){
+            document.getElementById('nameFiliereChapitre_error').innerHTML = '';
+            $( "#chapitreSubmit" ).click(function() {
+        if(document.getElementById('nameModule_error').nodeValue==null){
+            document.getElementById('nameModule_error').innerHTML = 'Veuillez choisir le module';                       
+        }
+        });
+                        
+        });
+        $('#moduleChapitre').on('change',function(){
+            document.getElementById('nameModule_error').innerHTML = '';            
+        });
+        $( "#chapitreSubmit" ).click(function() {
+            if($('#filiereChapitre').val()==null){
+                if(document.getElementById('nameFiliereChapitre_error').nodeValue==null){
+            document.getElementById('nameFiliereChapitre_error').innerHTML = 'Veuillez choisir la filière'; 
+        }
+        }
+        
+        });
+
+
 
     $('#filiereChapitre').on('change',function(){
        var nom_filiere = $(this).val();
@@ -727,9 +766,9 @@ if ($("#filiere-form").length > 0) {
          }
        });
             }
-            else if(response=="Veuillez choisir la filière"){
-              document.getElementById('nameFiliere_error').innerHTML = 'Veuillez choisir la filière';            
-            }
+            //else if(response=="Veuillez choisir la filière"){
+              //document.getElementById('nameNiveau_error').innerHTML = 'Veuillez choisir la filière';            
+            //}
             else{
             var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
             Materialize.toast($toastContent, 3000); 
