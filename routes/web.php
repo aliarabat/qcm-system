@@ -17,11 +17,11 @@
 Route::get('/', 'HomeController@index')->name('home');
 
 //Questions
-Route::get('/questions', 'QuestionController@create')->name('questions.create');
-Route::post('/questions/creation', 'QuestionController@createQuestion')->name('questions.createQuestion');
+Route::get('/questions', 'QuestionController@index')->name('questions.index');
+Route::get('/questions/creation', 'QuestionController@create')->name('questions.create');
+Route::post('/questions/store', 'QuestionController@store')->name('questions.store');
 Route::get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
 Route::get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
-Route::get('/questions/edition', 'QuestionController@editQuestion')->name('questions.edit');
 Route::get('/questions/validations', 'QuestionController@validateQuestions')->name('questions.validations');
 Route::post('/questions/validate', 'QuestionController@changeValidation')->name('questions.changeValidation');
 
@@ -42,8 +42,6 @@ Route::Delete('/mainparts/{idModule}/deleteModule', 'MainPartsController@deleteM
 Route::Post('/mainparts/{idChapitre}/updateChapitre', 'MainPartsController@updateChapitre')->name('mainParts.updateChapitre');
 Route::Delete('/mainparts/{idChapitre}/deleteChapitre', 'MainPartsController@deleteChapitre')->name('mainParts.deleteChapitre');
 Route::Get('/mainparts/refreshFilieres', 'MainPartsController@refreshFilieres')->name('mainParts.refreshFilieres');
-
-
 
 //Evaluations routes
 Route::get('/evaluations', 'EvaluationController@index')->name('evaluations.index');

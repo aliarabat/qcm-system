@@ -2,7 +2,7 @@
 @section('mainContent')
 
 
-    <form id="question-form" class="row" method="POST" action="{{route('questions.createQuestion')}}">
+    <form id="question-form" class="row" method="POST" action="{{route('questions.store')}}">
         @csrf
         <div id="question-create-form1" class="col-s12 z-depth-4 mt-p-1">
             <div class="row">
