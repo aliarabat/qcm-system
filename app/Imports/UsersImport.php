@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Mail\StudentCreated;
+use App\Notifications\UserCreated;
 use App\Role;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +23,7 @@ class UsersImport implements ToModel
     public function model(array $row)
     {
         $oldUser = User::where('email', $row[2])->first();
-        if (in_array($row[1], ['prenom','Prenom']) | !isset($row[1]) | isset($oldUser)) {
+        if (in_array($row[0], ['prenom', 'Prenom']) | !isset($row[0]) | isset($oldUser)) {
             return null;
         }
         $pwd = $this->random_string();
@@ -39,12 +40,13 @@ class UsersImport implements ToModel
         return $user;
     }
 
-    public static function random_string($length=10){
-        $characters=array_merge(range('a', 'b'), range('A', 'B'), range('0', '9'));
-        $generatedStr='';
-        $max=count($characters)-1;
-        for ($i=0; $i < $length; $i++) { 
-            $generatedStr.=$characters[mt_rand(0, $max)];
+    public static function random_string($length = 10)
+    {
+        $characters = array_merge(range('a', 'b'), range('A', 'B'), range('0', '9'));
+        $generatedStr = '';
+        $max = count($characters) - 1;
+        for ($i = 0; $i < $length; $i++) {
+            $generatedStr .= $characters[mt_rand(0, $max)];
         }
         return $generatedStr;
     }

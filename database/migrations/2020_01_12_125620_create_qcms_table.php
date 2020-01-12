@@ -19,8 +19,8 @@ class CreateQcmsTable extends Migration
             $table->text('reference');
             $table->unsignedInteger('duration');
             $table->unsignedInteger('difficulty');
-            // $table->bigIncrements('semestere_module_id');
-            // $table->foreign('semestre_module_id')->references('semestre_module')->on('semestere_module');
+            $table->unsignedBigInteger('semestre_module_id');
+            // $table->foreign('semestre_module_id')->references('id')->on('semestre_modules');
             $table->timestamps();
         });
     }
