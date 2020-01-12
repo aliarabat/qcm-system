@@ -25,12 +25,6 @@ class QuestionController extends Controller
     {
         $this->middleware('auth');
         $this->authorizeResource(Question::class, 'create');
-<<<<<<< HEAD
-        
-
-=======
-        $this->authorizeResource(Question::class, 'update');
->>>>>>> 60308c9dbbd2da386dbbeaed26c68b5d7e43aa58
     }
 
     public function index()
@@ -95,11 +89,9 @@ class QuestionController extends Controller
 
     public function update()
     {
-        
     }
     public function destroy()
     {
-
     }
 
 
