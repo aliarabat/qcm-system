@@ -143,28 +143,36 @@ class MainPartsController extends Controller
 
     public function createFiliere(Request $request)
     {
-        $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->input('nom_filiere')))->first();
-        if ($filiereExistant) {
-            //$request->session()->flash('errorStatus', 'Cette filière est déja créée');
-            //return -1;
-            $messagePane='Cette filière est déja créée';
-            return $messagePane;
-
-        } else {
-            $filiere = new Filiere();
-            $filiere->nom_filiere = mb_strtoupper($request->input('nom_filiere'));
-            $filiere->libelle = mb_strtoupper($request->input('libelle'));
-            $selectNiveau = $request->input('niveauFiliere');
-            //dd($selectNiveau);
-            $infosNiveau = explode("-", $selectNiveau);
-            //dd($infosNiveau[0].$infosNiveau[1]);
-            $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($infosNiveau[0]))->where('type', mb_strtoupper($infosNiveau[1]))->first();
-            $filiere->niveau()->associate($niveauExistant)->save();
-            //$request->session()->flash('status', 'Filière a été créée');
-            //return 1;
-            $messagePane='Filière a été créée';
+        $testSelectNiveau = $request->input('niveauFiliere');
+        if($testSelectNiveau == null){
+            $messagePane='Veuillez choisir la filière';
             return $messagePane;
         }
+        else{
+            $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->input('nom_filiere')))->first();
+            if ($filiereExistant) {
+                //$request->session()->flash('errorStatus', 'Cette filière est déja créée');
+                //return -1;
+                $messagePane='Cette filière est déja créée';
+                return $messagePane;
+    
+            } else {
+                $filiere = new Filiere();
+                $filiere->nom_filiere = mb_strtoupper($request->input('nom_filiere'));
+                $filiere->libelle = mb_strtoupper($request->input('libelle'));
+                $selectNiveau = $request->input('niveauFiliere');
+                //dd($selectNiveau);
+                $infosNiveau = explode("-", $selectNiveau);
+                //dd($infosNiveau[0].$infosNiveau[1]);
+                $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($infosNiveau[0]))->where('type', mb_strtoupper($infosNiveau[1]))->first();
+                $filiere->niveau()->associate($niveauExistant)->save();
+                //$request->session()->flash('status', 'Filière a été créée');
+                //return 1;
+                $messagePane='Filière a été créée';
+                return $messagePane;
+            }
+       }
+        
     }
 
     public function updateFiliere(Request $request,$idFiliere)
