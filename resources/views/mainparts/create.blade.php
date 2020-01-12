@@ -62,7 +62,6 @@
                                 </td>
                             </tr>
                             @empty
-                            <div>pas de niveaux</div>
                             @endforelse
     
         
@@ -79,29 +78,33 @@
 
                 <form  id="filiere-form" method="post" class="col s12" >
                     @csrf  
-                    <div class="input-field col s4">
+                    <div class="input-field col s3">
                             <select name="niveauFiliere" id="niveauFiliere" >
                                     <option  value="Niveau" selected disabled>Niveau</option>
                                     @forelse ($niveaux as $niveau)
                                     <option  value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
                                     @empty
-                                    <option value="Niveau"  selected disabled>Niveau</option>
                                     @endforelse
                             </select>
                             <label>Niveau</label>
                             <span class="error"><p id="nameNiveau_error"></p></span>
                         </div>
 
-                        <div class="input-field col s4 ">
+                        <div class="input-field col s3 ">
                                 <input id="filiereIn" name="nom_filiere" type="text"/>
                                  <label for="filiereIn">Filière</label>
                          </div>
 
 
-                         <div class="input-field col s4">
+                         <div class="input-field col s3">
                              <input  id="libelleIn" name="libelle" type="text"/>
                              <label for="libelleIn">Libellé</label>
                          </div>
+
+                         <div class="input-field col s3">
+                            <input  id="semestres" name="semestres" type="number"/>
+                            <label for="semestres">Nombre de semestres</label>
+                        </div>
 
                         <div class=" col s2 offset-s5">
                             <button id="filiereSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
@@ -135,7 +138,6 @@
                                 </td>
                             </tr>
                             @empty
-                            <tr>Pas de filières</tr>
                             @endforelse
     
                     </tbody>
@@ -152,25 +154,31 @@
             <div style="display: flex; align-items: center;">
                 <form id="module-form" method="post" class="col s12" >
                     @csrf  
-                    <div class="input-field col s4">
+                    <div class="input-field col s3">
                             <select name="filiereModule" id="filiereModule">
                                     <option value="m1" selected disabled>Filière</option>
                                     @forelse ($filieres as $filiere)
-                                    <option value="{{$filiere->nom_filiere}}-{{$filiere->libelle}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
+                                    <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
                                     @empty
-                                    <option value="m1" selected disabled>Filière</option>
                                     @endforelse
                             </select>
                             <label>Filière</label>
                             <span class="error"><p id="nameFiliere_error"></p></span>
                         </div>
+                        <div class="input-field col s3 ">
+                            <select name="semestreFiliere" id="semestreFiliere">
+                        </select>
+                            <label for="semestreFiliere">Semestres</label>
+                            <span class="error"><p id="nameSemestreFiliere_error"></p></span>
+
+                     </div>
     
-                        <div class="input-field col s4 ">
+                        <div class="input-field col s3 ">
                                 <input id="moduleIn" name="nom_module" type="text"/>
                                  <label for="moduleIn">Module</label>
                          </div>
     
-                         <div class="input-field col s4">
+                         <div class="input-field col s3">
                              <input  id="libelleModuleIn" name="libelleModule" type="text"/>
                              <label for="libelleModuleIn">Libellé</label>
                          </div>
@@ -208,7 +216,6 @@
                                 </td>
                             </tr>
                             @empty
-                            <tr>Pas de Modules</tr>
                             @endforelse
     
                     </tbody>
@@ -229,7 +236,6 @@
                                     @forelse ($filieres as $filiere)
                                         <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
                                     @empty
-                                        {{-- <option value="m1" selected disabled>Filière</option> --}}
                                     @endforelse
                             </select>
                             <label>Filière</label>
@@ -278,7 +284,6 @@
                                     </td>
                                 </tr>
                                 @empty
-                                <tr>Pas de Chapitres</tr>
                                 @endforelse
                         </tbody>
                     </table>
@@ -494,6 +499,49 @@
         
         });
 
+        $('#filiereModule').on('change',function(){
+       var nom_filiere = $(this).val();
+       console.log(nom_filiere);
+       $.ajax({
+           url: "{{route('mainParts.semestresFiliere')}}",
+           dataType: 'JSON',
+          data: {
+            "_token": "{{ csrf_token() }}",
+            "nom_filiere": nom_filiere
+            },
+          type: 'GET',
+          dataType: 'JSON',
+          success: function( result )
+          {
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+
+                 if(len!=0){
+                  
+                   var s='<option value="m1" selected disabled>Semestre</option>';
+                   for( var i = 0; i<len; i++){
+                        var id = result['data'][i].id;
+                        var name = result['data'][i].libelle;
+                        s+='<option value="' + name + '">' + name + '</option>'; 
+                        $('select[name="semestreFiliere"]').html(s);
+                        $('select[name="semestreFiliere"]').material_select();
+                    }
+                 }
+                 else{
+                    var s='<option value="m1" selected disabled>Semestre</option>';
+                    $('select[name="semestreFiliere"]').html(s);
+                    $('select[name="semestreFiliere"]').material_select();
+                 }             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
+
+    });
 
 
     $('#filiereChapitre').on('change',function(){
@@ -668,7 +716,11 @@ if ($("#filiere-form").length > 0) {
         libelle: {
             required: true,
             maxlength: 10,      
-        },    
+        },  
+        semestres:{
+            required: true,
+            min:1,
+        }, 
     },
     messages: {
         niveauFiliere: {
@@ -679,6 +731,10 @@ if ($("#filiere-form").length > 0) {
       },
       libelle: {
         required: "Veuillez saisir le libellé de la filière", 
+      },
+      semestres: {
+        required: "Veuillez saisir le nombre de semestres",
+        min:"Nombre minimum de semestres 1", 
       },
     },
     errorElement : 'div',
@@ -713,10 +769,13 @@ if ($("#filiere-form").length > 0) {
             setTimeout(function(){
             $('#res_message').hide();
             $('#msg_div').hide();
+            //$('#nameNiveau_error').hide();
             },10000);
             console.log(response);
-            console.log($('#niveauFiliere').val());
-            if(response=="Filière a été créée"){
+            //console.log($('#niveauFiliere').val());
+            if(response=="Filière avec ses semestres ont été créés"){
+                //if(response==4){
+                document.getElementById('nameNiveau_error').innerHTML = '';            
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
                 Materialize.toast($toastContent, 3000); 
@@ -770,6 +829,7 @@ if ($("#filiere-form").length > 0) {
               //document.getElementById('nameNiveau_error').innerHTML = 'Veuillez choisir la filière';            
             //}
             else{
+                document.getElementById('nameNiveau_error').innerHTML = '';            
             var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
             Materialize.toast($toastContent, 3000); 
             }

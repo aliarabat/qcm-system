@@ -7,6 +7,7 @@ use App\Chapitre;
 use App\Filiere;
 use App\Module;
 use App\Niveau;
+use App\Semestre;
 
 use Illuminate\Http\Request;
 
@@ -161,20 +162,30 @@ class MainPartsController extends Controller
                 $filiere->nom_filiere = mb_strtoupper($request->input('nom_filiere'));
                 $filiere->libelle = mb_strtoupper($request->input('libelle'));
                 $selectNiveau = $request->input('niveauFiliere');
+                $semestres=intval($request->input('semestres'));
                 //dd($selectNiveau);
                 $infosNiveau = explode("-", $selectNiveau);
                 //dd($infosNiveau[0].$infosNiveau[1]);
                 $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($infosNiveau[0]))->where('type', mb_strtoupper($infosNiveau[1]))->first();
                 $filiere->niveau()->associate($niveauExistant)->save();
+                $filiereApresSave = Filiere::get()->where('nom_filiere', mb_strtoupper($request->input('nom_filiere')))->first();
                 //$request->session()->flash('status', 'Filière a été créée');
                 //return 1;
-                $messagePane='Filière a été créée';
+                //createSemestres($semestres,$filiereApresSave->id);
+                $lastid = $filiereApresSave->id;
+                for($i=1;$i<=$semestres;$i++) {
+
+                    $semestresFiliere = array(
+
+                        'filiere_id' => $lastid,
+                        'libelle' => 'S'.$i
+                    );
+                    Semestre::insert($semestresFiliere);
+                }
+                $messagePane='Filière avec ses semestres ont été créés';
                 return $messagePane;
             }
-       //}
-        
     }
-
     public function updateFiliere(Request $request,$idFiliere)
     {
         $filiereExistant = Filiere::findOrFail($idFiliere);
@@ -484,5 +495,18 @@ class MainPartsController extends Controller
         }
         $modulesData['data'] = $data;
         return json_encode($modulesData);
+    }
+
+    public function semestresFiliere(Request $request)
+    {
+        $this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
+        $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nom_filiere')))->first();
+        $semestresFiliere = Semestre::get()->where('filiere_id', $filiereExistant->id);
+        $data = array();
+        foreach ($semestresFiliere as $semestre) {
+            array_push($data, $semestre);
+        }
+        $semestresData['data'] = $data;
+        return json_encode($semestresData);
     }
 }
