@@ -41,7 +41,7 @@ class QuestionPolicy
      */
     public function create(User $user)
     {
-        return $user->role_id == 2;
+        return $user->role->name == strtoupper('professor');
     }
 
     /**
@@ -53,9 +53,9 @@ class QuestionPolicy
      */
     public function update(User $user, Question $question)
     {
-        //
+        
     }
-
+    
     /**
      * Determine whether the user can delete the question.
      *
