@@ -25,17 +25,11 @@ class QuestionController extends Controller
     {
         $this->middleware('auth');
         $this->authorizeResource(Question::class, 'create');
-<<<<<<< HEAD
-        
-
-=======
-        $this->authorizeResource(Question::class, 'update');
->>>>>>> 60308c9dbbd2da386dbbeaed26c68b5d7e43aa58
     }
 
     public function index()
     {
-        return view('questions.create');
+        return view('questions.index');
     }
 
     /**
@@ -45,7 +39,6 @@ class QuestionController extends Controller
      */
     public function create()
     {
-
         $filieres = Filiere::all();
         return view(
             'questions.create',
@@ -53,8 +46,7 @@ class QuestionController extends Controller
         );
     }
 
-
-    public function createQuestion(Request $request)
+    public function store(Request $request)
     {
 
         $counts = array_count_values($request->reponse);
@@ -85,11 +77,21 @@ class QuestionController extends Controller
                         'reponse' => $request->reponse[$propositon]
                     );
                     Proposition::insert($propositions);
-                    //$request->session()->flash('status', 'creation avec success');
                 }
             }
         }
-        //return redirect()->route('questions.create');
+    }
+
+    public function edit()
+    {
+        return view('questions.edit');
+    }
+
+    public function update()
+    {
+    }
+    public function destroy()
+    {
     }
 
 
@@ -127,11 +129,6 @@ class QuestionController extends Controller
         return json_encode($chapitresData);
     }
 
-    public function editQuestion()
-    {
-        return view('questions.edit');
-    }
-
     public function validateQuestions()
     {
         $questions = Question::paginate(5);
@@ -140,13 +137,13 @@ class QuestionController extends Controller
 
     public function changeValidation(Request $request)
     {
-        $question=Question::find($request->input('id'));
+        $question = Question::find($request->input('id'));
         if (!$question) {
-           return response()->json(['status'=>'NOT_FOUND']);
+            return response()->json(['status' => 'NOT_FOUND']);
         }
 
-        $question->validite=$request->input('validity');
+        $question->validite = $request->input('validity');
         $question->save();
-        return response()->json(['status'=>'UPDATE_SUCCESS']);
+        return response()->json(['status' => 'UPDATE_SUCCESS']);
     }
 }
