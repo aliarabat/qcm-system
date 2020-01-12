@@ -202,15 +202,15 @@
                     </thead>
             
                     <tbody>
-                        @forelse ($assocfilmod as $assoc)
+                        @forelse ($assocSemestreModule as $assoc)
                             <tr>
-                                <td id="{{$assoc->module_id}}-{{$assoc->filiere_id}}">{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}</td>
+                            <td>{{App\Filiere::find(App\Semestre::find($assoc->semestre_id)->filiere_id)->nom_filiere}}-{{App\Semestre::find($assoc->semestre_id)->libelle}}</td>
                                 <td>{{App\Module::find($assoc->module_id)->nom_module}}</td>
                                 <td>
-                                    <a href="#modal3" onclick='return onUpdateModule({{$assoc->module_id}},"{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}","{{App\Module::find($assoc->module_id)->nom_module}}","{{App\Module::find($assoc->module_id)->libelle}}","{{$assoc->module_id}}-{{$assoc->filiere_id}}",false)' class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <a href="#modal3" onclick='return onUpdateModule(,"","","","",false)' class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
                                     </a>
-                                    <a href="#delete3" onclick="return onDeleteModule({{$assoc->module_id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
+                                    <a href="#delete3" onclick="return onDeleteModule(,false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
                                         <div class="material-icons">delete</div>
                                     </a>
                                 </td>

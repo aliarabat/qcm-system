@@ -19,6 +19,8 @@ class CreateSemestreModulesTable extends Migration
             $table->foreign('semestre_id')->references('id')->on('semestres')->onDelete('cascade');
             $table->unsignedBigInteger('module_id');
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
+            $table->bigInteger('professor_id')->unsigned();
+            $table->foreign('professor_id')->references('id')->on('users');
             $table->string('anneeUniversitaire');
             $table->timestamps();
         });
