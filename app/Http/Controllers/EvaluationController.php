@@ -32,6 +32,12 @@ class EvaluationController extends Controller
         return view('evaluations.create');
     }
 
+    public function store(Request $request)
+    {
+        $data = $request->except('_token');
+        return response()->json(compact('data'));
+    }
+
     public function start()
     {
         $qcm=[];

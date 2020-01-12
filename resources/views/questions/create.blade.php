@@ -315,8 +315,6 @@ if ($("#question-form").length > 0) {
             $('#arrow-forward').attr('disabled', true);
         }
      });
-
-
 });
 
 
