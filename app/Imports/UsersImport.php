@@ -21,14 +21,15 @@ class UsersImport implements ToModel
      */
     public function model(array $row)
     {
-        $oldUser = User::where('email', $row[1])->first();
-        if (in_array($row[0], ['name', 'nom', 'Name', 'Nom']) | !isset($row[0]) | isset($oldUser)) {
+        $oldUser = User::where('email', $row[2])->first();
+        if (in_array($row[1], ['prenom','Prenom']) | !isset($row[1]) | isset($oldUser)) {
             return null;
         }
         $pwd = $this->random_string();
         $user = new User([
-            'name'     => $row[0],
-            'email'    => $row[1],
+            'first_name'     => $row[0],
+            'last_name'     => $row[1],
+            'email'    => $row[2],
             'password' => Hash::make($pwd),
         ]);
         $role = Role::where('name', 'STUDENT')->first();
@@ -38,7 +39,7 @@ class UsersImport implements ToModel
         return $user;
     }
 
-    public function random_string($length=10){
+    public static function random_string($length=10){
         $characters=array_merge(range('a', 'b'), range('A', 'B'), range('0', '9'));
         $generatedStr='';
         $max=count($characters)-1;

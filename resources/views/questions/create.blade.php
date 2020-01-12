@@ -272,7 +272,7 @@ if ($("#question-form").length > 0) {
       });
       $('#submit').html('Sending..');
       $.ajax({
-        url: '{{route('questions.createQuestion')}}' ,
+        url: '{{route('questions.store')}}' ,
         type: "POST",
         data: $('#question-form').serialize(),
         success: function( response ) {

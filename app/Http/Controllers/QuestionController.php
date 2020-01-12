@@ -24,7 +24,7 @@ class QuestionController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->authorizeResource(Question::class, 'create');
+        
     }
 
     public function index()
@@ -39,6 +39,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
+        $this->authorize('create',Question::class);
         $filieres = Filiere::all();
         return view(
             'questions.create',
@@ -131,6 +132,7 @@ class QuestionController extends Controller
 
     public function validateQuestions()
     {
+        $this->authorize('validate',Question::class);
         $questions = Question::paginate(5);
         return view('questions.validations')->with(['questions' => $questions]);
     }
