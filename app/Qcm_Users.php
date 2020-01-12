@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Qcm extends Model
+class Qcm_Users extends Model
 {
     //
 }

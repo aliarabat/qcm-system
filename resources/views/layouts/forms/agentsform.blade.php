@@ -1,20 +1,12 @@
 <div class="row">
-    <div class="input-field col s6">
-        <input  id="CIN" name="CIN" type="text" required/>
-        <label for="CIN">CIN</label>
-    </div>
-    @yield('codemassar')
+    
     <div class="input-field col s6 ">
-        <input id="nom" name="nom" type="text" required/>
-        <label for="nom">Nom</label>
+        <input id="first_name" name="first_name" type="text" required/>
+        <label for="first_name">Prénom</label>
     </div>
     <div class="input-field col s6">
-        <input  id="prenom" name="prenom" type="text"/>
-        <label for="prenom">Prénom</label>
-    </div>
-    <div class="input-field col s6">
-        <input  id="emailAcadémique" name="emailAcadémique" type="email"/>
-        <label for="emailAcadémique">Email académique</label>
+        <input  id="last_name" name="last_name" type="text"/>
+        <label for="last_name">Nom</label>
     </div>
     <div class="input-field col s6">
         <input  id="email" name="email" type="email"/>
