@@ -17,4 +17,11 @@ class Filiere extends Model
     {
         return $this->hasMany(Module::class);
     }
+
+    public function semestres()
+    {
+        return $this->hasMany(Semestre::class);
+    }
+
+
 }

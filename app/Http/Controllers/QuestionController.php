@@ -25,7 +25,7 @@ class QuestionController extends Controller
     {
         $this->middleware('auth');
         $this->authorizeResource(Question::class, 'create');
-        $this->authorizeResource(Question::class, 'update');
+        
 
     }
 
