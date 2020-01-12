@@ -12,23 +12,7 @@
             </ul>
         </div>
 
-        @if(session()->has('status'))
-           @section('messages')
-                <script>
-                    var $toastContent = $("<span>{{session()->get('status')}}</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
-                    Materialize.toast($toastContent, 3000);    
-                </script>
-           @endsection
-        @endif
-        @if(session()->has('errorStatus'))
-            @section('messages')
-                <script>
-                    var $toastContent = $("<span>{{session()->get('errorStatus')}}</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
-                    Materialize.toast($toastContent, 3000);    
-                </script>
-           @endsection
-        @endif
-
+  
         <!--Niveau-->
         <div id="niveau" class="col s12" >
 
@@ -69,7 +53,7 @@
                                 <td>{{$niveau->niveau}}</td>
                                 <td>{{$niveau->type}}</td>
                                 <td>
-                                    <a href="#modal1" onclick="return onUpdateNiveau({{$niveau->id}}, '{{$niveau->niveau}}', '{{$niveau->type}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <a href="#modal1" onclick='return onUpdateNiveau({{$niveau->id}}, "{{$niveau->niveau}}", "{{$niveau->type}}",false)' class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
                                     </a>
                                     <a href="#delete1" onclick="return onDeleteNiveau({{$niveau->id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
@@ -96,21 +80,23 @@
                 <form  id="filiere-form" method="post" class="col s12" >
                     @csrf  
                     <div class="input-field col s4">
-                            <select name="niveauFiliere" id="niveauFiliere">
-                                    <option value="m1" selected disabled>Niveau</option>
+                            <select name="niveauFiliere" id="niveauFiliere" >
+                                    <option  value="Niveau" selected disabled>Niveau</option>
                                     @forelse ($niveaux as $niveau)
-                                    <option value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
+                                    <option  value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
                                     @empty
-                                    <option value="m1" selected disabled>Niveau</option>
+                                    <option value="Niveau"  selected disabled>Niveau</option>
                                     @endforelse
                             </select>
                             <label>Niveau</label>
+                            <span class="error"><p id="nameFiliere_error"></p></span>
                         </div>
 
                         <div class="input-field col s4 ">
                                 <input id="filiereIn" name="nom_filiere" type="text"/>
                                  <label for="filiereIn">Filière</label>
                          </div>
+
 
                          <div class="input-field col s4">
                              <input  id="libelleIn" name="libelle" type="text"/>
@@ -140,7 +126,7 @@
                                 <td>{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}</td>
                                 <td>{{$filiere->nom_filiere}}-{{$filiere->libelle}}</td>
                                 <td>
-                                    <a href="#modal2" onclick="return onUpdateFiliere({{$filiere->id}},'{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}','{{$filiere->nom_filiere}}','{{$filiere->libelle}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <a href="#modal2" onclick='return onUpdateFiliere({{$filiere->id}},"{{App\Niveau::find($filiere->niveau_id)->niveau}}-{{App\Niveau::find($filiere->niveau_id)->type}}","{{$filiere->nom_filiere}}","{{$filiere->libelle}}",false)' class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
                                     </a>
                                     <a href="#delete2" onclick="return onDeleteFiliere({{$filiere->id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
@@ -212,7 +198,7 @@
                                 <td id="{{$assoc->module_id}}-{{$assoc->filiere_id}}">{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}</td>
                                 <td>{{App\Module::find($assoc->module_id)->nom_module}}</td>
                                 <td>
-                                    <a href="#modal3" onclick="return onUpdateModule({{$assoc->module_id}},'{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}','{{App\Module::find($assoc->module_id)->nom_module}}','{{App\Module::find($assoc->module_id)->libelle}}','{{$assoc->module_id}}-{{$assoc->filiere_id}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <a href="#modal3" onclick='return onUpdateModule({{$assoc->module_id}},"{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}","{{App\Module::find($assoc->module_id)->nom_module}}","{{App\Module::find($assoc->module_id)->libelle}}","{{$assoc->module_id}}-{{$assoc->filiere_id}}",false)' class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
                                     </a>
                                     <a href="#delete3" onclick="return onDeleteModule({{$assoc->module_id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
@@ -280,7 +266,7 @@
                                     <td>{{App\Module::find($chapitre->module_id)->nom_module}}</td>
                                     <td>{{$chapitre->nom_chapitre}}</td>
                                     <td>
-                                        <a href="#modal4" onclick="return onUpdateChapitre({{$chapitre->id}},'{{$chapitre->nom_chapitre}}',false)" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                        <a href="#modal4" onclick='return onUpdateChapitre({{$chapitre->id}},"{{$chapitre->nom_chapitre}}",false)' class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                             <div class="material-icons">edit</div>
                                         </a>
                                         <a href="#delete4" onclick="return onDeleteChapitre({{$chapitre->id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
@@ -467,7 +453,10 @@
     @section('script')
     <script type="text/javascript">
     $(document).ready(function() {
-    
+        $('#niveauFiliere').on('change',function(){
+            document.getElementById('nameFiliere_error').innerHTML = '';            
+        });
+
     $('#filiereChapitre').on('change',function(){
        var nom_filiere = $(this).val();
        //console.log(nom_filiere);
@@ -628,15 +617,11 @@
 
 
 if ($("#filiere-form").length > 0) {
+    //$('#niveauFiliere').val($('.optionFiliere').val());
+    //console.log($('.optionFiliere').val());
     $("#filiere-form").validate({
       
     rules: {
-        niveauFiliere: {
-        required: function() {
-                              return $('#niveauFiliere').val() != 'Niveau';
-                        },
-      },
-      agree: 'required',
       nom_filiere: {
             required: true,
             maxlength: 100,      
@@ -667,6 +652,7 @@ if ($("#filiere-form").length > 0) {
           }
         },
     submitHandler: function(form) {
+        
      $.ajaxSetup({
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -678,6 +664,7 @@ if ($("#filiere-form").length > 0) {
         type: "POST",
         data: $('#filiere-form').serialize(),
         success: function( response ) {
+            //console.log($('#niveauFiliere').val());
             $('#filiereSubmit').html('Créer');
             $('#res_message').show();
             $('#res_message').html(response.msg);
@@ -689,6 +676,7 @@ if ($("#filiere-form").length > 0) {
             $('#msg_div').hide();
             },10000);
             console.log(response);
+            console.log($('#niveauFiliere').val());
             if(response=="Filière a été créée"){
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
@@ -739,6 +727,9 @@ if ($("#filiere-form").length > 0) {
          }
        });
             }
+            else if(response=="Veuillez choisir la filière"){
+              document.getElementById('nameFiliere_error').innerHTML = 'Veuillez choisir la filière';            
+            }
             else{
             var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
             Materialize.toast($toastContent, 3000); 
@@ -748,8 +739,8 @@ if ($("#filiere-form").length > 0) {
         }
       });
 
-      
     }
+    
   })
 }
 

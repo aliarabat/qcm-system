@@ -23,6 +23,7 @@ Route::get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFil
 Route::get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
 Route::get('/questions/edition', 'QuestionController@editQuestion')->name('questions.edit');
 Route::get('/questions/validations', 'QuestionController@validateQuestions')->name('questions.validations');
+Route::post('/questions/validate', 'QuestionController@changeValidation')->name('questions.changeValidation');
 
 //mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
@@ -51,11 +52,13 @@ Route::get('/evaluations/commencer', 'EvaluationController@start')->name('evalua
 Route::post('/evaluations/terminer', 'EvaluationController@end')->name('evaluations.end');
 
 //professors
-Route::get('/professeurs', 'ProfessorController@create')->name('professors.create');
+Route::get('/professeurs', 'ProfessorController@index')->name('professors.index');
+Route::post('/professeurs/creation', 'ProfessorController@create')->name('professors.create');
 
 
 //students
-Route::get('/etudiants', 'StudentController@createStudent')->name('students.create');
+Route::get('/etudiants', 'StudentController@index')->name('students.index');
+Route::post('/etudiants/creation', 'StudentController@create')->name('students.creation');
 
 
 Auth::routes();

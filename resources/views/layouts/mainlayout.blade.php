@@ -174,10 +174,10 @@
             <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div>
             </li>
             <li><div class=" collapsible-header"><i class="material-icons">supervisor_account</i>Professeurs</div>
-            <div class="collapsible-body"><a href="{{route('professors.create')}}">Création</a></div>
+            <div class="collapsible-body"><a href="{{route('professors.index')}}">Création</a></div>
             </li>
             <li><div class=" collapsible-header"><i class="material-icons">supervised_user_circle</i>Etudiants</div>
-            <div class="collapsible-body"><a href="{{route('students.create')}}">Création</a></li>
+            <div class="collapsible-body"><a href="{{route('students.index')}}">Création</a></li>
             </li>
             </ul>
         @endif
@@ -238,9 +238,10 @@
 
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-<script src="{{ asset('js/materialize.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('js/createquestion.js') }}" type="text/javascript"></script>
-<script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/materialize.min.js')}}" type="text/javascript"></script>
+<script src="{{ asset('js/loader.js')}}"></script>
+<script src="{{ asset('js/createquestion.js')}}" type="text/javascript"></script>
+<script src="{{ asset('js/app.js')}}" type="text/javascript"></script>
 @yield('script')
 @yield('messages')
         <script>
