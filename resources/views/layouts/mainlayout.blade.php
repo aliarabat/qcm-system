@@ -192,11 +192,6 @@
                 <a href="#">
                     <img src="{{asset('images/fssm.png')}}" alt="UCA Logo" style="width: 100px; height: 50px; filter: brightness(0) invert(1);padding-top: 10px;margin-left: 10px;">
                 </a>
-            {{-- <div>
-                <a href="#!" class="breadcrumb">First</a>
-                <a href="#!" class="breadcrumb">Second</a>
-                <a href="#!" class="breadcrumb">Third</a>
-            </div> --}}
         </div>
             <ul class="right">
                 <!-- Authentication Links -->
@@ -212,7 +207,7 @@
                 @else
                     <li class="">
                         <a id="" class="" href="#"  >
-                            {{ Auth::user()->name }} <span class=""></span>
+                            {{ Auth::user()->last_name }} {{ Auth::user()->first_name }} <span class=""></span>
                         </a></li>
 
                         <li>

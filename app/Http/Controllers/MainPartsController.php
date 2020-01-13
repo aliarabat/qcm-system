@@ -262,7 +262,7 @@ class MainPartsController extends Controller
             $selectedSemestre = $request->input('semestreFiliere');
             $semestreExistant = Semestre::get()->where('libelle', mb_strtoupper($selectedSemestre))->where('filiere_id', $filiereExistant->id)->first();
             $assocSemestreModule = semestreModule::get()->where('semestre_id', $semestreExistant->id)->where('module_id', $moduleExistant->id)->first();
-            if ($$assocSemestreModule) {
+            if ($assocSemestreModule) {
                 $messagePane='Ce module est déjà associé à cette filière pour un semestre';
                 return $messagePane;
             } else {

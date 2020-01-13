@@ -53,12 +53,12 @@ Route::post('/evaluations/store', 'EvaluationController@store')->name('evaluatio
 
 //professors
 Route::get('/professeurs', 'ProfessorController@index')->name('professors.index');
-Route::post('/professeurs/creation', 'ProfessorController@create')->name('professors.create');
+Route::post('/professeurs/store', 'ProfessorController@store')->name('professors.store');
 
 
 //students
 Route::get('/etudiants', 'StudentController@index')->name('students.index');
-Route::post('/etudiants/creation', 'StudentController@create')->name('students.creation');
+Route::post('/etudiants/store', 'StudentController@store')->name('students.store');
 
 
 Auth::routes();

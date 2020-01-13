@@ -3,16 +3,15 @@
 namespace App\Imports;
 
 use App\Mail\StudentCreated;
-use App\Notifications\UserCreated;
+use App\Mail\UserCreated;
 use App\Role;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
-use phpseclib\Crypt\Random;
 
-class UsersImport implements ToModel
+class StudentImport implements ToModel
 {
     use Importable;
     /**
@@ -23,20 +22,20 @@ class UsersImport implements ToModel
     public function model(array $row)
     {
         $oldUser = User::where('email', $row[2])->first();
-        if (in_array($row[0], ['prenom', 'Prenom']) | !isset($row[0]) | isset($oldUser)) {
+        if (in_array($row[0], ['nom', 'Nom']) | !isset($row[0]) | isset($oldUser)) {
             return null;
         }
         $pwd = $this->random_string();
         $user = new User([
-            'first_name'     => $row[0],
-            'last_name'     => $row[1],
+            'last_name'     => $row[0],
+            'first_name'     => $row[1],
             'email'    => $row[2],
             'password' => Hash::make($pwd),
         ]);
         $role = Role::where('name', 'STUDENT')->first();
         $user->role()->associate($role);
         $user->save();
-        Mail::to($user)->send(new StudentCreated($user, $pwd));
+        Mail::to($user)->send(new UserCreated($user, $pwd, 'étudiant'));
         return $user;
     }
 

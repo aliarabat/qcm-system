@@ -3,12 +3,12 @@
 @section('mainContent')
 
     <div class="row z-depth-4 mt-p-1">
-        <form id="create-student-form" data-route="{{route('students.creation')}}">
+        <form id="create-student-form" data-route="{{route('students.store')}}">
             @csrf
             @include('layouts.forms.agentsform')
         </form>
         @include('layouts.forms.line')
-        <form id="form-import" data-route="{{route('students.creation')}}" enctype="multipart/form-data" class="d-flex justify-content-center align-items-center">
+        <form id="form-import" data-route="{{route('students.store')}}" enctype="multipart/form-data" class="d-flex justify-content-center align-items-center">
             @include('layouts.forms.fileupload')
         </form>
     </div>
