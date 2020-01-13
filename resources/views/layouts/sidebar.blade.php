@@ -1,16 +1,27 @@
-<ul id="slide-out" class="side-nav">
-  <li><div class="user-view">
-    <div class="background">
-      <img src="images/office.jpg">
-    </div>
-    <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
-    <a href="#!name"><span class="white-text name">John Doe</span></a>
-    <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
-  </div></li>
-  <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-  <li><a href="#!">Second Link</a></li>
-  <li><div class="divider"></div></li>
-  <li><a class="subheader">Subheader</a></li>
-  <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-</ul>
-<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+<ul id="slide-out" class="side-nav collapsible" data-collapsible="accordion">
+    <li><div class=" collapsible-header"><i class="material-icons">dashboard</i>QCM</div>
+      <div class="collapsible-body"><a href="{{route('questions.index')}}">Mes questions</a></div>
+      {{-- @can(['create'], App\Question::class) --}}
+          <div class="collapsible-body"><a href="{{route('questions.create')}}">Création des questions</a></div>
+      {{-- @endcan --}}
+      {{-- @can('create', App\Niveau::class) --}}
+      <div class="collapsible-body"><a href="{{route('mainParts.create')}}">Plan pédagogique</a></div>
+      {{-- @endcan --}}
+      <div class="collapsible-body"><a href="{{route('questions.validations')}}">Validations</a></div>
+    </li>
+    <li><div class=" collapsible-header"><i class="material-icons">work</i>Evaluations</div>
+      <div class="collapsible-body"><a href="{{route('evaluations.create')}}">Création</a></div>
+      <div class="collapsible-body"><a href="{{route('evaluations.index')}}">Commencer</a></div>
+      <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div>
+    </li>
+    <li><div class=" collapsible-header"><i class="material-icons">supervisor_account</i>Professeurs</div>
+      <div class="collapsible-body"><a href="{{route('professors.index')}}">Création</a></div>
+    </li>
+    <li><div class=" collapsible-header"><i class="material-icons">supervised_user_circle</i>Etudiants</div>
+      <div class="collapsible-body"><a href="{{route('students.index')}}">Création</a></li>
+    </li>
+    <li><div class=" collapsible-header"><i class="material-icons">group_add</i>Affections</div>
+        <div class="collapsible-body"><a href="{{route('affectationProfessor.index')}}">Professeurs</a></div>
+        <div class="collapsible-body"><a href="{{route('affectationStudent.index')}}">Etudiants</a></div>
+    </li>
+  </ul>

@@ -62,7 +62,6 @@
                                 </td>
                             </tr>
                             @empty
-                            <div>pas de niveaux</div>
                             @endforelse
     
         
@@ -79,29 +78,33 @@
 
                 <form  id="filiere-form" method="post" class="col s12" >
                     @csrf  
-                    <div class="input-field col s4">
+                    <div class="input-field col s3">
                             <select name="niveauFiliere" id="niveauFiliere" >
                                     <option  value="Niveau" selected disabled>Niveau</option>
                                     @forelse ($niveaux as $niveau)
                                     <option  value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
                                     @empty
-                                    <option value="Niveau"  selected disabled>Niveau</option>
                                     @endforelse
                             </select>
                             <label>Niveau</label>
-                            <span class="error"><p id="nameFiliere_error"></p></span>
+                            <span class="error"><p id="nameNiveau_error"></p></span>
                         </div>
 
-                        <div class="input-field col s4 ">
+                        <div class="input-field col s3 ">
                                 <input id="filiereIn" name="nom_filiere" type="text"/>
                                  <label for="filiereIn">Filière</label>
                          </div>
 
 
-                         <div class="input-field col s4">
+                         <div class="input-field col s3">
                              <input  id="libelleIn" name="libelle" type="text"/>
                              <label for="libelleIn">Libellé</label>
                          </div>
+
+                         <div class="input-field col s3">
+                            <input  id="semestres" name="semestres" type="number"/>
+                            <label for="semestres">Nombre de semestres</label>
+                        </div>
 
                         <div class=" col s2 offset-s5">
                             <button id="filiereSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
@@ -135,7 +138,6 @@
                                 </td>
                             </tr>
                             @empty
-                            <tr>Pas de filières</tr>
                             @endforelse
     
                     </tbody>
@@ -151,28 +153,45 @@
 
             <div style="display: flex; align-items: center;">
                 <form id="module-form" method="post" class="col s12" >
-                    @csrf  
-                    <div class="input-field col s4">
+                    @csrf
+                      <div class="row">
+                    <div class="input-field col s6">
                             <select name="filiereModule" id="filiereModule">
                                     <option value="m1" selected disabled>Filière</option>
                                     @forelse ($filieres as $filiere)
-                                    <option value="{{$filiere->nom_filiere}}-{{$filiere->libelle}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
+                                    <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
                                     @empty
-                                    <option value="m1" selected disabled>Filière</option>
                                     @endforelse
                             </select>
                             <label>Filière</label>
+                            <span class="error"><p id="nameFiliere_error"></p></span>
                         </div>
+                        <div class="input-field col s6 ">
+                            <select name="semestreFiliere" id="semestreFiliere">
+                        </select>
+                            <label for="semestreFiliere">Semestres</label>
+                            <span class="error"><p id="nameSemestreFiliere_error"></p></span>
+
+                     </div>
     
-                        <div class="input-field col s4 ">
+                        
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6 ">
                                 <input id="moduleIn" name="nom_module" type="text"/>
                                  <label for="moduleIn">Module</label>
                          </div>
+
+                         
     
-                         <div class="input-field col s4">
+                         <div class="input-field col s6">
                              <input  id="libelleModuleIn" name="libelleModule" type="text"/>
                              <label for="libelleModuleIn">Libellé</label>
                          </div>
+
+
+                         
+                        </div>
     
                         <div class="col s2 offset-s5">
                             <button id="moduleSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>
@@ -193,21 +212,20 @@
                     </thead>
             
                     <tbody>
-                        @forelse ($assocfilmod as $assoc)
+                        @forelse ($assocSemestreModule as $assoc)
                             <tr>
-                                <td id="{{$assoc->module_id}}-{{$assoc->filiere_id}}">{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}</td>
+                            <td>{{App\Filiere::find(App\Semestre::find($assoc->semestre_id)->filiere_id)->nom_filiere}}-{{App\Semestre::find($assoc->semestre_id)->libelle}}</td>
                                 <td>{{App\Module::find($assoc->module_id)->nom_module}}</td>
                                 <td>
-                                    <a href="#modal3" onclick='return onUpdateModule({{$assoc->module_id}},"{{App\Filiere::find($assoc->filiere_id)->nom_filiere}}","{{App\Module::find($assoc->module_id)->nom_module}}","{{App\Module::find($assoc->module_id)->libelle}}","{{$assoc->module_id}}-{{$assoc->filiere_id}}",false)' class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
+                                    <a href="#modal3" onclick='return onUpdateModule(,"","","","",false)' class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
                                         <div class="material-icons">edit</div>
                                     </a>
-                                    <a href="#delete3" onclick="return onDeleteModule({{$assoc->module_id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
+                                    <a href="#delete3" onclick="return onDeleteModule(,false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">
                                         <div class="material-icons">delete</div>
                                     </a>
                                 </td>
                             </tr>
                             @empty
-                            <tr>Pas de Modules</tr>
                             @endforelse
     
                     </tbody>
@@ -228,16 +246,17 @@
                                     @forelse ($filieres as $filiere)
                                         <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
                                     @empty
-                                        {{-- <option value="m1" selected disabled>Filière</option> --}}
                                     @endforelse
                             </select>
                             <label>Filière</label>
+                            <span class="error"><p id="nameFiliereChapitre_error"></p></span>
                         </div>
                         <div class="input-field col s4" id="moduleChapitre">
                             <select name="moduleChapitre">
                                 
                             </select>
                             <label>Module</label>
+                            <span class="error"><p id="nameModule_error"></p></span>
                         </div>
                         <div class="input-field col s4 ">
                             <input id="chapitreIn" name="nom_chapitre" type="text"/>
@@ -275,7 +294,6 @@
                                     </td>
                                 </tr>
                                 @empty
-                                <tr>Pas de Chapitres</tr>
                                 @endforelse
                         </tbody>
                     </table>
@@ -454,8 +472,87 @@
     <script type="text/javascript">
     $(document).ready(function() {
         $('#niveauFiliere').on('change',function(){
+            document.getElementById('nameNiveau_error').innerHTML = '';            
+        });
+        $( "#filiereSubmit" ).click(function() {
+        if(document.getElementById('nameNiveau_error').nodeValue==null){
+            document.getElementById('nameNiveau_error').innerHTML = 'Veuillez choisir le niveau';            
+        }
+        });
+        $('#filiereModule').on('change',function(){
             document.getElementById('nameFiliere_error').innerHTML = '';            
         });
+        $( "#moduleSubmit" ).click(function() {
+        if(document.getElementById('nameFiliere_error').nodeValue==null){
+            document.getElementById('nameFiliere_error').innerHTML = 'Veuillez choisir la filière';            
+        }
+        });
+
+        $('#filiereChapitre').on('change',function(){
+            document.getElementById('nameFiliereChapitre_error').innerHTML = '';
+            $( "#chapitreSubmit" ).click(function() {
+        if(document.getElementById('nameModule_error').nodeValue==null){
+            document.getElementById('nameModule_error').innerHTML = 'Veuillez choisir le module';                       
+        }
+        });
+                        
+        });
+        $('#moduleChapitre').on('change',function(){
+            document.getElementById('nameModule_error').innerHTML = '';            
+        });
+        $( "#chapitreSubmit" ).click(function() {
+            if($('#filiereChapitre').val()==null){
+                if(document.getElementById('nameFiliereChapitre_error').nodeValue==null){
+            document.getElementById('nameFiliereChapitre_error').innerHTML = 'Veuillez choisir la filière'; 
+        }
+        }
+        
+        });
+
+        $('#filiereModule').on('change',function(){
+       var nom_filiere = $(this).val();
+       console.log(nom_filiere);
+       $.ajax({
+           url: "{{route('mainParts.semestresFiliere')}}",
+           dataType: 'JSON',
+          data: {
+            "_token": "{{ csrf_token() }}",
+            "nom_filiere": nom_filiere
+            },
+          type: 'GET',
+          dataType: 'JSON',
+          success: function( result )
+          {
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
+
+                 if(len!=0){
+                  
+                   var s='<option value="m1" selected disabled>Semestre</option>';
+                   for( var i = 0; i<len; i++){
+                        var id = result['data'][i].id;
+                        var name = result['data'][i].libelle;
+                        s+='<option value="' + name + '">' + name + '</option>'; 
+                        $('select[name="semestreFiliere"]').html(s);
+                        $('select[name="semestreFiliere"]').material_select();
+                    }
+                 }
+                 else{
+                    var s='<option value="m1" selected disabled>Semestre</option>';
+                    $('select[name="semestreFiliere"]').html(s);
+                    $('select[name="semestreFiliere"]').material_select();
+                 }             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
+
+    });
+
 
     $('#filiereChapitre').on('change',function(){
        var nom_filiere = $(this).val();
@@ -629,7 +726,11 @@ if ($("#filiere-form").length > 0) {
         libelle: {
             required: true,
             maxlength: 10,      
-        },    
+        },  
+        semestres:{
+            required: true,
+            min:1,
+        }, 
     },
     messages: {
         niveauFiliere: {
@@ -640,6 +741,10 @@ if ($("#filiere-form").length > 0) {
       },
       libelle: {
         required: "Veuillez saisir le libellé de la filière", 
+      },
+      semestres: {
+        required: "Veuillez saisir le nombre de semestres",
+        min:"Nombre minimum de semestres 1", 
       },
     },
     errorElement : 'div',
@@ -674,10 +779,13 @@ if ($("#filiere-form").length > 0) {
             setTimeout(function(){
             $('#res_message').hide();
             $('#msg_div').hide();
+            //$('#nameNiveau_error').hide();
             },10000);
             console.log(response);
-            console.log($('#niveauFiliere').val());
-            if(response=="Filière a été créée"){
+            //console.log($('#niveauFiliere').val());
+            if(response=="Filière avec ses semestres ont été créés"){
+                //if(response==4){
+                document.getElementById('nameNiveau_error').innerHTML = '';            
                 $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
                 var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
                 Materialize.toast($toastContent, 3000); 
@@ -727,10 +835,11 @@ if ($("#filiere-form").length > 0) {
          }
        });
             }
-            else if(response=="Veuillez choisir la filière"){
-              document.getElementById('nameFiliere_error').innerHTML = 'Veuillez choisir la filière';            
-            }
+            //else if(response=="Veuillez choisir la filière"){
+              //document.getElementById('nameNiveau_error').innerHTML = 'Veuillez choisir la filière';            
+            //}
             else{
+                document.getElementById('nameNiveau_error').innerHTML = '';            
             var $toastContent = $("<span>"+response+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
             Materialize.toast($toastContent, 3000); 
             }

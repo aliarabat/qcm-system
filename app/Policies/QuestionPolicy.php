@@ -18,7 +18,7 @@ class QuestionPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        
     }
 
     /**
@@ -30,7 +30,7 @@ class QuestionPolicy
      */
     public function view(User $user, Question $question)
     {
-        //
+    
     }
 
     /**
@@ -42,6 +42,12 @@ class QuestionPolicy
     public function create(User $user)
     {
         return $user->role->name == strtoupper('professor');
+        // return $user->role_id = 2;
+    }
+
+    public function validate(User $user)
+    {
+        return $user->role->name == strtoupper('admin');
     }
 
     /**

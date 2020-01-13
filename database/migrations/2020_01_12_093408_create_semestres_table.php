@@ -17,7 +17,7 @@ class CreateSemestresTable extends Migration
             $table->bigIncrements('id');
             $table->string('libelle');
             $table->bigInteger('filiere_id')->unsigned();
-            $table->foreign('filiere_id')->references('id')->on('filieres');
+            $table->foreign('filiere_id')->references('id')->on('filieres')->onDelete('cascade');;
         });
     }
 

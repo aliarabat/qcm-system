@@ -16,8 +16,19 @@
                 @csrf
                 <div class="col s12">
                     <div class="input-field">
-                        <input id="name" type="text" class="@error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus/>
-                        <label for="name">{{ __('Name') }}</label>
+                        <input id="name" type="text" class="@error('name') is-invalid @enderror" name="lastName" value="{{ old('name') }}" required autocomplete="name" autofocus/>
+                        <label for="name">{{ __('Last name') }}</label>
+                        @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col s12">
+                    <div class="input-field">
+                        <input id="name" type="text" class="@error('name') is-invalid @enderror" name="firstName" value="{{ old('name') }}" required autocomplete="name" autofocus/>
+                        <label for="name">{{ __('First name') }}</label>
                         @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

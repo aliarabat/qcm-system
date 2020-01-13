@@ -28,6 +28,7 @@ Route::post('/questions/validate', 'QuestionController@changeValidation')->name(
 //mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
 Route::Get('/mainparts/modulesFiliere', 'MainPartsController@modulesFiliere')->name('mainParts.modulesFiliere');
+Route::Get('/mainparts/semestresFiliere', 'MainPartsController@semestresFiliere')->name('mainParts.semestresFiliere');
 Route::Post('/mainparts', 'MainPartsController@createNiveau')->name('mainParts.createNiveau');
 Route::Post('/mainparts/filiere', 'MainPartsController@createFiliere')->name('mainParts.createFiliere');
 Route::Post('/mainparts/module', 'MainPartsController@createModule')->name('mainParts.createModule');
@@ -53,7 +54,7 @@ Route::post('/evaluations/store', 'EvaluationController@store')->name('evaluatio
 
 //professors
 Route::get('/professeurs', 'ProfessorController@index')->name('professors.index');
-Route::post('/professeurs/creation', 'ProfessorController@create')->name('professors.create');
+Route::post('/professeurs/store', 'ProfessorController@store')->name('professors.store');
 
 //QCM
 Route::get('/qcm/creation', 'QcmController@index')->name('qcm.index');
@@ -61,8 +62,15 @@ Route::get('/qcm/findChapitreByModule', 'QcmController@findChapitreByModule')->n
 Route::get('/qcm/create', 'QcmController@createQcm')->name('qcm.createQcm');
 //students
 Route::get('/etudiants', 'StudentController@index')->name('students.index');
-Route::post('/etudiants/creation', 'StudentController@create')->name('students.creation');
+Route::post('/etudiants/store', 'StudentController@store')->name('students.store');
 
+//affectations students
+Route::get('/affectation/etudiants', 'AffectationStudentController@index')->name('affectationStudent.index');
+Route::post('/affectation/etudiants/store', 'AffectationStudentController@store')->name('affectationStudent.store');
+
+//affectations professors
+Route::get('/affectation/professeurs', 'AffectationProfessorController@index')->name('affectationProfessor.index');
+Route::post('/affectation/professeurs/store', 'AffectationProfessorController@store')->name('affectationProfessor.store');
 
 Auth::routes();
 
