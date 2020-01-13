@@ -58,6 +58,7 @@ class QuestionController extends Controller
             $question = new Question();
             $chapitre = Chapitre::get()->where('nom_chapitre', mb_strtoupper(request('chapitre')))->first();
             $question->chapitre_id = $chapitre->id;
+            return response()->json('haaa chapitre => '+ $chapitre);
             $question->question = request('question');
             $question->duree = request('duree');
             $question->difficulte = request('difficulte');

@@ -180,7 +180,7 @@ $('#moduleChap').on('change',function(){
          for( var i = 0; i<len; i++){
                     var id = result['data'][i].id;
                      var name = result['data'][i].nom_chapitre;
-                    s+='<option value="' + name + '">' + name + '</option>'; 
+                    s+='<option value="'+ name +'">' + name + '</option>'; 
                     console.log(name)
                     $('select[name="chapitre"]').html(s);
                     $('select[name="chapitre"]').material_select();

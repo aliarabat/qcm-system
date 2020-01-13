@@ -212,7 +212,10 @@ $.ajax({
       for( var i = 0; i<len; i++){
                 var id = result['data'][i].id;
                 var question = result['data'][i].question;
-                s+='<tr><td>'+question+'</td><td><a href="#update-modal" onclick="return onUpdateQuestion()" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">';
+                s+='<tr>'+
+                '<td>'+question+'</td>'+
+                '<td>'+
+                '<a href="#update-modal" onclick="return onUpdateQuestion()" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">';
                 s+='<div class="material-icons">edit</div></a><a href="#delete-modal" onclick="return onDeleteQuestion()" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">';
                 s+='<div class="material-icons">delete</div></a></td></tr>'; 
                 // console.log(name)
