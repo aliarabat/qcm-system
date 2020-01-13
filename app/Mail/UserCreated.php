@@ -8,11 +8,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class StudentCreated extends Mailable
+class UserCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $user;
+    public $role;
     public $password;
 
     /**
@@ -20,9 +21,10 @@ class StudentCreated extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user, $password = "")
+    public function __construct(User $user, $password = "", $role)
     {
         $this->user = $user;
+        $this->role = $role;
         $this->password = $password;
     }
 
@@ -33,8 +35,8 @@ class StudentCreated extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.students.created')
+        return $this->markdown('emails.users.created')
                     ->subject('Création du compte UCA E-Learning&Testing')
-                    ->with(['url'=>route('password.confirm')]);
+                    ->with(['url'=>route('login')]);
     }
 }
