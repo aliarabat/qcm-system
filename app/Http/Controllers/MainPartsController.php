@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\AssocFiliereModule;
 use App\Chapitre;
 use App\Filiere;
 use App\Module;
@@ -36,7 +35,6 @@ class MainPartsController extends Controller
         $this->niveaux=Niveau::all();
         $this->filieres=Filiere::all();
         $this->modules=Module::all();
-        //$this->allAssocFilieresModules=AssocFiliereModule::all();
         $this->allAssocSemestreModules=semestreModule::all();
         $this->chapitres=Chapitre::all();
         $this->allProfs=User::get()->where('role_id',2);
@@ -74,7 +72,6 @@ class MainPartsController extends Controller
     {
         $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($request->input('niveau')))->where('type', mb_strtoupper($request->input('type')))->first();
         if ($niveauExistant) {
-            //$request->session()->flash('errorStatus', 'Ce Niveau est déja créé');
             $messagePane='Ce Niveau est déjà créé';
             return $messagePane;
         } else {
@@ -84,8 +81,7 @@ class MainPartsController extends Controller
             $niveau->save();
             $messagePane='Le Niveau a été créé';
             return $messagePane;
-            //$request->session()->flash('status', 'Le Niveau a été créé');
-            //return 1;
+            
         }
     }
 
@@ -95,22 +91,15 @@ class MainPartsController extends Controller
         if ($niveauExistant) {
             $niveauExistant1 = Niveau::get()->where('niveau', mb_strtoupper($request->get('nomNiveau')))->where('type', mb_strtoupper($request->get('typeNiveau')))->first();
             if ($niveauExistant1) {
-            //$messagePane='Ce Niveau est déjà existant';
-            //return $messagePane;
             return -1;
             } else {
                 $niveauExistant->niveau = mb_strtoupper($request->get('nomNiveau'));
                 $niveauExistant->type = mb_strtoupper($request->get('typeNiveau'));
                 $niveauExistant->save();
-                //return json_encode($niveauExistant);
-                //$messagePane='Le Niveau a été modifié';
-                //return $messagePane;
                 return 1;
             }     
         } 
         else {
-            //$messagePane='Erreur inconnue';
-            //return $messagePane; 
             return -2;       
         }
     }
@@ -122,23 +111,28 @@ class MainPartsController extends Controller
           $filieresById=Filiere::get()->where('niveau_id', $idNiveau);
           $data = array();
             foreach ($filieresById as $filiere) {
-                $assocFiliereModule=AssocFiliereModule::get()->where('filiere_id', $filiere->id);
-                foreach ($assocFiliereModule as $assocFilModule) {
-                    $module=Module::get()->where('id', $assocFilModule->module_id)->first();
-                    array_push($data, $module);
+                $semestresFiliere=Semestre::get()->where('filiere_id', $filiere->id);
+                foreach ($semestresFiliere as $semestre) {
+                    $array_semestre_module = semestreModule::get()->where('semestre_id', $semestre->id);
+                    foreach($array_semestre_module as $semestre_module){
+                        $moduleExistant=Module::get()->where('id', $semestre_module->module_id)->first();
+                        array_push($data,$moduleExistant );
                     }
+                }
                 }
             Niveau::destroy($idNiveau);
             foreach ($data as $itemModule) {
+                $newArray_semestre_module = semestreModule::get()->where('module_id', $itemModule->id);
+                if($newArray_semestre_module){
+                    continue;
+                }
+                else{
                     Module::destroy($itemModule->id);
+                }
             }
-            //$messagePane='Le Niveau a été supprimé';
-            //return $messagePane;
             return 1;
         } 
         else {
-            //$messagePane='Erreur inconnue';
-            //return $messagePane;
             return -1;       
           }
     }
@@ -222,20 +216,24 @@ class MainPartsController extends Controller
     public function deleteFiliere($idFiliere){
         $filiereExistante = Filiere::findOrFail($idFiliere);
         if ($filiereExistante) {
-          $assocsFiliereModule=AssocFiliereModule::get()->where('filiere_id', $idFiliere);
-          $data = array();
-            foreach ($assocsFiliereModule as $assocFilModule) {
-                
-                    $module=Module::get()->where('id', $assocFilModule->module_id)->first();
-                    $tmpAssocFilMol=AssocFiliereModule::get()->where('module_id', $module->id);
-                    $lentmpAssocFilMol=count($tmpAssocFilMol);
-                    if($lentmpAssocFilMol==1){
-                        array_push($data, $module);
-                    }
+            $data = array();
+            $semestresFiliere=Semestre::get()->where('filiere_id', $filiereExistante->id);
+            foreach ($semestresFiliere as $semestre) {
+                $array_semestre_module = semestreModule::get()->where('semestre_id', $semestre->id);
+                foreach($array_semestre_module as $semestre_module){
+                    $moduleExistant=Module::get()->where('id', $semestre_module->module_id)->first();
+                    array_push($data,$moduleExistant );
                 }
+            }
             Filiere::destroy($idFiliere);
             foreach ($data as $itemModule) {
+                $newArray_semestre_module = semestreModule::get()->where('module_id', $itemModule->id);
+                if($newArray_semestre_module){
+                    continue;
+                }
+                else{
                     Module::destroy($itemModule->id);
+                }
             }
             return 1;
         } 
@@ -251,8 +249,8 @@ class MainPartsController extends Controller
 
     public function createModule(Request $request)
     {
-        //$moduleExistant = Module::get()->where('nom_module', mb_strtoupper($request->input('nom_module')))->first();
-        /*if ($moduleExistant) {
+        $moduleExistant = Module::get()->where('nom_module', mb_strtoupper($request->input('nom_module')))->first();
+        if ($moduleExistant) {
             $selectFiliere = $request->input('filiereModule');
             $infosFiliere = explode("-", $selectFiliere);
             $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($infosFiliere[0]))->first();
@@ -263,29 +261,18 @@ class MainPartsController extends Controller
                 $messagePane='Ce module est déjà associé à cette filière pour un semestre';
                 return $messagePane;
             } else {
-                $semestreId = $semestreExistant->id;
-                $moduleId=$moduleExistant->id;
-
-                    $semestreModule = array(
-
-                        'semestre_id' => $semestreId,
-                        'module_id' => $moduleId,
-                        'professor_id' => null,
-                        'anneeUniversitaire' => null
-                    );
-                    semestreModule::insert($semestreModule);
-                //$assocSemestreModuleNew = new semestreModule();
-                //$assocSemestreModuleNew->semestre()->associate($semestreExistant);
-                //$assocSemestreModuleNew->module()->associate($moduleExistant);
-                //$assocSemestreModuleNew->professor()->associate(null);
-                //$assocSemestreModuleNew->anneeUniversitaire=null;
-                //$assocSemestreModuleNew->save();
+                //$semestreId = $semestreExistant->id;
+                //$moduleId=$moduleExistant->id;
+                $assocSemestreModuleNew = new semestreModule();
+                $assocSemestreModuleNew->semestre()->associate($semestreExistant);
+                $assocSemestreModuleNew->module()->associate($moduleExistant);
+                $assocSemestreModuleNew->save();
                 $messagePane='Ce module a été associé à cette filière';
                 return $messagePane;
                     
                 
             }
-        }else { */
+        }else { 
             $module = new Module();
             $module->nom_module = mb_strtoupper($request->input('nom_module'));
             $module->libelle = mb_strtoupper($request->input('libelleModule'));
@@ -296,37 +283,15 @@ class MainPartsController extends Controller
             $selectedSemestre = $request->input('semestreFiliere');
             $semestreExistant = Semestre::get()->where('libelle',  $selectedSemestre)->where('filiere_id', $filiereExistant->id)->first();
             $moduleExistant = Module::get()->where('nom_module', mb_strtoupper($request->input('nom_module')))->first();
-
-            $semestreId = $semestreExistant->id;
-            $moduleId=$moduleExistant->id;
-
-                    /*$semestreModule = array(
-
-                        'semestre_id' => $semestreId,
-                        'module_id' => $moduleId
-                        //'professor_id' => null,
-                        //'anneeUniversitaire' => null
-                    );*/
-                    //semestreModule::insert($semestreModule);
-                
-                    $assocSemestreModuleNew = new semestreModule();
-                    //$assocSemestreModuleNew->semestre_id=$semestreId;
-                    //$assocSemestreModuleNew->module_id=$moduleId;
-                    //$assocSemestreModuleNew->professor_id=null;
-                    //$assocSemestreModuleNew->anneeUniversitaire=null;
-
-
-                $assocSemestreModuleNew->semestre()->associate($semestreExistant);
-                $assocSemestreModuleNew->module()->associate($moduleExistant);
-                $assocSemestreModuleNew->professor()->associate(null);
-                $assocSemestreModuleNew->anneeUniversitaire='null';
-                $assocSemestreModuleNew->save();
-                //semestreModule::create($assocSemestreModuleNew);
-
-
+            //$semestreId = $semestreExistant->id;
+            //$moduleId=$moduleExistant->id;
+            $assocSemestreModuleNew = new semestreModule();
+            $assocSemestreModuleNew->semestre()->associate($semestreExistant);
+            $assocSemestreModuleNew->module()->associate($moduleExistant);
+            $assocSemestreModuleNew->save();
             $messagePane='Module a été créée';
-            return [$moduleExistant,$semestreExistant,$assocSemestreModuleNew];
-        //}
+            return $messagePane;
+        }
     }
 
 
@@ -335,84 +300,29 @@ class MainPartsController extends Controller
         $moduleExistant = Module::findOrFail($idModule);
         if ($moduleExistant) {
             if($moduleExistant->nom_module==mb_strtoupper($request->get('nomModule'))){
-            $selectFiliere = $request->get('filiere');
-            $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($selectFiliere))->first();
-            $assocFiliereModule = AssocFiliereModule::get()->where('filiere_id', $filiereExistant->id)->where('module_id', $moduleExistant->id)->first();
-            $oldfiliere = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('oldFiliere')))->first();
-            $previousAssocFiliereModule=AssocFiliereModule::get()->where('module_id', $moduleExistant->id)->where('filiere_id', $oldfiliere->id)->first();
-            if ($assocFiliereModule->id == $previousAssocFiliereModule->id) {
                 $moduleExistant->nom_module=mb_strtoupper($request->get('nomModule'));
                 $moduleExistant->libelle=mb_strtoupper($request->get('libelle'));
                 $moduleExistant->save();
-                $previousAssocFiliereModule->filiere()->associate($filiereExistant);
-                $previousAssocFiliereModule->module()->associate($moduleExistant)->save();
-                return 3;
-            }
-            /*else if($assocFiliereModule->id != $previousAssocFiliereModule->id){
-              return -4;
-            } */
-            else {
-                $assocFilieresModules = AssocFiliereModule::get()->where('module_id', $moduleExistant->id)->first();
-                $filiereExistant1 = Filiere::get()->where('id', $assocFilieresModules->filiere_id)->first();
-                if($filiereExistant1->niveau_id == $filiereExistant->niveau_id){
-                //$oldfiliere = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('oldFiliere')))->first();
-                //$previousAssocFiliereModule=AssocFiliereModule::get()->where('module_id', $moduleExistant->id)->where('filiere_id', $oldfiliere->id)->first();
-                $moduleExistant->nom_module=mb_strtoupper($request->get('nomModule'));
-                $moduleExistant->libelle=mb_strtoupper($request->get('libelle'));
-                $moduleExistant->save();
-                $previousAssocFiliereModule->filiere()->associate($filiereExistant);
-                $previousAssocFiliereModule->module()->associate($moduleExistant)->save();
                 return 1;
-                }
-                else{
-                    return -2;
-                }
-                
             }
-        }
-
-        else{
-            $moduleExistant1 = Module::get()->where('nom_module', mb_strtoupper($request->get('nom_module')))->first();
-            if ($moduleExistant1) {
-                return -3;
-            } else {
-                $selectFiliere = $request->get('filiere');
-                $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($selectFiliere))->first();
-                $assocFiliereModule = AssocFiliereModule::get()->where('filiere_id', $filiereExistant->id)->where('module_id', $moduleExistant->id)->first();
-                $oldfiliere = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('oldFiliere')))->first();
-                $previousAssocFiliereModule=AssocFiliereModule::get()->where('module_id', $moduleExistant->id)->where('filiere_id', $oldfiliere->id)->first();
-            if ($assocFiliereModule->id == $previousAssocFiliereModule->id) {
+            
+            else {
+            $allModulesInDB = Module::all();
+            foreach($allModulesInDB as $module){
+            if($module->nom_module==mb_strtoupper($request->get('nomModule'))){
+            return -1;
+                }
+            }
+               
                 $moduleExistant->nom_module=mb_strtoupper($request->get('nomModule'));
                 $moduleExistant->libelle=mb_strtoupper($request->get('libelle'));
                 $moduleExistant->save();
-                $previousAssocFiliereModule->filiere()->associate($filiereExistant);
-                $previousAssocFiliereModule->module()->associate($moduleExistant)->save();
-                return 4;
+                return 1;
+                
+            
             }
-            /*else if($assocFiliereModule->id != $previousAssocFiliereModule->id){
-              return -4;
-            } */
-                else {
-                    $assocFilieresModules = AssocFiliereModule::get()->where('module_id', $moduleExistant->id)->first();
-                    $filiereExistant1 = Filiere::get()->where('id', $assocFilieresModules->filiere_id)->first();
-                    if($filiereExistant1->niveau_id == $filiereExistant->niveau_id){
-                    $previousAssocFiliereModule=AssocFiliereModule::get()->where('module_id', $moduleExistant->id)->where('filiere_id', $filiereExistant->id)->first();
-                    $moduleExistant->nom_module=mb_strtoupper($request->get('nomModule'));
-                    $moduleExistant->libelle=mb_strtoupper($request->get('libelle'));
-                    $moduleExistant->save();
-                    $previousAssocFiliereModule->filiere()->associate($filiereExistant);
-                    $previousAssocFiliereModule->module()->associate($moduleExistant)->save();
-                    return 1;
-                    }
-                    else{
-                        return -5;
-                    }
-                    
-                }
-            }     
-        }
         } else {
-            return -6;
+            return -2;
         }
     }
 
@@ -421,10 +331,10 @@ class MainPartsController extends Controller
     public function deleteModule($idModule){
         $moduleExistant = Module::findOrFail($idModule);
         if ($moduleExistant) {
-          $assocsFiliereModule=AssocFiliereModule::get()->where('module_id', $idModule);
+          $assocsSemestreModule=semestreModule::get()->where('module_id', $idModule);
           $data = array();
-            foreach ($assocsFiliereModule as $assocFilModule) {
-                    AssocFiliereModule::destroy($assocFilModule->id);
+            foreach ($assocsSemestreModule as $assocSemModule) {
+                semestreModule::destroy($assocSemModule->id);
                 }
                     Module::destroy($moduleExistant->id);
             return 1;
@@ -448,21 +358,15 @@ class MainPartsController extends Controller
         if ($chapitresExistant) {
             foreach ($chapitresExistant as $chapitreItem) {
                 if ($chapitreItem->nom_chapitre == $chapitre->nom_chapitre) {
-                    //$request->session()->flash('errorStatus', 'Ce Chapitre est déja associé à ce module');
-                    //return -1;
                     $messagePane='Ce Chapitre est déjà associé à ce module';
                     return $messagePane;
                 }
             }
             $chapitre->module()->associate($moduleExistant)->save();
-            //$request->session()->flash('status', 'Ce Chapitre a été associé à ce module');
-            //return 1;
             $messagePane='Ce Chapitre a été associé au module';
             return $messagePane;
         } else {
             $chapitre->module()->associate($moduleExistant)->save();
-            //$request->session()->flash('status', 'Le nouveau chapitre a été associé à ce module');
-            //return 2;
             $messagePane='Le nouveau chapitre a été associé au module';
             return $messagePane;
         }
@@ -509,19 +413,22 @@ class MainPartsController extends Controller
 
     //Génération du select module par la filiere
 
-    /*public function modulesFiliere(Request $request)
+    public function modulesFiliere(Request $request)
     {
         $this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
         $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nom_filiere')))->first();
-        $assocFiliereModule = AssocFiliereModule::get()->where('filiere_id', $filiereExistant->id);
+        $semestresFiliere=Semestre::get()->where('filiere_id', $filiereExistant->id);
         $data = array();
-        foreach ($assocFiliereModule as $filmol) {
-            $moduleExistant = Module::get()->where('id', $filmol->module_id)->first();
-            array_push($data, $moduleExistant);
+        foreach ($semestresFiliere as $semestre) {
+            $array_semestre_module = semestreModule::get()->where('semestre_id', $semestre->id);
+            foreach($array_semestre_module as $semestre_module){
+                $moduleExistant=Module::get()->where('id', $semestre_module->module_id)->first();
+                array_push($data,$moduleExistant );
+            }
         }
         $modulesData['data'] = $data;
         return json_encode($modulesData);
-    }*/
+    }
 
     public function semestresFiliere(Request $request)
     {
