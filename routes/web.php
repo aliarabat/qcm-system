@@ -60,6 +60,13 @@ Route::post('/professeurs/store', 'ProfessorController@store')->name('professors
 Route::get('/etudiants', 'StudentController@index')->name('students.index');
 Route::post('/etudiants/store', 'StudentController@store')->name('students.store');
 
+//affectations students
+Route::get('/affectation/etudiants', 'AffectationStudentController@index')->name('affectationStudent.index');
+Route::post('/affectation/etudiants/store', 'AffectationStudentController@store')->name('affectationStudent.store');
+
+//affectations professors
+Route::get('/affectation/professeurs', 'AffectationProfessorController@index')->name('affectationProfessor.index');
+Route::post('/affectation/professeurs/store', 'AffectationProfessorController@store')->name('affectationProfessor.store');
 
 Auth::routes();
 

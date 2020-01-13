@@ -1,0 +1,189 @@
+.error {
+    color: red;
+
+}
+
+.brand-logo a i {
+    padding-left: 10px;
+}
+
+.mt-p-1 {
+    padding: 1em;
+    margin-top: 1em;
+}
+
+.mr-1 {
+    margin-right: 1em;
+}
+
+.ml-1 {
+    margin-left: 1em;
+}
+
+.mt-1 {
+    margin-top: 1em;
+}
+
+.mb-1 {
+    margin-bottom: 1em;
+}
+
+.m-1 {
+    margin: 1em;
+}
+
+.p-1 {
+    padding: 1em;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.justify-content-start {
+    justify-content: flex-start;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.justify-content-end {
+    justify-content: flex-end;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.justify-content-around {
+    justify-content: space-around;
+}
+
+.align-items-start {
+    align-items: flex-start;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.align-items-end {
+    align-items: flex-end;
+}
+
+.align-items-baseline {
+    align-items: baseline;
+}
+
+.align-items-stretch {
+    align-items: stretch;
+}
+
+.align-content-start {
+    align-content: flex-start;
+}
+
+.align-content-center {
+    align-content: center;
+}
+
+.align-content-end {
+    align-content: flex-end;
+}
+
+.align-content-around {
+    align-content: space-around;
+}
+
+.align-content-between {
+    align-content: space-between;
+}
+
+.align-content-stretch {
+    align-content: stretch;
+}
+
+#delete1,
+#modal1 {
+    width: 35% !important;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+    #delete1,
+    #modal1 {
+        width: 90% !important;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+    #delete1,
+    #modal1 {
+        width: 70% !important;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+    #delete1,
+    #modal1 {
+        width: 50% !important;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+    #delete1,
+    #modal1 {
+        width: 40% !important;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+    #delete1,
+    #modal1 {
+        width: 40% !important;
+    }
+}
+
+.modal .modal-content {
+    padding: 24px 24 0px 24px;
+}
+
+.pagination li.answered {
+    background-color: green;
+}
+
+.progress {
+    background-color: #f3cbbf !important;
+}
+
+.progress .determinate {
+    background-color: #ff3d00 !important;
+}
+
+.pagination li.active {
+    background-color: #d50000;
+}
+
+.collapsible .collapsible-body a {
+    margin-left: 2em;
+    color: #ff3d00;
+    transition-duration: 500ms;
+}
+
+.collapsible .collapsible-body a:hover {
+    margin-left: 3em;
+}
