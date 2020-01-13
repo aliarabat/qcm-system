@@ -18,15 +18,19 @@
             </div>
             <div class="input-field col s4">
                 <select name="module" id="module">
-                    <option value="" disabled>Select</option>
-                    <option value="1">Merise</option>
-                </select>
+                        
+                    <option value="m1" selected disabled>Module</option>
+                    @forelse ($modules as $module)
+                    <option value="{{$module->nom_module}}">{{$module->nom_module}}-{{$module->libelle}}</option>
+                    @empty
+                    <option value="m1" selected disabled>Filière</option>
+                    @endforelse
+            </select>
                 <label for="module">Module</label>
             </div>
             <div class="input-field col s4">
                 <select name="chapitre" id="chapitre">
-                    <option value="" disabled>Select</option>
-                    <option value="1">Chapitre1</option>
+                       
                 </select>
                 <label for="chapitre">Chapitre</label>
             </div>
@@ -99,7 +103,7 @@
             var questions=[];
             $('#tableQCM tbody tr').each(function (index, elem) { 
                 var question={
-                    "chapitreId": parseInt($(this).children('td').eq(1).text()),
+                    "chapitre": $(this).children('td').eq(1).text(),
                     "nbrQuestion": parseInt($(this).children('td').eq(2).text())
                 };
                 questions.push(question);
@@ -127,5 +131,54 @@
                 }  
             });
         }
+
+        $(document).ready(function() {
+
+$('#module').on('change',function(){
+
+var sel = document.getElementById('module');
+var nom_module = $("#module option:selected").val();
+console.log(nom_module);
+
+
+$.ajax({
+    url: "{{route('evaluations.findChapitreByModule')}}",
+    dataType: 'JSON',
+   data: {
+     "nom_module": nom_module,
+     
+     },
+   type: 'GET',
+   dataType: 'JSON',
+   success: function( result )
+   {
+     var len = 0;
+          
+     if(result['data'] != null){
+            len = result['data'].length;
+            $('select[name="chapitre"]').empty();
+            var s='<option value="m1" selected disabled>Chapitre</option>';
+     }
+      for( var i = 0; i<len; i++){
+                 var id = result['data'][i].id;
+                  var name = result['data'][i].nom_chapitre;
+                 s+='<option value="' + name + '">' + name + '</option>'; 
+                 $('select[name="chapitre"]').html(s);
+                 $('select[name="chapitre"]').material_select();
+                 
+             }
+   },
+   error: function()
+  {
+      //handle errors
+      alert('error...');
+  
+  }
+});
+
+
+});
+
+});
     </script>
 @endsection
