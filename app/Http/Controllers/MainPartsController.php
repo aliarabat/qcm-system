@@ -482,7 +482,7 @@ class MainPartsController extends Controller
 
     //Génération du select module par la filiere
 
-    public function modulesFiliere(Request $request)
+    /*public function modulesFiliere(Request $request)
     {
         $this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
         $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nom_filiere')))->first();
@@ -494,7 +494,7 @@ class MainPartsController extends Controller
         }
         $modulesData['data'] = $data;
         return json_encode($modulesData);
-    }
+    }*/
 
     public function semestresFiliere(Request $request)
     {
