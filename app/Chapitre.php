@@ -13,7 +13,7 @@ public function module(){
         return $this->belongsTo(Module::class);
     }
 
-    public function question(){
+    public function questions(){
         return $this->belonhagsTo(Question::class);
     }
 }
