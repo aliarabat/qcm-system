@@ -101,14 +101,16 @@ class QuestionController extends Controller
     {
         $this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
         $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nom_filiere')))->first();
-        $assocFiliereModule = AssocFiliereModule::get()->where('filiere_id', $filiereExistant->id);
+        $semestresFiliere=Semestre::get()->where('filiere_id', $filiereExistant->id);
         $data = array();
-        foreach ($assocFiliereModule as $filmol) {
-            $moduleExistant = Module::get()->where('id', $filmol->module_id)->first();
-            array_push($data, $moduleExistant);
+        foreach ($semestresFiliere as $semestre) {
+            $array_semestre_module = semestreModule::get()->where('semestre_id', $semestre->id);
+            foreach($array_semestre_module as $semestre_module){
+                $moduleExistant=Module::get()->where('id', $semestre_module->module_id)->first();
+                array_push($data,$moduleExistant );
+            }
         }
         $modulesData['data'] = $data;
-
         return json_encode($modulesData);
     }
 
