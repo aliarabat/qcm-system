@@ -153,8 +153,9 @@
 
             <div style="display: flex; align-items: center;">
                 <form id="module-form" method="post" class="col s12" >
-                    @csrf  
-                    <div class="input-field col s3">
+                    @csrf
+                      <div class="row">
+                    <div class="input-field col s6">
                             <select name="filiereModule" id="filiereModule">
                                     <option value="m1" selected disabled>Filière</option>
                                     @forelse ($filieres as $filiere)
@@ -165,7 +166,7 @@
                             <label>Filière</label>
                             <span class="error"><p id="nameFiliere_error"></p></span>
                         </div>
-                        <div class="input-field col s3 ">
+                        <div class="input-field col s6 ">
                             <select name="semestreFiliere" id="semestreFiliere">
                         </select>
                             <label for="semestreFiliere">Semestres</label>
@@ -173,15 +174,24 @@
 
                      </div>
     
-                        <div class="input-field col s3 ">
+                        
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6 ">
                                 <input id="moduleIn" name="nom_module" type="text"/>
                                  <label for="moduleIn">Module</label>
                          </div>
+
+                         
     
-                         <div class="input-field col s3">
+                         <div class="input-field col s6">
                              <input  id="libelleModuleIn" name="libelleModule" type="text"/>
                              <label for="libelleModuleIn">Libellé</label>
                          </div>
+
+
+                         
+                        </div>
     
                         <div class="col s2 offset-s5">
                             <button id="moduleSubmit" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3 text-accent-4">Créer</button>

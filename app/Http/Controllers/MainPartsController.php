@@ -9,6 +9,7 @@ use App\Module;
 use App\Niveau;
 use App\Semestre;
 use App\semestreModule;
+use App\User;
 
 use Illuminate\Http\Request;
 
@@ -26,6 +27,8 @@ class MainPartsController extends Controller
     private $modules;
     private $allAssocSemestreModules;
     private $chapitres;
+    private $allProfs;
+
 
     
     public function create()
@@ -36,9 +39,10 @@ class MainPartsController extends Controller
         //$this->allAssocFilieresModules=AssocFiliereModule::all();
         $this->allAssocSemestreModules=semestreModule::all();
         $this->chapitres=Chapitre::all();
+        $this->allProfs=User::get()->where('role_id',2);
         return view(
             'mainparts.create',
-            ['modules' => $this->modules, 'filieres' => $this->filieres, 'niveaux' => $this->niveaux,'assocSemestreModule' => $this->allAssocSemestreModules,'chapitres' => $this->chapitres]
+            ['modules' => $this->modules, 'filieres' => $this->filieres, 'niveaux' => $this->niveaux,'assocSemestreModule' => $this->allAssocSemestreModules,'chapitres' => $this->chapitres,'profs'=>$this->allProfs]
         );
     }
 
@@ -247,8 +251,8 @@ class MainPartsController extends Controller
 
     public function createModule(Request $request)
     {
-        $moduleExistant = Module::get()->where('nom_module', mb_strtoupper($request->input('nom_module')))->first();
-        if ($moduleExistant) {
+        //$moduleExistant = Module::get()->where('nom_module', mb_strtoupper($request->input('nom_module')))->first();
+        /*if ($moduleExistant) {
             $selectFiliere = $request->input('filiereModule');
             $infosFiliere = explode("-", $selectFiliere);
             $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($infosFiliere[0]))->first();
@@ -269,7 +273,7 @@ class MainPartsController extends Controller
                         'professor_id' => null,
                         'anneeUniversitaire' => null
                     );
-                    Semestre::insert($semestreModule);
+                    semestreModule::insert($semestreModule);
                 //$assocSemestreModuleNew = new semestreModule();
                 //$assocSemestreModuleNew->semestre()->associate($semestreExistant);
                 //$assocSemestreModuleNew->module()->associate($moduleExistant);
@@ -281,7 +285,7 @@ class MainPartsController extends Controller
                     
                 
             }
-        } /*else {
+        }else { */
             $module = new Module();
             $module->nom_module = mb_strtoupper($request->input('nom_module'));
             $module->libelle = mb_strtoupper($request->input('libelleModule'));
@@ -291,15 +295,38 @@ class MainPartsController extends Controller
             $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($infosFiliere[0]))->first();
             $selectedSemestre = $request->input('semestreFiliere');
             $semestreExistant = Semestre::get()->where('libelle',  $selectedSemestre)->where('filiere_id', $filiereExistant->id)->first();
-            $$assocSemestreModuleNew = new semestreModule();
-            $assocSemestreModuleNew->semestre()->associate($semestreExistant);
-            $assocSemestreModuleNew->module()->associate($module);
-            //$assocSemestreModuleNew->professor()->associate(NULL);
-            //$assocSemestreModuleNew->anneeUniversitaire->NULL;
-            $assocSemestreModuleNew->save();
+            $moduleExistant = Module::get()->where('nom_module', mb_strtoupper($request->input('nom_module')))->first();
+
+            $semestreId = $semestreExistant->id;
+            $moduleId=$moduleExistant->id;
+
+                    /*$semestreModule = array(
+
+                        'semestre_id' => $semestreId,
+                        'module_id' => $moduleId
+                        //'professor_id' => null,
+                        //'anneeUniversitaire' => null
+                    );*/
+                    //semestreModule::insert($semestreModule);
+                
+                    $assocSemestreModuleNew = new semestreModule();
+                    //$assocSemestreModuleNew->semestre_id=$semestreId;
+                    //$assocSemestreModuleNew->module_id=$moduleId;
+                    //$assocSemestreModuleNew->professor_id=null;
+                    //$assocSemestreModuleNew->anneeUniversitaire=null;
+
+
+                $assocSemestreModuleNew->semestre()->associate($semestreExistant);
+                $assocSemestreModuleNew->module()->associate($moduleExistant);
+                $assocSemestreModuleNew->professor()->associate(null);
+                $assocSemestreModuleNew->anneeUniversitaire='null';
+                $assocSemestreModuleNew->save();
+                //semestreModule::create($assocSemestreModuleNew);
+
+
             $messagePane='Module a été créée';
-            return $messagePane;
-        }*/
+            return [$moduleExistant,$semestreExistant,$assocSemestreModuleNew];
+        //}
     }
 
 
