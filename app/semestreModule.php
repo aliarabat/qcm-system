@@ -15,7 +15,5 @@ class semestreModule extends Model
     public function semestre(){
         return $this->belongsTo(Semestre::class);
     }
-    public function professor(){
-        return $this->belongsTo(User::class);
-    }
+   
 }
