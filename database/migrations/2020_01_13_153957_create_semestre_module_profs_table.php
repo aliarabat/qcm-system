@@ -15,7 +15,7 @@ class CreateSemestreModuleProfsTable extends Migration
     {
         Schema::create('semestre_module_profs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('semestre_id');
+            $table->unsignedBigInteger('semestre_module_id');
             $table->foreign('semestre_module_id')->references('id')->on('semestre_modules')->onDelete('cascade');
             $table->unsignedBigInteger('professor_id');
             $table->foreign('professor_id')->references('id')->on('users')->onDelete('cascade');
