@@ -6,26 +6,29 @@
         <!--Niveau-->
         <div id="niveau" class="col s12" >
             <div style="display: flex; align-items: center;">
-                <form action="#" method="post" class="col s12" >
+                <form data-route="{{route('questions.findQuestionByChapitreId')}}" class="col s12" >
                     @csrf  
                     <div class="input-field col s6 ">
-                        <select name="module" id="module">
-                            <option value="">Selectionner le module</option>
+                        <select name="nom_module" id="nom_module">
+                            <option value="">select module</option>
+                            @foreach(App\Module::all() as $module)
+                        <option value="{{$module->nom_module}}">{{$module->libelle}}({{$module->nom_module}})</option>
+                            @endforeach
                         </select>
-                        <label for="niveauIn">Module</label>
+                        <label for="nom_module">Module</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="chapitre" id="chapitre">
-                            <option value="">Selectionner le chapitre</option>
+                            
                         </select>
-                        <label for="typeIn">Chapitre</label>
+                        <label for="chapitre">Chapitre</label>
                     </div>
                     <div class="col s2 offset-s5">
-                        <button type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer</button>
+                        <button id="search" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Afficher</button>
                     </div>
                 </form>
             </div>
-            <!-- list des Niveaux-->
+            <!-- list des question-->
             <div class="row">
                 <table class="centered" id="tableNiveaux">
                     <thead>
@@ -34,8 +37,8 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
+                    <tbody id="table_content">
+                        {{-- <tr>
                             <td>Ma</td>
                             <td>
                                 <a href="#update-modal" onclick="return onUpdateQuestion()" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">
@@ -45,7 +48,7 @@
                                     <div class="material-icons">delete</div>
                                 </a>
                             </td>
-                        </tr>
+                        </tr> --}}
                     </tbody>
                 </table>
             </div>
@@ -124,6 +127,123 @@
 
 @endsection
 
-@section('script')
+{{-- @section('script')
     <script src="{{asset('js/questions.js')}}"></script>
+@endsection --}}
+@section('script')
+<script type="text/javascript">
+$(document).ready(function() {
+
+
+    $('#nom_module').on('change',function(){
+
+var sel = document.getElementById('module');
+var nom_module = $("#nom_module option:selected").val();
+//    var nom_module = $(this).val();
+console.log(nom_module);
+
+$.ajax({
+    url: "{{route('questions.findChapitreByModule')}}",
+    dataType: 'JSON',
+   data: {
+     "nom_module": nom_module,
+     
+     },
+   type: 'GET',
+   dataType: 'JSON',
+   success: function( result )
+   {
+       
+     var len = 0;
+          
+     if(result['data'] != null){
+            len = result['data'].length;
+            $('select[name="chapitre"]').empty();
+            var s='<option value="m1" selected disabled>Chapitre</option>';
+     }
+      for( var i = 0; i<len; i++){
+                 var id = result['data'][i].id;
+                  var name = result['data'][i].nom_chapitre;
+                 s+='<option value="'+ id +'">' + name + '</option>'; 
+                 console.log(name)
+                 $('select[name="chapitre"]').html(s);
+                 $('select[name="chapitre"]').material_select();
+                 
+             }
+     console.log(result);
+   },
+   error: function()
+  {
+      //handle errors
+      alert('error...');
+  
+  }
+});
+
+
+});
+
+$('form').on('submit',function(e){
+e.preventDefault();
+// var sel = document.getElementById('module');
+var chapitre_id = $("#chapitre option:selected").val();
+
+console.log(chapitre_id);
+
+$.ajax({
+    url: "{{route('questions.findQuestionByChapitreId')}}",
+    dataType: 'JSON',
+   data: {
+     "chapitre_id": chapitre_id,
+     
+     },
+   type: 'GET',
+   dataType: 'JSON',
+   success: function( result )
+   {
+       
+     var len = 0;
+     var s='';    
+     if(result['data'] != null){
+            len = result['data'].length;
+            // $('select[name="chapitre"]').empty();
+            
+     }
+      for( var i = 0; i<len; i++){
+                var id = result['data'][i].id;
+                var question = result['data'][i].question;
+                s+='<tr><td>'+question+'</td><td><a href="#update-modal" onclick="return onUpdateQuestion()" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">';
+                s+='<div class="material-icons">edit</div></a><a href="#delete-modal" onclick="return onDeleteQuestion()" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">';
+                s+='<div class="material-icons">delete</div></a></td></tr>'; 
+                // console.log(name)
+                $('#table_content').html(s);
+                // $('select[name="chapitre"]').material_select();
+                 
+             }
+     console.log(result);
+   },
+   error: function()
+  {
+      //handle errors
+      alert('error...');
+  
+  }
+});
+
+
+});
+
+
+
+
+
+});
+
+
+
+</script>
+
 @endsection
+
+
+

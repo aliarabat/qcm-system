@@ -116,8 +116,10 @@ class QuestionController extends Controller
 
     public function findChapitreByModule(Request $request)
     {
-        $this->validate($request, ['nom_module' => 'required|exists:modules,nom_module']);
-        $modules = Module::get()->where('nom_module', mb_strtoupper($request->get('nom_module')))->first();
+        // $this->validate($request, ['nom_module' => 'required|exists:modules,nom_module']);
+        $modules = Module::get()->where('nom_module', $request->get('nom_module'))->first();
+        // return response()->json($modules->id);
+        // return response()->json($modules);
         $data = array();
         $chapitres = [];
         $chapitres = Chapitre::get()->where('module_id', $modules->id);
@@ -148,4 +150,19 @@ class QuestionController extends Controller
         $question->save();
         return response()->json(['status' => 'UPDATE_SUCCESS']);
     }
+
+    public function findQuestionByChapitreId(Request $request){
+        $chapitre = Chapitre::get()->where('id', $request->get('chapitre_id'))->first();
+        $data = array();
+        $questions = [];
+        $questions = Question::get()->where('chapitre_id', $chapitre->id);
+
+        foreach ($questions as $question) {
+            array_push($data, $question);
+        }
+        $questionsData['data'] = $data;
+
+        return json_encode($questionsData);
+    }
+
 }

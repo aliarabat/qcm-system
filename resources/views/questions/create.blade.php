@@ -288,7 +288,7 @@ if ($("#question-form").length > 0) {
                                   }else{
                                     $( '#proposition' ).val("");
                                    //console.log('#response'+index)
-                                   document.getElementById("check1").checked = false;
+                                   document.getElementById("check0").checked = false;
                                   }
            });
            $( '#question' ).val("");
@@ -322,6 +322,3 @@ if ($("#question-form").length > 0) {
 </script>
 
 @endsection
-
-
-
