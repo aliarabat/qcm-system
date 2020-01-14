@@ -15,6 +15,7 @@ class AffectationProfessorController extends Controller
     private $niveaux;
     public function index()
     {
+        $this->authorize('create',Niveau::class);
         //role prof: App\Role::get()->where('name','PROFESSOR')->first()->id
         $this->allProfs = User::get()->where('role_id', 2);
         $this->niveaux = Niveau::all();

@@ -68,15 +68,12 @@
                     <input placeholder="question" type="text" id="question" name="question" value=""/>
                     <label  for="question">Question</label>
                 </div>
-                <div class="input-field col s6">
-                    <input placeholder="duree" type="number" id="duree" name="duree" value=" "/>
-                    <label for="duree">Durée</label>
-                </div>
+                
                 <div class="input-field col s6">
                     <select name="difficulte" id="difficulte">
-                        <option value="facile" id="facile">Facile</option>
-                        <option value="normal"  id="normal">Normal</option>
-                        <option value="difficile" id="difficile">Difficile</option>
+                        <option value="Facile" id="Facile">Facile</option>
+                        <option value="Normal"  id="Normal">Normal</option>
+                        <option value="Difficile" id="Difficile">Difficile</option>
                     </select>
                     <label for="difficulte">Difficulté</label>
                 </div>
@@ -216,14 +213,14 @@ $.ajax({
                 var ques = result['data'][i].question;
                 var question = ques.replace("\'","\\\'");
                 var difficulte = result['data'][i].difficulte;
-                var duree = result['data'][i].duree;
+                // var duree = result['data'][i].duree;
                 var note = result['data'][i].note;
                 
                 console.log();
                 s+='<tr>'+
                 '<td>'+ques+'</td>'+
                 '<td>'+
-                '<a href="#update-modal" onclick="return onUpdateQuestion(\''+id+'\',\''+question+'\',\''+duree+'\',\''+note+'\',\''+difficulte+'\','+false+')" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">';
+                '<a href="#update-modal" onclick="return onUpdateQuestion(\''+id+'\',\''+question+'\',\''+note+'\',\''+difficulte+'\','+false+')" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">';
                 s+='<div class="material-icons">edit</div></a><a href="#delete-modal" onclick="return onDeleteQuestion('+id+','+false+')" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">';
                 s+='<div class="material-icons">delete</div></a></td>'+
                     '</tr>'; 
@@ -289,11 +286,11 @@ function onDeleteQuestion(id, deleteFromDb) {
         }
 }
 
-function onUpdateQuestion(id,question,duree,note,difficulte,deleteFromDb) {
+function onUpdateQuestion(id,question,note,difficulte,deleteFromDb) {
         if (deleteFromDb==false) {
             $("#hidden_id_2").val(id);
             $("#question").val(question);
-            $("#duree").val(duree);
+            // $("#duree").val(duree);
             $("#note").val(note);
             document.getElementById(difficulte).setAttribute("selected","");
             $("#difficulte").material_select();
@@ -369,7 +366,7 @@ function onUpdateQuestion(id,question,duree,note,difficulte,deleteFromDb) {
                     "_token": "{{ csrf_token() }}", 
                     "question_id" : $("#hidden_id_2").val(),
                     "question" : $("#question").val(),
-                    "duree" : $("#duree").val(),
+                    // "duree" : $("#duree").val(),
                     "note" : $("#note").val(),
                     "difficulte" : $("#difficulte").val(),
                     "propositions" : propositions,
@@ -386,7 +383,7 @@ function onUpdateQuestion(id,question,duree,note,difficulte,deleteFromDb) {
                 error: function()
                 {
                     //handle errors
-                    alert('erroor ... ');
+                    alert('e');
                 }
             });
 

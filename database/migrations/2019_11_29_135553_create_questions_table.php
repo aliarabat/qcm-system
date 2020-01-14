@@ -20,7 +20,7 @@ class CreateQuestionsTable extends Migration
             $table->unsignedBigInteger('chapitre_id');
             $table->foreign('chapitre_id')->references('id')->on('chapitres')->onDelete('cascade');            
             $table->string('difficulte'); 
-            $table->unsignedInteger('vote'); 
+            $table->unsignedInteger('vote')->default(0); 
             $table->string('validite', 20)->default('invalid');
             $table->double('note'); 
             $table->unsignedBigInteger('user_id');
