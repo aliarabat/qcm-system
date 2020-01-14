@@ -317,7 +317,9 @@ function onUpdateQuestion(id,question,duree,note,difficulte,deleteFromDb) {
                 }
                 for( var i = 0; i<len; i++){
                             var lib = result['data'][i].proposition;
-                            
+                            var checked = result['data'][i].reponse;
+                            var check='';
+                            if(checked == 1) check='checked' ;
 
                             s+='<div id="response'+i+'" class="d-flex align-items-center">'+
                                 '<div class="input-field col s6 offset-s3">'+
@@ -327,7 +329,7 @@ function onUpdateQuestion(id,question,duree,note,difficulte,deleteFromDb) {
                                 '<p class="">'+
 
                                 '<input id="hiden" type="hidden" name="reponse['+i+']" value="0" >'+
-                                '<input name="reponse['+i+']"  type="checkbox" id="check'+i+'"  value="1">'+
+                                '<input name="reponse['+i+']"  type="checkbox" id="check'+i+'"  value="1" '+check+'>'+
                                 '<label for="check'+i+'"></label>'+
                                 '</p>'+
                                 '<a href="#" onclick="return deleteResponse(\'response'+0+'\')" class="red-text text-accent-4">'+
