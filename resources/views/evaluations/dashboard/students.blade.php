@@ -19,7 +19,7 @@
             </div>
         </div>    
     @empty
-        <h4 class="flow-text">Aucun qcm trouvé à ce moment</h4>
+        <h4 class="flow-text center-align">Aucun qcm trouvé à ce moment</h4>
     @endforelse
     </div>
 

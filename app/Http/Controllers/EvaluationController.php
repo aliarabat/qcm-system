@@ -44,14 +44,10 @@ class EvaluationController extends Controller
         $qcms=[];
         $qcm_users = QcmUsers::where(['user_id' => Auth::user()->id, 'is_passed' => false])->get();
         $qcms = [];
-        // dd($qcm_users);
         foreach ($qcm_users as  $qcm_user) {
             $qcm = $qcm_user->qcm;
             array_push($qcms, $qcm);
         }
-        // foreach ($qcms as  $qcm) {
-        //     echo $qcm->description;
-        // }
         return view('evaluations.dashboard.students', ['qcms' => $qcms]);
     }
 
@@ -308,6 +304,7 @@ class EvaluationController extends Controller
 
     public function showResults()
     {
+        $this->authorize('create', Question::class);
         $semModuProfs = SemestreModuleProf::where('professor_id', Auth::user()->id)->get();
         $results = [];
         foreach ($semModuProfs as $smp) {

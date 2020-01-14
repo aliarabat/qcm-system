@@ -19,6 +19,9 @@
       @can('passer', App\Question::class)
       <div class="collapsible-body"><a href="{{route('evaluations.index')}}">Commencer</a></div>
       @endcan
+      @can('create', App\Question::class)
+      <div class="collapsible-body"><a href="{{route('evaluations.results')}}">Résultats</a></div>
+      @endcan
     </li>
     {{-- ------------------done-------------- --}}
     @can('create', App\Niveau::class)
