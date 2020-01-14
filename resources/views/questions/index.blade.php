@@ -59,6 +59,7 @@
 
 
     <div id="update-modal" class="modal">
+        
         <div class="modal-content">
             <h4>Mise à jour</h4>
             <div class="row">
@@ -109,7 +110,7 @@
         </div>
         <div class="modal-footer">
             <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
-            <a onclick="return onUpdateQuestion(null,null,null,null,true)" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>
+            <a onclick="return onUpdateQuestion(null,null,null,null,null,true)" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>
         </div>
     </div>
 
@@ -352,6 +353,43 @@ function onUpdateQuestion(id,question,duree,note,difficulte,deleteFromDb) {
         }
         else {
             console.log('start update');
+            var propositions = [];
+                $("input[name='proposition[]']").each(function() {
+                    propositions.push($(this).val());
+                });
+            var reponses = [];
+                $("input[name='reponse[]']").each(function() {
+                    reponses.push($(this).val());
+                });
+            $.ajax({
+                
+                url: "{{route('questions.update')}}",
+                dataType: 'JSON',
+                data: {
+                    "_token": "{{ csrf_token() }}", 
+                    "question_id" : $("#hidden_id_2").val(),
+                    "question" : $("#question").val(),
+                    "duree" : $("#duree").val(),
+                    "note" : $("#note").val(),
+                    "difficulte" : $("#difficulte").val(),
+                    "propositions" : propositions,
+                    "reponses" : reponses
+
+                },
+                type: 'POST',
+                
+                success: function( result )
+                {
+            
+                console.log(result);
+                },
+                error: function()
+                {
+                    //handle errors
+                    alert('erroor ... ');
+                }
+            });
+
         
         }
 }
