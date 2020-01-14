@@ -54,6 +54,9 @@ Route::get('/evaluations/commencer/{id}', 'EvaluationController@start')->name('e
 Route::Get('/Evaluation/findByModule', 'EvaluationController@findChapitreByModule')->name('evaluations.findChapitreByModule');
 Route::post('/evaluations/terminer', 'EvaluationController@end')->name('evaluations.end');
 Route::post('/evaluations/store', 'EvaluationController@store')->name('evaluations.store');
+Route::get('/evaluations/resultats', 'EvaluationController@showResults')->name('evaluations.results');
+Route::get('/evaluations/getResults', 'EvaluationController@getResults')->name('evaluations.getResults');
+
 
 //professors
 Route::get('/professeurs', 'ProfessorController@index')->name('professors.index');
@@ -63,9 +66,11 @@ Route::post('/professeurs/store', 'ProfessorController@store')->name('professors
 Route::get('/qcm/creation', 'QcmController@index')->name('qcm.index');
 Route::get('/qcm/findChapitreByModule', 'QcmController@findChapitreByModule')->name('qcm.findChapitreByModule');
 Route::get('/qcm/create', 'QcmController@createQcm')->name('qcm.createQcm');
+
 //students
 Route::get('/etudiants', 'StudentController@index')->name('students.index');
 Route::post('/etudiants/store', 'StudentController@store')->name('students.store');
+
 
 //affectations students
 Route::get('/affectation/etudiants', 'AffectationStudentController@index')->name('affectationStudent.index');

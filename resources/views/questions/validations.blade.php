@@ -10,8 +10,9 @@
                         <th>Question</th>
                         <th>Professeur</th>
                         <th>Date de création</th>
-                        <th>Date de modification</th>
+                        <th>Vote</th>
                         <th>Etat</th>
+                        <th>Voter</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,7 +21,7 @@
                         <td>{{$question->question}}</td>
                         <td>{{$question->user->last_name}} {{$question->user->first_name}}</td>
                         <td>{{$question->created_at}}</td>
-                        <td>{{$question->updated_at}}</td>
+                        <td>{{$question->vote??'Pas encore'}}</td>
                         <td class="d-flex justify-content-between">
                             <p>
                                 <input class="with-gap" onchange="return validate('valid-{{$question->id}}')" type="radio" {{$question->validite=='valid'?'checked':''}} name="validite{{$loop->index}}" id="valid{{$loop->index}}">
@@ -33,6 +34,12 @@
                             <p>
                                 <input class="with-gap" onchange="return validate('invalid-{{$question->id}}')" type="radio" {{$question->validite=='invalid'?'checked':''}} name="validite{{$loop->index}}" id="invalid{{$loop->index}}">
                                 <label for="invalid{{$loop->index}}" class="black-text">Invalide</label>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <input type="checkbox" class="filled-in" id="filled-in-box{{$loop->index}}"/>
+                                <label for="filled-in-box{{$loop->index}}"></label>
                             </p>
                         </td>
                     </tr>
