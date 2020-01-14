@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\StudentImport;
 use App\Mail\UserCreated;
+use App\Niveau;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -15,11 +16,13 @@ class StudentController extends Controller
 {
     public function index()
     {
+        $this->authorize('create',Niveau::class);
         return view('students.index');
     }
 
     public function store(Request $request)
     {
+        $this->authorize('create',Niveau::class);
         $data = $request->except('_token');
         if (count($data) > 2) {
             $oldStudent = User::where('email', $data['email'])->first();

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\User;
 use App\Role;
 use App\Niveau;
@@ -9,20 +7,18 @@ use App\Filiere;
 use App\Semestre;
 use App\StudentSemestre;
 use Illuminate\Http\Request;
-
 class AffectationStudentController extends Controller
 {
     private $allStudents;
     private $niveaux;
-
     public function index()
     {
+        $this->authorize('create',Niveau::class);
         $this->allStudents = User::get()->where('role_id', 3);
         $this->niveaux = Niveau::all();
         $studentSemestres = StudentSemestre::paginate(5);
         return view('affectations.students.index', ['students' => $this->allStudents, 'niveaux' => $this->niveaux, 'studentSemestres' => $studentSemestres]);
     }
-
     public function store(Request $request)
     {
         $student = User::get()->where('id', $request->student)->first();

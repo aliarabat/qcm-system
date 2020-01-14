@@ -12,6 +12,7 @@ use App\Module;
 use App\Chapitre;
 use App\Semestre;
 use App\SemestreModule;
+use App\SemestreModuleProf;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
@@ -31,6 +32,7 @@ class QuestionController extends Controller
 
     public function index()
     {
+        $this->authorize('create',Question::class);
         return view('questions.index');
     }
 
@@ -40,12 +42,31 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $this->authorize('create',Question::class);
-        $filieres = Filiere::all();
+
+    { 
+         $filieress=[];
+        $semestre_module_profs = SemestreModuleProf::where('professor_id',Auth::user()->id)->get();
+        foreach($semestre_module_profs as $semestre_module_prof ){
+            $semestre_modules = SemestreModule::where('id',$semestre_module_prof->semestre_module_id)->get();
+
+            foreach($semestre_modules as $semestre_module ){
+            $semestres = Semestre::where('id',$semestre_module->semestre_id)->get();
+
+                foreach($semestres as $semestre){
+                 $filieres = Filiere::where('id',$semestre->filiere_id)->get();
+
+                    foreach($filieres as $filiere){
+                        array_push($filieress,$filiere);
+               }
+           } 
+        }
+          
+        }
+        //return response()->json( $test);
+        
         return view(
             'questions.create',
-            ['filieres' => $filieres]
+            ['filieres' => $filieress]
         );
     }
 
@@ -95,7 +116,7 @@ class QuestionController extends Controller
     {
         $id =  $request->get('question_id');
         $question =  $request->get('question');
-        $duree =  $request->get('duree');
+        // $duree =  $request->get('duree');
         $note =  $request->get('note');
         $difficulte =  $request->get('difficulte');
         $propositions =  $request->get('propositions');
@@ -105,20 +126,23 @@ class QuestionController extends Controller
         foreach($propositions_to_delete as $p){
             //$p->delete();
         }
-        $quest->duree = $duree;
+        // $quest->duree = $duree;
         $quest->note = $note;
         $quest->question = $question;
         $quest->difficulte = $difficulte;
-        $quest->save();
+        //$quest->save();
         $rep = $request->get('reponses');
+       
         foreach($propositions as $prop => $props){
             $proposition = new Proposition();
-            $proposition->question()->associate($quest);
+            $proposition->question_id=$id;
             $proposition->proposition = $props;
             $proposition->reponse = $rep[$prop];
+            
             $proposition->save();
+           
         }
-
+        
     
     }
     public function destroy()
