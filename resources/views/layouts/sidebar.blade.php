@@ -1,5 +1,5 @@
 <ul id="slide-out" class="side-nav collapsible" data-collapsible="accordion">
-    <li><div class=" collapsible-header"><i class="material-icons">dashboard</i>QCM</div>
+    <li><div class=" collapsible-header"><i class="material-icons">dashboard</i>Questions</div>
       <div class="collapsible-body"><a href="{{route('questions.index')}}">Mes questions</a></div>
       {{-- @can(['create'], App\Question::class) --}}
           <div class="collapsible-body"><a href="{{route('questions.create')}}">Création des questions</a></div>
@@ -11,8 +11,8 @@
     </li>
     <li><div class=" collapsible-header"><i class="material-icons">work</i>Evaluations</div>
       <div class="collapsible-body"><a href="{{route('evaluations.create')}}">Création</a></div>
-      <div class="collapsible-body"><a href="{{route('evaluations.index')}}">Commencer</a></div>
-      {{-- <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div> --}}
+      <div class="collapsible-body"><a href="{{route('evaluations.index')}}">Evaluations disponible</a></div>
+      <div class="collapsible-body"><a href="{{route('evaluations.results')}}">Résultats</a></div>
     </li>
     <li><div class=" collapsible-header"><i class="material-icons">supervisor_account</i>Professeurs</div>
       <div class="collapsible-body"><a href="{{route('professors.index')}}">Création</a></div>

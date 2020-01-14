@@ -21,6 +21,42 @@
         <div class="col s12 d-flex justify-content-center">
             <button type="submit" class="btn btn-flat waves-effect waves-light deep-orange accent-3 white-text">Affecter</button>
         </div>
+        <div class="col s12">
+            <table class="centered">
+                <thead>
+                    <tr>
+                        <th>Etudiant</th>
+                        <th>Semestre</th>
+                        <th>Date d'affectation</th>
+                        <th>Désaffecter</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($studentSemestres->items() as $stuSem)
+                    <tr>
+                        <td>{{$stuSem->student->last_name}} {{$stuSem->student->first_name}}</td>
+                        <td>{{$stuSem->semestre->libelle}}</td>
+                        <td>{{$stuSem->updated_at}}</td>
+                        <td>
+                            <button class="btn btn-flat waves-effect waves-light deep-orange accent-3 white-text">Désaffecter</button>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5">Aucune affectation trouvées</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        @if (count($studentSemestres)>0)
+        <div class="col s12 d-flex justify-content-end">
+            <ul class="pagination">
+                <li class="{{$studentSemestres->onFirstPage()?'disabled':'waves-effect'}}"><a href="{{$studentSemestres->onFirstPage()?'':$studentSemestres->previousPageUrl()}}"><i class="material-icons">chevron_left</i></a></li>
+                <li class="{{$studentSemestres->hasMorePages()?'waves-effect':'disabled'}}"><a href="{{$studentSemestres->nextPageUrl()}}"><i class="material-icons">chevron_right</i></a></li>
+            </ul>
+        </div>
+        @endif
     </form>
 
 @endsection
