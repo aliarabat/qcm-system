@@ -52,6 +52,8 @@ Route::get('/evaluations/creation', 'EvaluationController@create')->name('evalua
 Route::post('/evaluations/passed/{qcmId}', 'EvaluationController@passed')->name('evaluations.passed');
 Route::get('/evaluations/commencer/{id}', 'EvaluationController@start')->name('evaluations.start');
 Route::Get('/Evaluation/findByModule', 'EvaluationController@findChapitreByModule')->name('evaluations.findChapitreByModule');
+Route::Get('/Evaluation/findByFiliere', 'EvaluationController@findSemesterByFiliere')->name('evaluations.findSemesterByFiliere');
+Route::Get('/Evaluation/findBySemestre', 'EvaluationController@findModuleBySemestre')->name('evaluations.findModuleBySemestre');
 Route::post('/evaluations/terminer', 'EvaluationController@end')->name('evaluations.end');
 Route::post('/evaluations/store', 'EvaluationController@store')->name('evaluations.store');
 

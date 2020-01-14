@@ -7,17 +7,25 @@
         <div id="question-create-form1" class="col-s12 z-depth-4 mt-p-1">
             <div class="row">
                 <div class="input-field col s4">
-                    <select name="filiereModule" id="filiereModule">
+                    <select name="filiere" id="filiere">
                             
-                            <option value="m1" selected disabled>Filière</option>
-                            @forelse ($filieres as $filiere)
-                            <option value="{{$filiere->nom_filiere}}">{{$filiere->nom_filiere}}-{{$filiere->libelle}}</option>
-                            @empty
-                            <option value="m1" selected disabled>Filière</option>
-                            @endforelse
-                    </select>
-                    <label>Filière</label>
+                        <option value="m1" selected disabled>Filière</option>
+                        @forelse ($filieres as $filiere)
+                        <option value="{{$filiere->id}}">{{$filiere->nom_filiere}}</option>
+                        @empty
+                        <option value="m1" selected disabled>Filière</option>
+                        @endforelse
+                </select>
+                    <label for="module">Filière</label>
                 </div>
+    
+                <div class="input-field col s4">
+                    <select name="semestre" id="semestre">
+    
+                </select>
+                    <label for="semestre">Semestre</label>
+                </div>
+    
                    <div class="input-field col s4" id="moduleChap">
                             <select  name="moduleChap" id="moduleChap">
                                    
@@ -99,50 +107,142 @@
 @section('script')
 <script type="text/javascript">
 $(document).ready(function() {
+    $('#filiere').on('change',function(){
 
-    $('#filiereModule').on('change',function(){
-       var nom_filiere = $(this).val();
-       console.log(nom_filiere);
-       $.ajax({
-           url: "{{route('mainParts.modulesFiliere')}}",
-           dataType: 'JSON',
-          data: {
-            "_token": "{{ csrf_token() }}",
-            "nom_filiere": nom_filiere
-            },
-          type: 'GET',
-          dataType: 'JSON',
-          success: function( result )
-          {
-            var len = 0;
+var filiere_id= $(this).val();
+console.log(filiere_id);
+
+
+$.ajax({
+    url: "{{route('evaluations.findSemesterByFiliere')}}",
+    dataType: 'JSON',
+   data: {
+
+    "_token": "{{ csrf_token() }}",
+     "filiere_id": filiere_id,
+     
+     },
+   type: 'GET',
+   dataType: 'JSON',
+   success: function( result )
+   {
+     var len = 0;
+          
+     if(result['data'] != null){
             len = result['data'].length;
-            console.log(len);
+            $('select[name="semestre"]').empty();
+            var s='<option value="m1" selected disabled>Semestre</option>';
+     }
+      for( var i = 0; i<len; i++){
+                 var id = result['data'][i].id;
+                  var name = result['data'][i].libelle;
+                 s+='<option value="' + id  + '">' + name + '</option>'; 
+                 $('select[name="semestre"]').html(s);
+                 $('select[name="semestre"]').material_select();
+                 console.log(name);
+             }
+   },
+   error: function()
+  {
+      //handle errors
+      alert('error...');
+  
+  }
+});
 
-                 if(len!=0){
+
+});
+
+
+$('#semestre').on('change',function(){
+
+var semestre_id= $(this).val();
+console.log(semestre_id);
+
+
+$.ajax({
+    url: "{{route('evaluations.findModuleBySemestre')}}",
+    dataType: 'JSON',
+   data: {
+
+    "_token": "{{ csrf_token() }}",
+     "semestre_id": semestre_id,
+     
+     },
+   type: 'GET',
+   dataType: 'JSON',
+   success: function( result )
+   {
+     var len = 0;
+          
+     if(result['data'] != null){
+            len = result['data'].length;
+            $('select[name="moduleChap"]').empty();
+            var s='<option value="m1" selected disabled>Module</option>';
+     }
+      for( var i = 0; i<len; i++){
+                 var id = result['data'][i].id;
+                  var name = result['data'][i].nom_module;
+                 s+='<option value="' + name  + '">' + name + '</option>'; 
+                 $('select[name="moduleChap"]').html(s);
+                 $('select[name="moduleChap"]').material_select();
+                 console.log(name);
+             }
+   },
+   error: function()
+  {
+      //handle errors
+      alert('error...');
+  
+  }
+});
+
+
+});
+
+    // $('#filiereModule').on('change',function(){
+    //    var nom_filiere = $(this).val();
+    //    console.log(nom_filiere);
+    //    $.ajax({
+    //        url: "{{route('mainParts.modulesFiliere')}}",
+    //        dataType: 'JSON',
+    //       data: {
+    //         "_token": "{{ csrf_token() }}",
+    //         "nom_filiere": nom_filiere
+    //         },
+    //       type: 'GET',
+    //       dataType: 'JSON',
+    //       success: function( result )
+    //       {
+    //         var len = 0;
+    //         len = result['data'].length;
+    //         console.log(len);
+
+    //              if(len!=0){
                   
-                   var s='<option value="m1" selected disabled>Module</option>';
-                   for( var i = 0; i<len; i++){
-                        var id = result['data'][i].id;
-                        var name = result['data'][i].nom_module;
-                        s+='<option value="' + name + '">' + name + '</option>'; 
-                        $('select[name="moduleChap"]').html(s);
-                        $('select[name="moduleChap"]').material_select();
-                    }
-                 }
-                 else{
-                    var s='<option value="m1" selected disabled>Module</option>';
-                    $('select[name="moduleChap"]').html(s);
-                    $('select[name="moduleChap"]').material_select();
-                 }             
-          },
-          error: function()
-         {
-             //handle errors
-             alert('error...');
-         }
-       });
+    //                var s='<option value="m1" selected disabled>Module</option>';
+    //                for( var i = 0; i<len; i++){
+    //                     var id = result['data'][i].id;
+    //                     var name = result['data'][i].nom_module;
+    //                     s+='<option value="' + name + '">' + name + '</option>'; 
+    //                     $('select[name="moduleChap"]').html(s);
+    //                     $('select[name="moduleChap"]').material_select();
+    //                 }
+    //              }
+    //              else{
+    //                 var s='<option value="m1" selected disabled>Module</option>';
+    //                 $('select[name="moduleChap"]').html(s);
+    //                 $('select[name="moduleChap"]').material_select();
+    //              }             
+    //       },
+    //       error: function()
+    //      {
+    //          //handle errors
+    //          alert('error...');
+    //      }
+    //    });
 
-    });
+    // });
 
 
 $('#moduleChap').on('change',function(){

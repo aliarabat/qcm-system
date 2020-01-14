@@ -6,7 +6,7 @@
         <div class="col-s12">
             <div class="input-field col s4">
                 <input type="text" name="description" id="description"/>
-                <label for="description">Libellé</label>
+                <label for="description">Description</label>
             </div>
             <div class="input-field col s4">
                 <input type="number" name="duree" id="duree"/>
@@ -17,23 +17,39 @@
                 <label for="difficulte">Difficulté en (%)</label>
             </div>
             <div class="input-field col s4">
-                <select name="module" id="module">
+                <select name="filiere" id="filiere">
                         
-                    <option value="m1" selected disabled>Module</option>
-                    @forelse ($modules as $module)
-                    <option value="{{$module->nom_module}}">{{$module->nom_module}}-{{$module->libelle}}</option>
+                    <option value="m1" selected disabled>Filière</option>
+                    @forelse ($filieres as $filiere)
+                    <option value="{{$filiere->id}}">{{$filiere->nom_filiere}}</option>
                     @empty
                     <option value="m1" selected disabled>Filière</option>
                     @endforelse
             </select>
+                <label for="module">Filière</label>
+            </div>
+
+            <div class="input-field col s4">
+                <select name="semestre" id="semestre">
+
+            </select>
+                <label for="semestre">Semestre</label>
+            </div>
+
+          <div class="input-field col s4">
+                <select name="module" id="module">
+
+            </select>
                 <label for="module">Module</label>
             </div>
+
             <div class="input-field col s4">
                 <select name="chapitre" id="chapitre">
                        
                 </select>
                 <label for="chapitre">Chapitre</label>
             </div>
+
             <div class="col s4 d-flex align-items-baseline">
                 <div class="input-field col s10" style="padding-left: 0;">
                     <input type="number" name="nbrQuestionCahpitre" id="nbrQuestionCahpitre" min="1"/>
@@ -72,16 +88,8 @@
     <script>
         function addQCMQuestions() {
             var tbody=$('#tableQCM tbody');
-            const nbrRow=$('#tableQCM tbody tr').length;
-            if (nbrRow>0) {
-                $('#libelle').attr('disabled', true);
-                $('#nbrQuestions').attr('disabled', true);
-                $('#difficulte').attr('disabled', true);
-            }else{
-                $('#libelle').removeAttr('disabled');
-                $('#nbrQuestions').removeAttr('disabled');
-                $('#difficulte').removeAttr('disabled');
-            }
+            var nbrRow=$('#tableQCM tbody tr').length;
+        
             var row=`<tr id='row${nbrRow}'>
                         <td>${$('#module').val()}</td>
                         <td>${$('#chapitre').val()}</td>
@@ -93,8 +101,25 @@
                         </td>
                     </tr>`;
             $(tbody).append(row);
+              nbrRow=$('#tableQCM tbody tr').length;
+            if (nbrRow>0) {
+                $('#description').attr('disabled', true);
+                $('#duree').attr('disabled', true);
+                $('#difficulte').attr('disabled', true);
+                $('#filiere').attr('disabled');
+                $('#semestre').attr('disabled');
+                $('#module').attr('disabled');
+            }else{
+                $('#description').removeAttr('disabled');
+                $('#duree').removeAttr('disabled');
+                $('#difficulte').removeAttr('disabled');
+                $('#filiere').removeAttr('disabled');
+                $('#semestre').removeAttr('disabled');
+                $('#module').removeAttr('disabled');
+            }    
         }
 
+     
         function deleteQCMQuestions(id) {
             $('#'+id).remove();
         }
@@ -114,6 +139,8 @@
                 "duree": $('#duree').val(),
                 "difficulte": $('#difficulte').val(),
                 "chapitres": questions,
+                "module":$('#module').val(),
+                "semestre":$('#semestre').val(),
             }
 
             $.post({
@@ -122,6 +149,10 @@
                 dataType: 'JSON',
                 success: function (data) { 
                     console.log(data);
+                    $("#tableQCM tbody tr").remove(); 
+                    $( '#description' ).val("");
+                    $( '#duree' ).val("");
+                    $( '#difficulte' ).val("");
                 },
                 error: function (error) { 
 
@@ -133,6 +164,99 @@
         }
 
         $(document).ready(function() {
+
+$('#filiere').on('change',function(){
+
+var filiere_id= $(this).val();
+console.log(filiere_id);
+
+
+$.ajax({
+    url: "{{route('evaluations.findSemesterByFiliere')}}",
+    dataType: 'JSON',
+   data: {
+
+    "_token": "{{ csrf_token() }}",
+     "filiere_id": filiere_id,
+     
+     },
+   type: 'GET',
+   dataType: 'JSON',
+   success: function( result )
+   {
+     var len = 0;
+          
+     if(result['data'] != null){
+            len = result['data'].length;
+            $('select[name="semestre"]').empty();
+            var s='<option value="m1" selected disabled>Semestre</option>';
+     }
+      for( var i = 0; i<len; i++){
+                 var id = result['data'][i].id;
+                  var name = result['data'][i].libelle;
+                 s+='<option value="' + id  + '">' + name + '</option>'; 
+                 $('select[name="semestre"]').html(s);
+                 $('select[name="semestre"]').material_select();
+                 console.log(name);
+             }
+   },
+   error: function()
+  {
+      //handle errors
+      alert('error...');
+  
+  }
+});
+
+
+});
+
+
+$('#semestre').on('change',function(){
+
+var semestre_id= $(this).val();
+console.log(semestre_id);
+
+
+$.ajax({
+    url: "{{route('evaluations.findModuleBySemestre')}}",
+    dataType: 'JSON',
+   data: {
+
+    "_token": "{{ csrf_token() }}",
+     "semestre_id": semestre_id,
+     
+     },
+   type: 'GET',
+   dataType: 'JSON',
+   success: function( result )
+   {
+     var len = 0;
+          
+     if(result['data'] != null){
+            len = result['data'].length;
+            $('select[name="module"]').empty();
+            var s='<option value="m1" selected disabled>Module</option>';
+     }
+      for( var i = 0; i<len; i++){
+                 var id = result['data'][i].id;
+                  var name = result['data'][i].nom_module;
+                 s+='<option value="' + name  + '">' + name + '</option>'; 
+                 $('select[name="module"]').html(s);
+                 $('select[name="module"]').material_select();
+                 console.log(name);
+             }
+   },
+   error: function()
+  {
+      //handle errors
+      alert('error...');
+  
+  }
+});
+
+
+});
 
 $('#module').on('change',function(){
 
