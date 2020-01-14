@@ -19,10 +19,11 @@ class CreateQuestionsTable extends Migration
             $table->string('question'); 
             $table->unsignedBigInteger('chapitre_id');
             $table->foreign('chapitre_id')->references('id')->on('chapitres')->onDelete('cascade');            
-            $table->Integer('duree');
             $table->string('difficulte'); 
             $table->string('validite', 20)->default('invalid');
             $table->double('note'); 
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

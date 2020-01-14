@@ -47,7 +47,7 @@
                 @csrf
                 @foreach ($qcm['questions'] as $question)
                     <div class="col s10 offset-s1" id="question{{$loop->index}}" style="display: {{$loop->index!=0?'none':''}}">
-                        <h5>Question {{$loop->index+1}}: <span class="flow-text">{{$question->question}}</span></h5>
+                        <h5>Question {{$loop->index+1}}: <span class="flow-text">{{$question->question}}</span><span style="font-size: 10px; color: green;">{{$question->type=='multi'?'Multi choix':'Choix unique'}}</span></h5>
                         <input type="hidden" name="question[{{$loop->index}}]['id']" value="{{$question->id}}">
                         @if ($question->type=="unique")
                         <div class="col s10 offset-s1">
