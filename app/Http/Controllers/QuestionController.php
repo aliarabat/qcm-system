@@ -158,8 +158,8 @@ class QuestionController extends Controller
         $chapitre = Chapitre::get()->where('id', $request->get('chapitre_id'))->first();
         $data = array();
         $questions = [];
-        $questions = Question::get()->where('chapitre_id', $chapitre->id);
-
+        $questions = Question::where('chapitre_id', $chapitre->id)->with('propositions')->get();
+        
         foreach ($questions as $question) {
             array_push($data, $question);
         }
@@ -170,12 +170,17 @@ class QuestionController extends Controller
 
     public function deleteQuestionById(Request $request){
         $propositions = Proposition::get()->where('question_id',$request->get('question_id'));
-        // return response()->json($propositions);
+        
         foreach($propositions as $p){
             $p->delete();
         }
         Question::destroy($request->get('question_id'));
         return response()->json('question deleted ... ! ');
+    }
+    public function findPropositionsByQuestionId(Request $request){
+        $props = Proposition::get()->where('question_id',$request->get('question_id'));
+        $propositions['data']=$props;
+        return json_encode($propositions);
     }
 
 }

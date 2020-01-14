@@ -64,28 +64,28 @@
             <div class="row">
                 <input type="hidden" id="hidden_id_2" name="id" value=" ">
                 <div class="input-field col s12">
-                    <input type="text" id="question" name="question" value=""/>
-                    <label for="question">Question</label>
+                    <input placeholder="question" type="text" id="question" name="question" value=""/>
+                    <label  for="question">Question</label>
                 </div>
                 <div class="input-field col s6">
-                    <input type="number" id="duree" name="duree" value=" "/>
+                    <input placeholder="duree" type="number" id="duree" name="duree" value=" "/>
                     <label for="duree">Durée</label>
                 </div>
                 <div class="input-field col s6">
                     <select name="difficulte" id="difficulte">
-                        <option value="">Facile</option>
-                        <option value="">Normale</option>
-                        <option value="">Difficile</option>
+                        <option value="facile" id="facile">Facile</option>
+                        <option value="normal"  id="normal">Normal</option>
+                        <option value="difficile" id="difficile">Difficile</option>
                     </select>
                     <label for="difficulte">Difficulté</label>
                 </div>
                 <div class="input-field col s6">
-                    <input type="number" id="note" name="note" value=""/>
+                    <input placeholder="note" type="number" id="note" name="note" value=""/>
                     <label for="note">Note</label>
                 </div>
             </div>
-            <div class="row">
-                <div id="response0" class="d-flex align-items-center">
+            <div class="row" id="propositions">
+                {{-- <div id="response0" class="d-flex align-items-center">
                     <div class="input-field col s6 offset-s3">
                         <input type="text" name="proposition[]" id="proposition">
                         <label>Réponse 1</label>
@@ -99,7 +99,7 @@
                     <a href="#" onclick="return deleteResponse('response0')" class="red-text text-accent-4">
                         <i class="material-icons ">delete</i>
                     </a>
-                </div>
+                </div> --}}
             </div>
             <div id="add-button" class="row center-align">
                 <button class="btn-flat waves-effect btn-floating orange accent-3 tooltipped" data-position="right" data-tooltip="Ajouter une réponse">
@@ -118,7 +118,7 @@
         <div class="modal-content">
             <h4>Suppression</h4>
             <p>Voulez-vous vraiment supprimer cette question ?</p>
-            <input id="hidden_id" type=""/>
+            <input id="hidden_id" type="hidden"/>
         </div>
         <div class="modal-footer">
             <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
@@ -212,18 +212,20 @@ $.ajax({
      }
       for( var i = 0; i<len; i++){
                 var id = result['data'][i].id;
-                var question = result['data'][i].question;
-                
+                var ques = result['data'][i].question;
+                var question = ques.replace("\'","\\\'");
+                var difficulte = result['data'][i].difficulte;
                 var duree = result['data'][i].duree;
                 var note = result['data'][i].note;
-                console.log(question);
-                s+="<tr>"+
-                "<td>"+question+"</td>"+
-                "<td>"+
-                "<a href='#update-modal' onclick='return onUpdateQuestion("+id+","+question+","+duree+","+note+",false)' class='light-blue-text text-darken-4 tooltipped modal-trigger' data-position='top' data-tooltip='Mettre à jour'>";
-                s+="<div class='material-icons'>edit</div></a><a href='#delete-modal' onclick='return onDeleteQuestion("+id+",false)' class='red-text text-accent-4 tooltipped modal-trigger' data-position='top' data-tooltip='Supprimer'>";
-                s+="<div class='material-icons'>delete</div></a></td>"+
-                    "</tr>"; 
+                
+                console.log();
+                s+='<tr>'+
+                '<td>'+ques+'</td>'+
+                '<td>'+
+                '<a href="#update-modal" onclick="return onUpdateQuestion(\''+id+'\',\''+question+'\',\''+duree+'\',\''+note+'\',\''+difficulte+'\','+false+')" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">';
+                s+='<div class="material-icons">edit</div></a><a href="#delete-modal" onclick="return onDeleteQuestion('+id+','+false+')" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">';
+                s+='<div class="material-icons">delete</div></a></td>'+
+                    '</tr>'; 
                 // console.log(name)
                 $('#table_content').html(s);
                 // $('select[name="chapitre"]').material_select();
@@ -265,7 +267,7 @@ function onDeleteQuestion(id, deleteFromDb) {
             success:function(result){
             console.log(result);
 
-        $( "#question_table" ).load( "http://127.0.0.1:8000/questions #question_table" );
+        // $( "#question_table" ).load( "http://127.0.0.1:8000/questions #question_table" );
         //     //     $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
         //     //     $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
         //     //     $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
@@ -286,49 +288,69 @@ function onDeleteQuestion(id, deleteFromDb) {
         }
 }
 
-function onUpdateQuestion(id,question,duree,note,deleteFromDb) {
+function onUpdateQuestion(id,question,duree,note,difficulte,deleteFromDb) {
         if (deleteFromDb==false) {
-            // $("#hidden_id_2").val(id);
-            // $("#question").val(question);
-            // $("#duree").val(duree);
-            // $("#note").val(note);
-            console.log('question 2 => ' + question);
-            console.log('go to modal ... !');
+            $("#hidden_id_2").val(id);
+            $("#question").val(question);
+            $("#duree").val(duree);
+            $("#note").val(note);
+            document.getElementById(difficulte).setAttribute("selected","");
+            $("#difficulte").material_select();
+            console.log(difficulte);
+            console.log('go to update modal ... !');
+            // get propositions .......
+            $.ajax({
+                url: "{{route('questions.findPropositionsByQuestionId')}}",
+                dataType: 'JSON',
+                data: {
+                    "question_id": id,
+                },
+                type: 'GET',
+                dataType: 'JSON',
+                success: function( result )
+                {
+       
+                var len = 0;
+                var s='';
+                if(result['data'] != null){
+                        len = result['data'].length;
+                }
+                for( var i = 0; i<len; i++){
+                            var lib = result['data'][i].proposition;
+                            
+
+                            s+='<div id="response'+i+'" class="d-flex align-items-center">'+
+                                '<div class="input-field col s6 offset-s3">'+
+                                '<input  type="text" name="proposition[]" id="p'+i+'"  value="'+lib+'">'+
+                                '<label for="p'+i+'" class="active">Réponse '+(i+1)+'</label>'+
+                                '</div>'+
+                                '<p class="">'+
+
+                                '<input id="hiden" type="hidden" name="reponse['+i+']" value="0" >'+
+                                '<input name="reponse['+i+']"  type="checkbox" id="check'+i+'"  value="1">'+
+                                '<label for="check'+i+'"></label>'+
+                                '</p>'+
+                                '<a href="#" onclick="return deleteResponse(\'response'+0+'\')" class="red-text text-accent-4">'+
+                                '<i class="material-icons ">delete</i>'+
+                                '</a>'+
+                                '</div>'; 
+                                $('#propositions').html(s);
+                        }
+                        
+                console.log(result);
+                },
+                error: function()
+                {
+                    //handle errors
+                    alert('error...');
+                
+                }
+            });
+
         }
         else {
-            console.log('start destroy');
-             //Suppression d'une question avec ajax
-            var question_id=$("#hidden_id").val();
-
-            $.ajax({
-           url: "{{route('questions.deleteQuestionById')}}",
-           dataType: 'JSON',
-           data: {
-            "_token": "{{ csrf_token() }}",   
-            "question_id": question_id,
-            },
-            type: 'DELETE',
-            success:function(result){
-            console.log(result);
-
-        $( "#question_table" ).load( "http://127.0.0.1:8000/questions #question_table" );
-        //     //     $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
-        //     //     $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
-        //     //     $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
-
-        //     //     $('#delete1').modal('close');
-        //     //     //update les selects niveaux
-        //     //     $.ajax({
-        //     //  url: "{{route('mainParts.refreshNiveaux')}}",
-        //     //  type: 'GET',
-        //     //  "_token": "{{ csrf_token() }}",
-        //     //  dataType: 'JSON',
-            },
-          error: function()
-         {
-             //handle errors
-             alert('error...');}
-            });
+            console.log('start update');
+        
         }
 }
 
