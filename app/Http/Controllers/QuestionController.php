@@ -58,7 +58,7 @@ class QuestionController extends Controller
             $question = new Question();
             $chapitre = Chapitre::get()->where('nom_chapitre', mb_strtoupper(request('chapitre')))->first();
             $question->chapitre_id = $chapitre->id;
-            return response()->json('haaa chapitre => '+ $chapitre);
+            //return response()->json('haaa chapitre => '+ $chapitre);
             $question->question = request('question');
             $question->duree = request('duree');
             $question->difficulte = request('difficulte');
@@ -166,6 +166,16 @@ class QuestionController extends Controller
         $questionsData['data'] = $data;
 
         return json_encode($questionsData);
+    }
+
+    public function deleteQuestionById(Request $request){
+        $propositions = Proposition::get()->where('question_id',$request->get('question_id'));
+        // return response()->json($propositions);
+        foreach($propositions as $p){
+            $p->delete();
+        }
+        Question::destroy($request->get('question_id'));
+        return response()->json('question deleted ... ! ');
     }
 
 }

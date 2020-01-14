@@ -24,13 +24,14 @@
                         <label for="chapitre">Chapitre</label>
                     </div>
                     <div class="col s2 offset-s5">
-                        <button id="search" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Afficher</button>
+                        {{-- <button id="search" type="submit" class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Afficher</button> --}}
                     </div>
                 </form>
-            </div>
+            </div></div></div>
             <!-- list des question-->
+            <div class="row z-depth-4 mt-p-1">
             <div class="row">
-                <table class="centered" id="tableNiveaux">
+                <table class="centered" id="question_table">
                     <thead>
                         <tr>
                             <th>Question</th>
@@ -61,13 +62,13 @@
         <div class="modal-content">
             <h4>Mise à jour</h4>
             <div class="row">
-                <input type="hidden" name="id" value=" ">
+                <input type="hidden" id="hidden_id_2" name="id" value=" ">
                 <div class="input-field col s12">
-                    <input type="text" name="question" value=""/>
+                    <input type="text" id="question" name="question" value=""/>
                     <label for="question">Question</label>
                 </div>
                 <div class="input-field col s6">
-                    <input type="text" name="duree" value=" "/>
+                    <input type="number" id="duree" name="duree" value=" "/>
                     <label for="duree">Durée</label>
                 </div>
                 <div class="input-field col s6">
@@ -79,7 +80,7 @@
                     <label for="difficulte">Difficulté</label>
                 </div>
                 <div class="input-field col s6">
-                    <input type="number" name="note" value=""/>
+                    <input type="number" id="note" name="note" value=""/>
                     <label for="note">Note</label>
                 </div>
             </div>
@@ -108,7 +109,7 @@
         </div>
         <div class="modal-footer">
             <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
-            <a onclick="return onUpdateQuestion(null, null, null, true)" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>
+            <a onclick="return onUpdateQuestion(null,null,null,null,true)" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Mettre à jour</a>
         </div>
     </div>
 
@@ -116,8 +117,8 @@
     <div id="delete-modal" class="modal">
         <div class="modal-content">
             <h4>Suppression</h4>
-            <p>Voulez-vous vraiment supprimer ce Niveau?</p>
-            <input type="hidden"/>
+            <p>Voulez-vous vraiment supprimer cette question ?</p>
+            <input id="hidden_id" type=""/>
         </div>
         <div class="modal-footer">
             <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
@@ -183,7 +184,7 @@ $.ajax({
 
 });
 
-$('form').on('submit',function(e){
+$('#chapitre').on('change',function(e){
 e.preventDefault();
 // var sel = document.getElementById('module');
 var chapitre_id = $("#chapitre option:selected").val();
@@ -206,18 +207,23 @@ $.ajax({
      var s='';    
      if(result['data'] != null){
             len = result['data'].length;
-            // $('select[name="chapitre"]').empty();
+            $('#table_content').empty();
             
      }
       for( var i = 0; i<len; i++){
                 var id = result['data'][i].id;
                 var question = result['data'][i].question;
-                s+='<tr>'+
-                '<td>'+question+'</td>'+
-                '<td>'+
-                '<a href="#update-modal" onclick="return onUpdateQuestion()" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">';
-                s+='<div class="material-icons">edit</div></a><a href="#delete-modal" onclick="return onDeleteQuestion()" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">';
-                s+='<div class="material-icons">delete</div></a></td></tr>'; 
+                
+                var duree = result['data'][i].duree;
+                var note = result['data'][i].note;
+                console.log(question);
+                s+="<tr>"+
+                "<td>"+question+"</td>"+
+                "<td>"+
+                "<a href='#update-modal' onclick='return onUpdateQuestion("+id+","+question+","+duree+","+note+",false)' class='light-blue-text text-darken-4 tooltipped modal-trigger' data-position='top' data-tooltip='Mettre à jour'>";
+                s+="<div class='material-icons'>edit</div></a><a href='#delete-modal' onclick='return onDeleteQuestion("+id+",false)' class='red-text text-accent-4 tooltipped modal-trigger' data-position='top' data-tooltip='Supprimer'>";
+                s+="<div class='material-icons'>delete</div></a></td>"+
+                    "</tr>"; 
                 // console.log(name)
                 $('#table_content').html(s);
                 // $('select[name="chapitre"]').material_select();
@@ -233,16 +239,98 @@ $.ajax({
   }
 });
 
-
 });
-
-
-
 
 
 });
 
+function onDeleteQuestion(id, deleteFromDb) {
+        if (deleteFromDb==false) {
+            $("#hidden_id").val(id);
+            console.log('go to modal ... !');
+        }
+        else {
+            console.log('start destroy');
+             //Suppression d'une question avec ajax
+            var question_id=$("#hidden_id").val();
 
+            $.ajax({
+           url: "{{route('questions.deleteQuestionById')}}",
+           dataType: 'JSON',
+           data: {
+            "_token": "{{ csrf_token() }}",   
+            "question_id": question_id,
+            },
+            type: 'DELETE',
+            success:function(result){
+            console.log(result);
+
+        $( "#question_table" ).load( "http://127.0.0.1:8000/questions #question_table" );
+        //     //     $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
+        //     //     $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
+        //     //     $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
+
+        //     //     $('#delete1').modal('close');
+        //     //     //update les selects niveaux
+        //     //     $.ajax({
+        //     //  url: "{{route('mainParts.refreshNiveaux')}}",
+        //     //  type: 'GET',
+        //     //  "_token": "{{ csrf_token() }}",
+        //     //  dataType: 'JSON',
+            },
+          error: function()
+         {
+             //handle errors
+             alert('error...');}
+            });
+        }
+}
+
+function onUpdateQuestion(id,question,duree,note,deleteFromDb) {
+        if (deleteFromDb==false) {
+            // $("#hidden_id_2").val(id);
+            // $("#question").val(question);
+            // $("#duree").val(duree);
+            // $("#note").val(note);
+            console.log('question 2 => ' + question);
+            console.log('go to modal ... !');
+        }
+        else {
+            console.log('start destroy');
+             //Suppression d'une question avec ajax
+            var question_id=$("#hidden_id").val();
+
+            $.ajax({
+           url: "{{route('questions.deleteQuestionById')}}",
+           dataType: 'JSON',
+           data: {
+            "_token": "{{ csrf_token() }}",   
+            "question_id": question_id,
+            },
+            type: 'DELETE',
+            success:function(result){
+            console.log(result);
+
+        $( "#question_table" ).load( "http://127.0.0.1:8000/questions #question_table" );
+        //     //     $( "#tableFilieres" ).load( "http://127.0.0.1:8000/mainparts #tableFilieres" );
+        //     //     $( "#tableModules" ).load( "http://127.0.0.1:8000/mainparts #tableModules" );
+        //     //     $( "#tableChapitres" ).load( "http://127.0.0.1:8000/mainparts #tableChapitres" );
+
+        //     //     $('#delete1').modal('close');
+        //     //     //update les selects niveaux
+        //     //     $.ajax({
+        //     //  url: "{{route('mainParts.refreshNiveaux')}}",
+        //     //  type: 'GET',
+        //     //  "_token": "{{ csrf_token() }}",
+        //     //  dataType: 'JSON',
+            },
+          error: function()
+         {
+             //handle errors
+             alert('error...');}
+            });
+        }
+}
 
 </script>
 
