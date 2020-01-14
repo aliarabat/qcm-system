@@ -1,10 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
-<<<<<<< HEAD
-use App\Niveau;
-=======
 use App\User;
 use App\Role;
 use App\Niveau;
@@ -13,29 +8,11 @@ use App\Semestre;
 use App\Module;
 use App\semestreModule;
 use App\SemestreModuleProf;
-
->>>>>>> f70fd6da8d97b93ff7276143be195335a9ef0f2e
 use Illuminate\Http\Request;
-
 class AffectationProfessorController extends Controller
 {
-<<<<<<< HEAD
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-        
-        
-    }
-    public function index()
-    {
-        $this->authorize('create',Niveau::class);
-        return view('affectations.professors.index');
-=======
     private $allProfs;
     private $niveaux;
-
-
     public function index()
     {
         //role prof: App\Role::get()->where('name','PROFESSOR')->first()->id
@@ -43,15 +20,9 @@ class AffectationProfessorController extends Controller
         $this->niveaux = Niveau::all();
         $semestreModuleProfs = SemestreModuleProf::paginate(5);
         return view('affectations.professors.index', ['profs' => $this->allProfs, 'niveaux' => $this->niveaux, 'semestreModuleProfs' => $semestreModuleProfs]);
->>>>>>> f70fd6da8d97b93ff7276143be195335a9ef0f2e
     }
-
     public function store(Request $request)
     {
-<<<<<<< HEAD
-        $this->authorize('create',Niveau::class);
-        return response()->json('Hello');
-=======
         $semestre_module_existant = semestreModule::get()->where('semestre_id', $request->semestre)->where('module_id', $request->module)->first();
         $semestre_module_prof_existant = SemestreModuleProf::get()->where('semestre_module_id', $semestre_module_existant->id)->first();
         if ($semestre_module_prof_existant) {
@@ -72,7 +43,6 @@ class AffectationProfessorController extends Controller
             return $message;
         }
     }
-
     public function filieresNiveau(Request $request)
     {
         //$this->validate($request, ['niveau' => 'required|exists:niveaux,niveau']);
@@ -97,8 +67,6 @@ class AffectationProfessorController extends Controller
         $semestresData['data'] = $data;
         return json_encode($semestresData);
     }
-
-
     public function modulesSemestre(Request $request)
     {
         //$this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
@@ -111,6 +79,5 @@ class AffectationProfessorController extends Controller
         }
         $modulesData['data'] = $data;
         return json_encode($modulesData);
->>>>>>> f70fd6da8d97b93ff7276143be195335a9ef0f2e
     }
 }

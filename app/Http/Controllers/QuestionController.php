@@ -12,6 +12,7 @@ use App\Module;
 use App\Chapitre;
 use App\Semestre;
 use App\SemestreModule;
+use App\SemestreModuleProf;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
@@ -41,12 +42,31 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $this->authorize('create',Question::class);
-        $filieres = Filiere::all();
+
+    { 
+         $filieress=[];
+        $semestre_module_profs = SemestreModuleProf::where('professor_id',Auth::user()->id)->get();
+        foreach($semestre_module_profs as $semestre_module_prof ){
+            $semestre_modules = SemestreModule::where('id',$semestre_module_prof->semestre_module_id)->get();
+
+            foreach($semestre_modules as $semestre_module ){
+            $semestres = Semestre::where('id',$semestre_module->semestre_id)->get();
+
+                foreach($semestres as $semestre){
+                 $filieres = Filiere::where('id',$semestre->filiere_id)->get();
+
+                    foreach($filieres as $filiere){
+                        array_push($filieress,$filiere);
+               }
+           } 
+        }
+          
+        }
+        //return response()->json( $test);
+        
         return view(
             'questions.create',
-            ['filieres' => $filieres]
+            ['filieres' => $filieress]
         );
     }
 

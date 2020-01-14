@@ -19,6 +19,7 @@ class CreateQcmsTable extends Migration
             $table->text('reference');
             $table->unsignedInteger('duration');
             $table->unsignedInteger('difficulty');
+            $table->unsignedInteger('nbrQuestion');
             $table->unsignedBigInteger('semestre_module_professor_id');
             $table->timestamps();
         });
