@@ -46,6 +46,7 @@
             <form class="col s12" id="qcm-form" data-route="{{route('evaluations.end')}}">
                 @csrf
                 <input type="hidden" id="quuid" value="{{route('evaluations.passed', ['qcmId'=> $qcm->id])}}"/>
+                <input type="hidden" id="quuuid" value="{{$qcm->id}}"/>
                 @foreach ($qcm['questions'] as $question)
                     <div class="col s10 offset-s1" id="question{{$loop->index}}" style="display: {{$loop->index!=0?'none':''}}">
                         <h5>Question {{$loop->index+1}}: <span class="flow-text">{{$question->question}}</span><span class="badge green white-text" style="float: none">{{$question->type=='multi'?'Multi choix':'Choix unique'}}</span></h5>
@@ -72,7 +73,7 @@
                     </div>
                 @endforeach
                 <div class="col s12 d-flex justify-content-end">
-                    <a href="#modal1" class="btn-flat waves-effect waves-light deep-orange disabled accent-3 white-text tooltipped modal-trigger" data-position="top" data-tooltip="Terminer l'évaluation">Terminer</a>
+                    <a href="#modal1" class="btn btn-flat waves-effect waves-light deep-orange disabled accent-3 white-text tooltipped modal-trigger" data-position="top" data-tooltip="Terminer l'évaluation">Terminer</a>
                 </div>
             </form>
         </div>
