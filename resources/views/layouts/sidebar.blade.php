@@ -12,7 +12,7 @@
     <li><div class=" collapsible-header"><i class="material-icons">work</i>Evaluations</div>
       <div class="collapsible-body"><a href="{{route('evaluations.create')}}">Création</a></div>
       <div class="collapsible-body"><a href="{{route('evaluations.index')}}">Commencer</a></div>
-      <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div>
+      {{-- <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div> --}}
     </li>
     <li><div class=" collapsible-header"><i class="material-icons">supervisor_account</i>Professeurs</div>
       <div class="collapsible-body"><a href="{{route('professors.index')}}">Création</a></div>
@@ -20,7 +20,7 @@
     <li><div class=" collapsible-header"><i class="material-icons">supervised_user_circle</i>Etudiants</div>
       <div class="collapsible-body"><a href="{{route('students.index')}}">Création</a></li>
     </li>
-    <li><div class=" collapsible-header"><i class="material-icons">group_add</i>Affections</div>
+    <li><div class=" collapsible-header"><i class="material-icons">group_add</i>Affectations</div>
         <div class="collapsible-body"><a href="{{route('affectationProfessor.index')}}">Professeurs</a></div>
         <div class="collapsible-body"><a href="{{route('affectationStudent.index')}}">Etudiants</a></div>
     </li>

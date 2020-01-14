@@ -10,7 +10,9 @@ use App\Proposition;
 use App\Filiere;
 use App\Module;
 use App\Chapitre;
-use App\AssocFiliereModule;
+use App\Semestre;
+use App\SemestreModule;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -58,10 +60,11 @@ class QuestionController extends Controller
             $question = new Question();
             $chapitre = Chapitre::get()->where('nom_chapitre', mb_strtoupper(request('chapitre')))->first();
             $question->chapitre_id = $chapitre->id;
+            //return response()->json('haaa chapitre => '+ $chapitre);
             $question->question = request('question');
-            $question->duree = request('duree');
             $question->difficulte = request('difficulte');
             $question->note = request('note');
+            $question->user()->associate(Auth::user());
 
             if ($counts[1] > 1) {
                 $question->type = 'multi';
@@ -101,14 +104,16 @@ class QuestionController extends Controller
     {
         $this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
         $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nom_filiere')))->first();
-        $assocFiliereModule = AssocFiliereModule::get()->where('filiere_id', $filiereExistant->id);
+        $semestresFiliere=Semestre::get()->where('filiere_id', $filiereExistant->id);
         $data = array();
-        foreach ($assocFiliereModule as $filmol) {
-            $moduleExistant = Module::get()->where('id', $filmol->module_id)->first();
-            array_push($data, $moduleExistant);
+        foreach ($semestresFiliere as $semestre) {
+            $array_semestre_module = SemestreModule::get()->where('semestre_id', $semestre->id);
+            foreach($array_semestre_module as $semestre_module){
+                $moduleExistant=Module::get()->where('id', $semestre_module->module_id)->first();
+                array_push($data,$moduleExistant );
+            }
         }
         $modulesData['data'] = $data;
-
         return json_encode($modulesData);
     }
 
@@ -116,8 +121,10 @@ class QuestionController extends Controller
 
     public function findChapitreByModule(Request $request)
     {
-        $this->validate($request, ['nom_module' => 'required|exists:modules,nom_module']);
-        $modules = Module::get()->where('nom_module', mb_strtoupper($request->get('nom_module')))->first();
+        // $this->validate($request, ['nom_module' => 'required|exists:modules,nom_module']);
+        $modules = Module::get()->where('nom_module', $request->get('nom_module'))->first();
+        // return response()->json($modules->id);
+        // return response()->json($modules);
         $data = array();
         $chapitres = [];
         $chapitres = Chapitre::get()->where('module_id', $modules->id);
@@ -148,4 +155,29 @@ class QuestionController extends Controller
         $question->save();
         return response()->json(['status' => 'UPDATE_SUCCESS']);
     }
+
+    public function findQuestionByChapitreId(Request $request){
+        $chapitre = Chapitre::get()->where('id', $request->get('chapitre_id'))->first();
+        $data = array();
+        $questions = [];
+        $questions = Question::get()->where('chapitre_id', $chapitre->id);
+
+        foreach ($questions as $question) {
+            array_push($data, $question);
+        }
+        $questionsData['data'] = $data;
+
+        return json_encode($questionsData);
+    }
+
+    public function deleteQuestionById(Request $request){
+        $propositions = Proposition::get()->where('question_id',$request->get('question_id'));
+        // return response()->json($propositions);
+        foreach($propositions as $p){
+            $p->delete();
+        }
+        Question::destroy($request->get('question_id'));
+        return response()->json('question deleted ... ! ');
+    }
+
 }

@@ -8,8 +8,10 @@ use App\Proposition;
 use App\Filiere;
 use App\Module;
 use App\Chapitre;
-use App\QCM;
+use App\Qcm;
 use App\AssocFiliereModule;
+use App\QcmUsers;
+use Illuminate\Support\Facades\Auth;
 
 class EvaluationController extends Controller
 {
@@ -30,7 +32,17 @@ class EvaluationController extends Controller
      */
     public function index()
     {
-        return view('evaluations.start');
+        $qcm_users = QcmUsers::where(['user_id'=>Auth::user()->id, 'is_passed'=>false])->get();
+        $qcms=[];
+        // dd($qcm_users);
+        foreach ($qcm_users as  $qcm_user) {
+            $qcm=$qcm_user->qcm;
+            array_push($qcms, $qcm);
+        }
+        // foreach ($qcms as  $qcm) {
+        //     echo $qcm->description;
+        // }
+        return view('evaluations.dashboard.students', ['qcms'=>$qcms]);
     }
 
     public function create()
@@ -111,21 +123,33 @@ class EvaluationController extends Controller
         return response()->json($questionsData);
     }
 
-    public function start()
+    public function start($id)
     {
-        $qcm=[];
-        $qcm['questions']=Question::all()->shuffle();
-     
+        $isPassed=QcmUsers::where(['qcm_id'=>$id, 'user_id'=>Auth::user()->id])->first()->value('is_passed');
+        if ($isPassed) {
+            Auth::logout();
+            return redirect()->route('login');
+        }
+        $qcm=Qcm::find($id)->first();
+        $qcm['questions']=Question::find($qcm->reference)->get()->shuffle();
         foreach ($qcm['questions'] as $key => $question) {
             $question->propositions=$question->propositions->shuffle();
         }
-        $qcm['wholeTime']=1;
+        
         return view('evaluations.evaluate', compact(['qcm']));
     }
 
     public function end(Request $request)
     {
         $data=$request->input('data');
-        return response()->json(compact('data'));
+        Auth::logout();
+        return redirect()->route('login');
+    }
+
+    public function passed($qcmId){
+        $qcm_user=QcmUsers::where(['qcm_id'=>$qcmId, 'user_id'=>Auth::user()->id])->first();
+        $qcm_user->is_passed=true;
+        $qcm_user->save();
+        return response()->json($qcm_user->is_passed);
     }
 }

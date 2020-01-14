@@ -44,21 +44,17 @@
                     <input type="text" onfocus="this.value=''" name="question" id="question">
                     <label for="question">Question</label>
                 </div>
-                <div class="input-field col s6">
-                    <label>Durée</label>
-                    <input name="duree" id="duree" type="number">
+                <div class="input-field col s6 ">
+                    <input name="note" id="note" type="number" min="0">
+                    <label>Note</label>
                 </div>
-                <div class="input-field col s6">
+                <div class="input-field col s6 offset-s3">
                     <select name="difficulte" id="difficulte">
                         <option value="Facile">Facile</option>
                         <option value="Normal">Normal</option>
                         <option value="Difficile">Difficile</option>
                     </select>
                     <label>Difficulte</label>
-                </div>
-                <div class="input-field col s6">
-                    <input name="note" id="note" type="number" min="0">
-                    <label>Note</label>
                 </div>
             </div>
                 <div class="row">
@@ -104,52 +100,49 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-$('#filiereModule').on('change',function(){
-    var sel = document.getElementById('filiereModule');
-   var nom_filiere= sel.value;
- 
-   
+    $('#filiereModule').on('change',function(){
+       var nom_filiere = $(this).val();
+       console.log(nom_filiere);
+       $.ajax({
+           url: "{{route('mainParts.modulesFiliere')}}",
+           dataType: 'JSON',
+          data: {
+            "_token": "{{ csrf_token() }}",
+            "nom_filiere": nom_filiere
+            },
+          type: 'GET',
+          dataType: 'JSON',
+          success: function( result )
+          {
+            var len = 0;
+            len = result['data'].length;
+            console.log(len);
 
-   $.ajax({
-       url: "{{route('questions.findModuleByFiliere')}}",
-       dataType: 'JSON',
-      data: {
-        "nom_filiere": nom_filiere
-        },
-      type: 'GET',
-      dataType: 'JSON',
-      success: function( result )
-      {
-        var len = 0;
-             if(result['data'] != null){
-               len = result['data'].length;
-            //    console.log(result['data']);
-            //    console.log(result['data'].length);
-               $('select[name="moduleChap"]').empty();
-               var s='<option value="m1" selected disabled>Module</option>';
-             }
-        //  console.log(result);
-        //   console.log(len);
-         for( var i = 0; i<len; i++){
-                    var id = result['data'][i].id;
-                    var name = result['data'][i].nom_module;
-                    s+='<option value="' + name + '">' + name + '</option>'; 
+                 if(len!=0){
+                  
+                   var s='<option value="m1" selected disabled>Module</option>';
+                   for( var i = 0; i<len; i++){
+                        var id = result['data'][i].id;
+                        var name = result['data'][i].nom_module;
+                        s+='<option value="' + name + '">' + name + '</option>'; 
+                        $('select[name="moduleChap"]').html(s);
+                        $('select[name="moduleChap"]').material_select();
+                    }
+                 }
+                 else{
+                    var s='<option value="m1" selected disabled>Module</option>';
                     $('select[name="moduleChap"]').html(s);
                     $('select[name="moduleChap"]').material_select();
-                    
-                    
-                }
-      },
-      error: function()
-     {
-         //handle errors
-         //alert('error...');
-         console.log(error);
-     }
-   });
+                 }             
+          },
+          error: function()
+         {
+             //handle errors
+             alert('error...');
+         }
+       });
 
-   
-});
+    });
 
 
 $('#moduleChap').on('change',function(){
@@ -180,7 +173,7 @@ $('#moduleChap').on('change',function(){
          for( var i = 0; i<len; i++){
                     var id = result['data'][i].id;
                      var name = result['data'][i].nom_chapitre;
-                    s+='<option value="' + name + '">' + name + '</option>'; 
+                    s+='<option value="'+ name +'">' + name + '</option>'; 
                     console.log(name)
                     $('select[name="chapitre"]').html(s);
                     $('select[name="chapitre"]').material_select();
@@ -322,6 +315,3 @@ if ($("#question-form").length > 0) {
 </script>
 
 @endsection
-
-
-

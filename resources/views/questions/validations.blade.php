@@ -18,7 +18,7 @@
                     @forelse ($questions->items() as $question)
                     <tr>
                         <td>{{$question->question}}</td>
-                        <td>Ana</td>
+                        <td>{{$question->user->last_name}} {{$question->user->first_name}}</td>
                         <td>{{$question->created_at}}</td>
                         <td>{{$question->updated_at}}</td>
                         <td class="d-flex justify-content-between">

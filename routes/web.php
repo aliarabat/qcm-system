@@ -22,8 +22,10 @@ Route::get('/questions/creation', 'QuestionController@create')->name('questions.
 Route::post('/questions/store', 'QuestionController@store')->name('questions.store');
 Route::get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
 Route::get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
+Route::get('/questions/findQuestionByChapitreId', 'QuestionController@findQuestionByChapitreId')->name('questions.findQuestionByChapitreId');
 Route::get('/questions/validations', 'QuestionController@validateQuestions')->name('questions.validations');
 Route::post('/questions/validate', 'QuestionController@changeValidation')->name('questions.changeValidation');
+Route::Delete('/questions/delete', 'QuestionController@deleteQuestionById')->name('questions.deleteQuestionById');
 
 //mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
@@ -47,8 +49,9 @@ Route::Get('/mainparts/refreshFilieres', 'MainPartsController@refreshFilieres')-
 //Evaluations routes
 Route::get('/evaluations', 'EvaluationController@index')->name('evaluations.index');
 Route::get('/evaluations/creation', 'EvaluationController@create')->name('evaluations.create');
+Route::post('/evaluations/passed/{qcmId}', 'EvaluationController@passed')->name('evaluations.passed');
+Route::get('/evaluations/commencer/{id}', 'EvaluationController@start')->name('evaluations.start');
 Route::Get('/Evaluation/findByModule', 'EvaluationController@findChapitreByModule')->name('evaluations.findChapitreByModule');
-Route::get('/evaluations/commencer', 'EvaluationController@start')->name('evaluations.start');
 Route::post('/evaluations/terminer', 'EvaluationController@end')->name('evaluations.end');
 Route::post('/evaluations/store', 'EvaluationController@store')->name('evaluations.store');
 

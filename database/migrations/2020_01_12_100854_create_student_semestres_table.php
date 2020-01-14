@@ -19,6 +19,8 @@ class CreateStudentSemestresTable extends Migration
             $table->foreign('student_id')->references('id')->on('users');
             $table->bigInteger('semestre_id')->unsigned();
             $table->foreign('semestre_id')->references('id')->on('semestres');
+            $table->string('annee',4);
+            $table->timestamps();
         });
     }
 

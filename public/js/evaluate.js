@@ -5,13 +5,14 @@ $(function () {
     });
     $('body').attr('onload', 'return pauseTimer("event")');
     $.post({
-        async: true,
+        url: $('#quuid').val(),
         data: {
-            '_token': $('#qcm-form input[name="_token"]').val(),
-            'data': 'user_id'
+            '_token': $('#qcm-form input[name="_token"]').val()
         },
         dataType: 'JSON',
-        url: '{{route("registerUser")}}'
+        success: function(data){
+            console.log(data);
+        }
     });
 });
 
@@ -48,7 +49,7 @@ function answerQuestion(index) {
             answeredQuestions--;
             $('.progress .determinate').css('width', (answeredQuestions * 100 / totalQuestions) + "%");
             $('#answered-questions').text(answeredQuestions + '/' + totalQuestions);
-            $('#qcm-form button').attr('disabled', true);
+            $('#qcm-form a[href="#modal1"]').addClass('disabled');
             return;
         }
     }
@@ -60,7 +61,7 @@ function answerQuestion(index) {
     $('#answered-questions').text(answeredQuestions + '/' + totalQuestions);
 
     if (totalQuestions == answeredQuestions) {
-        $('#qcm-form button').removeAttr('disabled');
+        $('#qcm-form a[href="#modal1"]').removeClass('disabled');
     }
 }
 
