@@ -74,6 +74,10 @@ Route::post('/affectation/etudiants/store', 'AffectationStudentController@store'
 //affectations professors
 Route::get('/affectation/professeurs', 'AffectationProfessorController@index')->name('affectationProfessor.index');
 Route::post('/affectation/professeurs/store', 'AffectationProfessorController@store')->name('affectationProfessor.store');
+Route::Get('/affectation/professeurs/filieresNiveau', 'AffectationProfessorController@filieresNiveau')->name('affectationProfessor.filieresNiveau');
+Route::Get('/affectation/professeurs/semestresFiliere', 'AffectationProfessorController@semestresFiliere')->name('affectationProfessor.semestresFiliere');
+Route::Get('/affectation/professeurs/modulesSemestre', 'AffectationProfessorController@modulesSemestre')->name('affectationProfessor.modulesSemestre');
+
 
 Auth::routes();
 
