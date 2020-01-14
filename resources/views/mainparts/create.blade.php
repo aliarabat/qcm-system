@@ -353,7 +353,6 @@
                                     @forelse ($niveaux as $niveau)
                                     <option value="{{$niveau->niveau}}-{{$niveau->type}}">{{$niveau->niveau}}-{{$niveau->type}}</option>
                                     @empty
-                                    <option value="m1" selected disabled>Niveau</option>
                                     @endforelse
                             </select>
                             <label>Niveau</label>
@@ -779,6 +778,7 @@ if ($("#filiere-form").length > 0) {
             $('#msg_div').removeClass('d-none');
             $( '#filiereIn' ).val("");
             $( '#libelleIn' ).val("");
+            $( '#semestres' ).val("");
             setTimeout(function(){
             $('#res_message').hide();
             $('#msg_div').hide();
@@ -1563,11 +1563,6 @@ if ($("#chapitre-form").length > 0) {
             });        
             }
     }
-
-
-
-
-
     </script>
     
     @endsection
