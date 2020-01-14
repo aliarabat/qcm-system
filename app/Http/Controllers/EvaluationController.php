@@ -32,6 +32,7 @@ class EvaluationController extends Controller
      */
     public function index()
     {
+        $this->authorize('passer',Question::class);
         $qcm_users = QcmUsers::where(['user_id'=>Auth::user()->id, 'is_passed'=>false])->get();
         $qcms=[];
         // dd($qcm_users);
@@ -47,6 +48,7 @@ class EvaluationController extends Controller
 
     public function create()
     {
+        $this->authorize('create',Question::class);
         $modules = Module::all();
         return view(
             'evaluations.create',

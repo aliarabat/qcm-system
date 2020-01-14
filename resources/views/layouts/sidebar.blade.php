@@ -1,19 +1,27 @@
 <ul id="slide-out" class="side-nav collapsible" data-collapsible="accordion">
     <li><div class=" collapsible-header"><i class="material-icons">dashboard</i>QCM</div>
+      @can('create', App\Question::class)
       <div class="collapsible-body"><a href="{{route('questions.index')}}">Mes questions</a></div>
-      {{-- @can(['create'], App\Question::class) --}}
-          <div class="collapsible-body"><a href="{{route('questions.create')}}">Création des questions</a></div>
-      {{-- @endcan --}}
-      {{-- @can('create', App\Niveau::class) --}}
+      <div class="collapsible-body"><a href="{{route('questions.create')}}">Création des questions</a></div>
+      @endcan
+      @can('create', App\Niveau::class)
       <div class="collapsible-body"><a href="{{route('mainParts.create')}}">Plan pédagogique</a></div>
-      {{-- @endcan --}}
+      @endcan
+      @can('validate', App\Question::class)
       <div class="collapsible-body"><a href="{{route('questions.validations')}}">Validations</a></div>
+      @endcan
     </li>
+    
     <li><div class=" collapsible-header"><i class="material-icons">work</i>Evaluations</div>
+      @can('create', App\Question::class)
       <div class="collapsible-body"><a href="{{route('evaluations.create')}}">Création</a></div>
+      @endcan
+      @can('passer', App\Question::class)
       <div class="collapsible-body"><a href="{{route('evaluations.index')}}">Commencer</a></div>
-      {{-- <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div> --}}
+      @endcan
     </li>
+    {{-- ------------------done-------------- --}}
+    @can('create', App\Niveau::class)
     <li><div class=" collapsible-header"><i class="material-icons">supervisor_account</i>Professeurs</div>
       <div class="collapsible-body"><a href="{{route('professors.index')}}">Création</a></div>
     </li>
@@ -24,4 +32,5 @@
         <div class="collapsible-body"><a href="{{route('affectationProfessor.index')}}">Professeurs</a></div>
         <div class="collapsible-body"><a href="{{route('affectationStudent.index')}}">Etudiants</a></div>
     </li>
+    @endcan
   </ul>
