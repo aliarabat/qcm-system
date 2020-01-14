@@ -132,14 +132,15 @@ class QuestionController extends Controller
         $quest->difficulte = $difficulte;
         //$quest->save();
         $rep = $request->get('reponses');
-       
+        return response()->json($rep);
+        
         foreach($propositions as $prop => $props){
             $proposition = new Proposition();
             $proposition->question_id=$id;
             $proposition->proposition = $props;
             $proposition->reponse = $rep[$prop];
             
-            $proposition->save();
+            // $proposition->save();
            
         }
         
