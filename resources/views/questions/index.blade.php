@@ -358,6 +358,7 @@ function onUpdateQuestion(id,question,note,difficulte,deleteFromDb) {
                 $("input[name='reponse[]']").each(function() {
                     reponses.push($(this).val());
                 });
+                //console.log(reponses);
             $.ajax({
                 
                 url: "{{route('questions.update')}}",
