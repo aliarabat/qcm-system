@@ -20,7 +20,7 @@
                             </svg>
                         </div>
                         <div class="display-remain-time"></div>
-                        <div id="wholeTime" hidden>{{$qcm['wholeTime']}}</div>
+                        <div id="wholeTime" hidden>{{$qcm->duration}}</div>
                     </div>
             </div>
             <div class="col s12 d-flex align-items-start">
@@ -43,11 +43,12 @@
                     {{-- <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li> --}}
                 </ul>
             </div>
-            <form class="col s12" id="qcm-form" method="POST" data-route="{{route('evaluations.end')}}">
+            <form class="col s12" id="qcm-form" data-route="{{route('evaluations.end')}}">
                 @csrf
+                <input type="hidden" id="quuid" value="{{route('evaluations.passed', ['qcmId'=> $qcm->id])}}"/>
                 @foreach ($qcm['questions'] as $question)
                     <div class="col s10 offset-s1" id="question{{$loop->index}}" style="display: {{$loop->index!=0?'none':''}}">
-                        <h5>Question {{$loop->index+1}}: <span class="flow-text">{{$question->question}}</span><span style="font-size: 10px; color: green;">{{$question->type=='multi'?'Multi choix':'Choix unique'}}</span></h5>
+                        <h5>Question {{$loop->index+1}}: <span class="flow-text">{{$question->question}}</span><span class="badge green white-text" style="float: none">{{$question->type=='multi'?'Multi choix':'Choix unique'}}</span></h5>
                         <input type="hidden" name="question[{{$loop->index}}]['id']" value="{{$question->id}}">
                         @if ($question->type=="unique")
                         <div class="col s10 offset-s1">
@@ -71,7 +72,7 @@
                     </div>
                 @endforeach
                 <div class="col s12 d-flex justify-content-end">
-                    <a href="#modal1" class="btn-flat waves-effect waves-light deep-orange accent-3 white-text tooltipped modal-trigger" data-position="top" data-tooltip="Terminer l'évaluation">Terminer</a>
+                    <a href="#modal1" class="btn-flat waves-effect waves-light deep-orange disabled accent-3 white-text tooltipped modal-trigger" data-position="top" data-tooltip="Terminer l'évaluation">Terminer</a>
                 </div>
             </form>
         </div>

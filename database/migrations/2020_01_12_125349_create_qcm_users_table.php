@@ -15,12 +15,10 @@ class CreateQcmUsersTable extends Migration
     {
         Schema::create('qcm_users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('is_passed');
-            $table->double('note');
+            $table->boolean('is_passed')->default(false);
+            $table->double('note')->default(0);
             $table->unsignedBigInteger('user_id');
-            // $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('qcm_id');
-            // $table->foreign('qcm_id')->references('id')->on('qcms');
             $table->timestamps();
         });
     }

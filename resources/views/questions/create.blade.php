@@ -44,21 +44,17 @@
                     <input type="text" onfocus="this.value=''" name="question" id="question">
                     <label for="question">Question</label>
                 </div>
-                <div class="input-field col s6">
-                    <label>Durée</label>
-                    <input name="duree" id="duree" type="number">
+                <div class="input-field col s6 ">
+                    <input name="note" id="note" type="number" min="0">
+                    <label>Note</label>
                 </div>
-                <div class="input-field col s6">
+                <div class="input-field col s6 offset-s3">
                     <select name="difficulte" id="difficulte">
                         <option value="Facile">Facile</option>
                         <option value="Normal">Normal</option>
                         <option value="Difficile">Difficile</option>
                     </select>
                     <label>Difficulte</label>
-                </div>
-                <div class="input-field col s6">
-                    <input name="note" id="note" type="number" min="0">
-                    <label>Note</label>
                 </div>
             </div>
                 <div class="row">

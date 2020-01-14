@@ -12,7 +12,7 @@
     <li><div class=" collapsible-header"><i class="material-icons">work</i>Evaluations</div>
       <div class="collapsible-body"><a href="{{route('evaluations.create')}}">Création</a></div>
       <div class="collapsible-body"><a href="{{route('evaluations.index')}}">Commencer</a></div>
-      <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div>
+      {{-- <div class="collapsible-body"><a href="{{route('evaluations.start')}}">Evaluer</a></div> --}}
     </li>
     <li><div class=" collapsible-header"><i class="material-icons">supervisor_account</i>Professeurs</div>
       <div class="collapsible-body"><a href="{{route('professors.index')}}">Création</a></div>

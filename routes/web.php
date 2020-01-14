@@ -47,8 +47,9 @@ Route::Get('/mainparts/refreshFilieres', 'MainPartsController@refreshFilieres')-
 //Evaluations routes
 Route::get('/evaluations', 'EvaluationController@index')->name('evaluations.index');
 Route::get('/evaluations/creation', 'EvaluationController@create')->name('evaluations.create');
+Route::post('/evaluations/passed/{qcmId}', 'EvaluationController@passed')->name('evaluations.passed');
+Route::get('/evaluations/commencer/{id}', 'EvaluationController@start')->name('evaluations.start');
 Route::Get('/Evaluation/findByModule', 'EvaluationController@findChapitreByModule')->name('evaluations.findChapitreByModule');
-Route::get('/evaluations/commencer', 'EvaluationController@start')->name('evaluations.start');
 Route::post('/evaluations/terminer', 'EvaluationController@end')->name('evaluations.end');
 Route::post('/evaluations/store', 'EvaluationController@store')->name('evaluations.store');
 
