@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class semestreModule extends Model
 {
-    //
     protected $fillable=['semestre_id','module_id'];
 
     public function module(){

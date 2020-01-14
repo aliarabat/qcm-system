@@ -10,7 +10,9 @@ use App\Proposition;
 use App\Filiere;
 use App\Module;
 use App\Chapitre;
-use App\AssocFiliereModule;
+use App\Semestre;
+use App\SemestreModule;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -60,9 +62,9 @@ class QuestionController extends Controller
             $question->chapitre_id = $chapitre->id;
             //return response()->json('haaa chapitre => '+ $chapitre);
             $question->question = request('question');
-            $question->duree = request('duree');
             $question->difficulte = request('difficulte');
             $question->note = request('note');
+            $question->user()->associate(Auth::user());
 
             if ($counts[1] > 1) {
                 $question->type = 'multi';
@@ -105,7 +107,7 @@ class QuestionController extends Controller
         $semestresFiliere=Semestre::get()->where('filiere_id', $filiereExistant->id);
         $data = array();
         foreach ($semestresFiliere as $semestre) {
-            $array_semestre_module = semestreModule::get()->where('semestre_id', $semestre->id);
+            $array_semestre_module = SemestreModule::get()->where('semestre_id', $semestre->id);
             foreach($array_semestre_module as $semestre_module){
                 $moduleExistant=Module::get()->where('id', $semestre_module->module_id)->first();
                 array_push($data,$moduleExistant );
