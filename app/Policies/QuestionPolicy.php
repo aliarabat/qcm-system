@@ -47,7 +47,11 @@ class QuestionPolicy
 
     public function validate(User $user)
     {
-        return $user->role->name == strtoupper('admin');
+        return $user->role->name == strtoupper('admin') || $user->role->name == strtoupper('professor');
+    }
+    public function passer(User $user)
+    {
+        return $user->role->name == strtoupper('student') ;
     }
 
     /**

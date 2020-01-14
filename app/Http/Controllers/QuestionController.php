@@ -32,6 +32,7 @@ class QuestionController extends Controller
 
     public function index()
     {
+        $this->authorize('create',Question::class);
         return view('questions.index');
     }
 

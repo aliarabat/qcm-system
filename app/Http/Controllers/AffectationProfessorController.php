@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\User;
 use App\Role;
 use App\Niveau;
@@ -10,15 +8,11 @@ use App\Semestre;
 use App\Module;
 use App\semestreModule;
 use App\SemestreModuleProf;
-
 use Illuminate\Http\Request;
-
 class AffectationProfessorController extends Controller
 {
     private $allProfs;
     private $niveaux;
-
-
     public function index()
     {
         //role prof: App\Role::get()->where('name','PROFESSOR')->first()->id
@@ -27,7 +21,6 @@ class AffectationProfessorController extends Controller
         $semestreModuleProfs = SemestreModuleProf::paginate(5);
         return view('affectations.professors.index', ['profs' => $this->allProfs, 'niveaux' => $this->niveaux, 'semestreModuleProfs' => $semestreModuleProfs]);
     }
-
     public function store(Request $request)
     {
         $semestre_module_existant = semestreModule::get()->where('semestre_id', $request->semestre)->where('module_id', $request->module)->first();
@@ -50,7 +43,6 @@ class AffectationProfessorController extends Controller
             return $message;
         }
     }
-
     public function filieresNiveau(Request $request)
     {
         //$this->validate($request, ['niveau' => 'required|exists:niveaux,niveau']);
@@ -75,8 +67,6 @@ class AffectationProfessorController extends Controller
         $semestresData['data'] = $data;
         return json_encode($semestresData);
     }
-
-
     public function modulesSemestre(Request $request)
     {
         //$this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);

@@ -11,8 +11,12 @@
                         <th>Professeur</th>
                         <th>Date de création</th>
                         <th>Vote</th>
+                        @can('create', App\Niveau::class)
                         <th>Etat</th>
+                        @endcan
+                        @can('create', App\Question::class)
                         <th>Voter</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -21,7 +25,9 @@
                         <td>{{$question->question}}</td>
                         <td>{{$question->user->last_name}} {{$question->user->first_name}}</td>
                         <td>{{$question->created_at}}</td>
+
                         <td>{{$question->vote??'Pas encore'}}</td>
+                        @can('create', App\Niveau::class)
                         <td class="d-flex justify-content-between">
                             <p>
                                 <input class="with-gap" onchange="return validate('valid-{{$question->id}}')" type="radio" {{$question->validite=='valid'?'checked':''}} name="validite{{$loop->index}}" id="valid{{$loop->index}}">
@@ -36,12 +42,15 @@
                                 <label for="invalid{{$loop->index}}" class="black-text">Invalide</label>
                             </p>
                         </td>
+                        @endcan
+                        @can('create', App\Question::class)
                         <td>
                             <p>
                                 <input type="checkbox" class="filled-in" id="filled-in-box{{$loop->index}}"/>
                                 <label for="filled-in-box{{$loop->index}}"></label>
                             </p>
                         </td>
+                        @endcan
                     </tr>
                     @empty
                     <tr>

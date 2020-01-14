@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\ProfessorImport;
 use App\Imports\StudentImport;
 use App\Mail\UserCreated;
+use App\Niveau;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -15,11 +16,13 @@ class ProfessorController extends Controller
 {
     public function index()
     {
+        $this->authorize('create',Niveau::class);
         return view('professors.index');
     }
 
     public function store(Request $request)
     {
+        $this->authorize('create',Niveau::class);
         // return response()->json($request->except('_token'));
         $data = $request->except('_token');
         if (count($data) > 2) {
