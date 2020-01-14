@@ -55,7 +55,12 @@ class QuestionController extends Controller
                  $filieres = Filiere::where('id',$semestre->filiere_id)->get();
 
                     foreach($filieres as $filiere){
-                        array_push($filieress,$filiere);
+                        if (in_array($filiere, $filieress)) {
+                            continue;
+                        }
+                        else{
+                            array_push($filieress,$filiere);
+                        }
                }
            } 
         }
@@ -85,6 +90,7 @@ class QuestionController extends Controller
             $question->difficulte = request('difficulte');
             $question->note = request('note');
             $question->user()->associate(Auth::user());
+            $question->vote=0;
 
             if ($counts[1] > 1) {
                 $question->type = 'multi';

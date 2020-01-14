@@ -100,7 +100,12 @@ class EvaluationController extends Controller
                         $semestress = Semestre::where('id', $semestreModule->semestre_id)->get();
 
                         foreach($semestress as $s ){
-                         array_push($semestres, $s);
+                            if (in_array($s, $semestres)) {
+                                continue;
+                            }
+                            else{
+                                array_push($semestres, $s);
+                            }
                      }
                  }
              }
