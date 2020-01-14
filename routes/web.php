@@ -22,8 +22,10 @@ Route::get('/questions/creation', 'QuestionController@create')->name('questions.
 Route::post('/questions/store', 'QuestionController@store')->name('questions.store');
 Route::get('/questions/findModuleByFiliere', 'QuestionController@findModuleByFiliere')->name('questions.findModuleByFiliere');
 Route::get('/questions/findChapitreByModule', 'QuestionController@findChapitreByModule')->name('questions.findChapitreByModule');
+Route::get('/questions/findQuestionByChapitreId', 'QuestionController@findQuestionByChapitreId')->name('questions.findQuestionByChapitreId');
 Route::get('/questions/validations', 'QuestionController@validateQuestions')->name('questions.validations');
 Route::post('/questions/validate', 'QuestionController@changeValidation')->name('questions.changeValidation');
+Route::Delete('/questions/delete', 'QuestionController@deleteQuestionById')->name('questions.deleteQuestionById');
 
 //mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
