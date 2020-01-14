@@ -26,6 +26,7 @@ Route::get('/questions/findPropositionsByQuestionId', 'QuestionController@findPr
 Route::get('/questions/findQuestionByChapitreId', 'QuestionController@findQuestionByChapitreId')->name('questions.findQuestionByChapitreId');
 Route::get('/questions/validations', 'QuestionController@validateQuestions')->name('questions.validations');
 Route::post('/questions/validate', 'QuestionController@changeValidation')->name('questions.changeValidation');
+Route::post('/questions/update', 'QuestionController@update')->name('questions.update');
 Route::Delete('/questions/delete', 'QuestionController@deleteQuestionById')->name('questions.deleteQuestionById');
 
 //mainParts

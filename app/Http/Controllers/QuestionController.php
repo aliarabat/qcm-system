@@ -91,8 +91,35 @@ class QuestionController extends Controller
         return view('questions.edit');
     }
 
-    public function update()
+    public function update(Request $request)
     {
+        $id =  $request->get('question_id');
+        $question =  $request->get('question');
+        $duree =  $request->get('duree');
+        $note =  $request->get('note');
+        $difficulte =  $request->get('difficulte');
+        $propositions =  $request->get('propositions');
+        
+        $quest = Question::find($id);
+        $propositions_to_delete = Proposition::get()->where('question_id',$id);
+        foreach($propositions_to_delete as $p){
+            //$p->delete();
+        }
+        $quest->duree = $duree;
+        $quest->note = $note;
+        $quest->question = $question;
+        $quest->difficulte = $difficulte;
+        $quest->save();
+        $rep = $request->get('reponses');
+        foreach($propositions as $prop => $props){
+            $proposition = new Proposition();
+            $proposition->question()->associate($quest);
+            $proposition->proposition = $props;
+            $proposition->reponse = $rep[$prop];
+            $proposition->save();
+        }
+
+    
     }
     public function destroy()
     {
