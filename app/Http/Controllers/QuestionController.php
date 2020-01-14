@@ -111,8 +111,35 @@ class QuestionController extends Controller
         return view('questions.edit');
     }
 
-    public function update()
+    public function update(Request $request)
     {
+        $id =  $request->get('question_id');
+        $question =  $request->get('question');
+        $duree =  $request->get('duree');
+        $note =  $request->get('note');
+        $difficulte =  $request->get('difficulte');
+        $propositions =  $request->get('propositions');
+        
+        $quest = Question::find($id);
+        $propositions_to_delete = Proposition::get()->where('question_id',$id);
+        foreach($propositions_to_delete as $p){
+            //$p->delete();
+        }
+        $quest->duree = $duree;
+        $quest->note = $note;
+        $quest->question = $question;
+        $quest->difficulte = $difficulte;
+        $quest->save();
+        $rep = $request->get('reponses');
+        foreach($propositions as $prop => $props){
+            $proposition = new Proposition();
+            $proposition->question()->associate($quest);
+            $proposition->proposition = $props;
+            $proposition->reponse = $rep[$prop];
+            $proposition->save();
+        }
+
+    
     }
     public function destroy()
     {
@@ -180,8 +207,8 @@ class QuestionController extends Controller
         $chapitre = Chapitre::get()->where('id', $request->get('chapitre_id'))->first();
         $data = array();
         $questions = [];
-        $questions = Question::get()->where('chapitre_id', $chapitre->id);
-
+        $questions = Question::where('chapitre_id', $chapitre->id)->with('propositions')->get();
+        
         foreach ($questions as $question) {
             array_push($data, $question);
         }
@@ -192,12 +219,17 @@ class QuestionController extends Controller
 
     public function deleteQuestionById(Request $request){
         $propositions = Proposition::get()->where('question_id',$request->get('question_id'));
-        // return response()->json($propositions);
+        
         foreach($propositions as $p){
             $p->delete();
         }
         Question::destroy($request->get('question_id'));
         return response()->json('question deleted ... ! ');
+    }
+    public function findPropositionsByQuestionId(Request $request){
+        $props = Proposition::get()->where('question_id',$request->get('question_id'));
+        $propositions['data']=$props;
+        return json_encode($propositions);
     }
 
 }

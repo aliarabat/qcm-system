@@ -15,7 +15,10 @@ use App\SemestreModuleProf;
 use App\SemestreModule;
 use App\Semestre;
 use App\StudentSemestre;
+use App\Response;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class EvaluationController extends Controller
 {
@@ -36,17 +39,17 @@ class EvaluationController extends Controller
      */
     public function index()
     {
-        $qcm_users = QcmUsers::where(['user_id'=>Auth::user()->id, 'is_passed'=>false])->get();
-        $qcms=[];
+        $qcm_users = QcmUsers::where(['user_id' => Auth::user()->id, 'is_passed' => false])->get();
+        $qcms = [];
         // dd($qcm_users);
         foreach ($qcm_users as  $qcm_user) {
-            $qcm=$qcm_user->qcm;
+            $qcm = $qcm_user->qcm;
             array_push($qcms, $qcm);
         }
         // foreach ($qcms as  $qcm) {
         //     echo $qcm->description;
         // }
-        return view('evaluations.dashboard.students', ['qcms'=>$qcms]);
+        return view('evaluations.dashboard.students', ['qcms' => $qcms]);
     }
 
     public function create()
@@ -142,12 +145,12 @@ class EvaluationController extends Controller
         $data = array();
         $chapitres = [];
         $chapitres = Chapitre::get()->where('module_id', $modules->id);
-            
+
         foreach ($chapitres as $chap) {
             array_push($data, $chap);
         }
         $chapitresData['data'] = $data;
-        
+
         return json_encode($chapitresData);
     }
 
@@ -169,9 +172,9 @@ class EvaluationController extends Controller
             $questions = Question::get()->shuffle()->where('chapitre_id', $chapitres->id)->where('validite', 'valid');
             $qstDiff = Question::get()->where('chapitre_id', $chapitres->id)->where('difficulte', 'Difficile')->where('validite', 'valid');
             $countDiff = $qstDiff->count();
-          
+
             foreach ($questions as $question) {
-            
+
                 if ($question->difficulte == "Difficile") {
                     array_push($data, $question);
                 } else {
@@ -180,13 +183,13 @@ class EvaluationController extends Controller
             }
 
             $countChap = count($chapitress);
-            $diff = (int)($request->input('difficulte')/$countChap);
-            $nbr =$chapitress[$i]["nbrQuestion"];
-            $nbrQstDiff = ceil((($nbr*$diff) / 100));
-            $d =$countDiff- $nbrQstDiff ;
-        
+            $diff = (int) ($request->input('difficulte') / $countChap);
+            $nbr = $chapitress[$i]["nbrQuestion"];
+            $nbrQstDiff = ceil((($nbr * $diff) / 100));
+            $d = $countDiff - $nbrQstDiff;
+
             if ($d >= 0) {
-                $nbrQstFaNo = $nbr - $nbrQstDiff ;
+                $nbrQstFaNo = $nbr - $nbrQstDiff;
             } elseif ($d < 0) {
                 $nbrQstFaNo = ($nbr - $nbrQstDiff) + ($nbrQstDiff - $countDiff);
             }
@@ -234,36 +237,77 @@ class EvaluationController extends Controller
 
     }
 
-
-
-
-    public function start($id)
+    public function start($qcmId)
     {
-        $isPassed=QcmUsers::where(['qcm_id'=>$id, 'user_id'=>Auth::user()->id])->first()->value('is_passed');
+        $isPassed = QcmUsers::where(['qcm_id' => $qcmId, 'user_id' => Auth::user()->id])->first()->value('is_passed');
         if ($isPassed) {
             Auth::logout();
             return redirect()->route('login');
         }
-        $qcm=Qcm::find($id)->first();
-        $qcm['questions']=Question::find($qcm->reference)->get()->shuffle();
+        $qcm = Qcm::find($qcmId)->first();
+        $qcm['questions'] = Question::find($qcm->reference)->get()->shuffle();
         foreach ($qcm['questions'] as $key => $question) {
-            $question->propositions=$question->propositions->shuffle();
+            $question->propositions = $question->propositions->shuffle();
         }
-        
+
         return view('evaluations.evaluate', compact(['qcm']));
     }
 
     public function end(Request $request)
     {
-        $data=$request->input('data');
-        Auth::logout();
-        return redirect()->route('login');
+        if ($request->ajax()) {
+            $data = $request->except('_token');
+            try {
+                $note=0;
+                for ($i = 0; $i < sizeof($data['data']); $i++) {
+                    $choice = $data['data'][$i];
+                    $response=Response::create([
+                        'responses' => implode("-", $choice['propositions']),
+                        'qcm_users_id' => $data['quuid'],
+                        'question_id' => $choice['question_id'],
+                    ]);
+                    // $propositions=Question::find($choice['question_id'])->propositions()->where('reponse', true)->get();
+                    // $responses = [];
+                    // foreach ($propositions as  $prop) {
+                    //     array_push($responses, $prop->id);
+                    // }
+
+                    // $diffs=array_diff($propositions, $choice['propositions']);
+                    // if (count($diffs)==0 && count($choice['propositions'])==count(array_push($responses, $prop->id))) {
+                    //     $note++;
+                    // }
+                }
+
+                // return response()->json($note);
+                Auth::logout();
+                return response()->json(['route' => route('login')]);
+            } catch (Throwable $th) {
+                return response()->json(['status' => 'ERROR']);
+            }
+        }
     }
 
-    public function passed($qcmId){
-        $qcm_user=QcmUsers::where(['qcm_id'=>$qcmId, 'user_id'=>Auth::user()->id])->first();
-        $qcm_user->is_passed=true;
+    public function passed($qcmId)
+    {
+        $qcm_user = QcmUsers::where(['qcm_id' => $qcmId, 'user_id' => Auth::user()->id])->first();
+        $qcm_user->is_passed = true;
         $qcm_user->save();
         return response()->json($qcm_user->is_passed);
+    }
+
+    public function showResults()
+    {
+        $semModuProfs = SemestreModuleProf::where('professor_id', Auth::user()->id)->get();
+        $results = [];
+        foreach ($semModuProfs as $smp) {
+            array_push($results, Qcm::find($smp->id)->first());
+        }
+        return view('evaluations.dashboard.professors', ['qcms' => $results]);
+    }
+
+    public function getResults(Request $request)    
+    {
+        $qcm_users=QcmUsers::where('qcm_id', $request->input('quuid'))->with('user')->get();
+        return response()->json(compact('qcm_users'));
     }
 }

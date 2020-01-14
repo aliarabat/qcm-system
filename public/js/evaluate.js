@@ -1,8 +1,8 @@
 $(function () {
-    window.addEventListener('beforeunload', function (e) {
-        e.preventDefault();
-        e.returnValue = '';
-    });
+    // window.addEventListener('beforeunload', function (e) {
+    //     e.preventDefault();
+    //     e.returnValue = '';
+    // });
     $('body').attr('onload', 'return pauseTimer("event")');
     $.post({
         url: $('#quuid').val(),
@@ -94,17 +94,21 @@ function submitQCM(e = event) {
         url: form.data('route'),
         data: {
             "_token": $('#qcm-form input[name="_token"]').val(),
+            "quuid":$('#quuuid').val(),
             "data": questions
         },
         dataType: 'JSON',
         beforeSend: function () {
             console.log("before send");
-        },
-        error: function (e) {
-            console.log(e);
+            showLoader('#qcm-form a:last-child');
+            $('#modal1').modal('close');
         },
         success: function (data) {
+            // window.location.href=data.route;
             console.log(data);
-        }
+        },
+        error: function (e) {
+            console.log('error');
+        },
     });
 }

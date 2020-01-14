@@ -9,8 +9,9 @@
             <div class="card deep-orange accent-3">
                 <div class="card-content white-text">
                     <span class="card-title">{{$qcm->description}}</span>
-                    <p>Bonjour chers etudiant dans l'évaluation qui vous concerne, vous aurez une seule chance de passer l'examen. 
-                        Si vous etes pret cliquer sur le bouton Commencer.</p>
+                    <span><strong>Durée :</strong> {{$qcm->duration}}min</span><br>
+                    <span><strong>Préparé par :</strong> Prof.{{$qcm->semestreModuleProfessor->professor->last_name}} {{$qcm->semestreModuleProfessor->professor->first_name}}</span><br>
+                    <p>Vous aurez une seule chance de passer cet examen. Si vous êtes prét cliquer sur le bouton ci-dessous.</p>
                 </div>
                 <div class="card-action">
                     <a href="{{route('evaluations.start', ['id'=>$qcm->id])}}" class="btn btn-flat waves-effect waves-light white-text deep-orange accent-4">Commencer</a>

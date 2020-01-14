@@ -8,7 +8,6 @@ use App\Module;
 use App\Niveau;
 use App\Semestre;
 use App\semestreModule;
-use App\User;
 
 use Illuminate\Http\Request;
 
@@ -26,7 +25,6 @@ class MainPartsController extends Controller
     private $modules;
     private $allAssocSemestreModules;
     private $chapitres;
-    private $allProfs;
 
 
     
@@ -37,10 +35,9 @@ class MainPartsController extends Controller
         $this->modules=Module::all();
         $this->allAssocSemestreModules=semestreModule::all();
         $this->chapitres=Chapitre::all();
-        $this->allProfs=User::get()->where('role_id',2);
         return view(
             'mainparts.create',
-            ['modules' => $this->modules, 'filieres' => $this->filieres, 'niveaux' => $this->niveaux,'assocSemestreModule' => $this->allAssocSemestreModules,'chapitres' => $this->chapitres,'profs'=>$this->allProfs]
+            ['modules' => $this->modules, 'filieres' => $this->filieres, 'niveaux' => $this->niveaux,'assocSemestreModule' => $this->allAssocSemestreModules,'chapitres' => $this->chapitres]
         );
     }
 
@@ -254,6 +251,7 @@ class MainPartsController extends Controller
             $selectFiliere = $request->input('filiereModule');
             $infosFiliere = explode("-", $selectFiliere);
             $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($infosFiliere[0]))->first();
+            //$filiereExistant = Filiere::get()->where('id',intval($selectFiliere) )->first();
             $selectedSemestre = $request->input('semestreFiliere');
             $semestreExistant = Semestre::get()->where('libelle', $selectedSemestre)->where('filiere_id', $filiereExistant->id)->first();
             $assocSemestreModule = semestreModule::get()->where('semestre_id', $semestreExistant->id)->where('module_id', $moduleExistant->id)->first();
@@ -280,6 +278,7 @@ class MainPartsController extends Controller
             $selectFiliere = $request->input('filiereModule');
             $infosFiliere = explode("-", $selectFiliere);
             $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($infosFiliere[0]))->first();
+            //$filiereExistant = Filiere::get()->where('id',intval($selectFiliere) )->first();
             $selectedSemestre = $request->input('semestreFiliere');
             $semestreExistant = Semestre::get()->where('libelle',  $selectedSemestre)->where('filiere_id', $filiereExistant->id)->first();
             $moduleExistant = Module::get()->where('nom_module', mb_strtoupper($request->input('nom_module')))->first();
