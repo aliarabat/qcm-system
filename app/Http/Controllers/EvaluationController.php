@@ -63,13 +63,18 @@ class EvaluationController extends Controller
             foreach($semestre_modules as $semestre_module ){
             $semestres = Semestre::where('id',$semestre_module->semestre_id)->get();
 
-                foreach($semestres as $semestre){
-                 $filieres = Filiere::where('id',$semestre->filiere_id)->get();
+            foreach($semestres as $semestre){
+                $filieres = Filiere::where('id',$semestre->filiere_id)->get();
 
-                    foreach($filieres as $filiere){
-                        array_push($filieress,$filiere);
-               }
-           } 
+                   foreach($filieres as $filiere){
+                       if (in_array($filiere, $filieress)) {
+                           continue;
+                       }
+                       else{
+                           array_push($filieress,$filiere);
+                       }
+              }
+          } 
         }
           
         }
@@ -101,7 +106,12 @@ class EvaluationController extends Controller
                         $semestress = Semestre::where('id', $semestreModule->semestre_id)->get();
 
                         foreach($semestress as $s ){
-                         array_push($semestres, $s);
+                            if (in_array($s, $semestres)) {
+                                continue;
+                            }
+                            else{
+                                array_push($semestres, $s);
+                            }
                      }
                  }
              }
@@ -306,9 +316,13 @@ class EvaluationController extends Controller
     {
         $this->authorize('create', Question::class);
         $semModuProfs = SemestreModuleProf::where('professor_id', Auth::user()->id)->get();
-        $results = [];
+        $results = array();
         foreach ($semModuProfs as $smp) {
-            array_push($results, Qcm::find($smp->id)->first());
+            $qcms=Qcm::get()->where('semestre_module_professor_id',$smp->id);
+            foreach($qcms as $qcm){
+                $qcmExistant=Qcm::find($qcm->id);
+                array_push($results,$qcmExistant);
+            }
         }
         return view('evaluations.dashboard.professors', ['qcms' => $results]);
     }

@@ -23,6 +23,8 @@ Route::get('/questions/findPropositionsByQuestionId', 'QuestionController@findPr
 Route::get('/questions/findQuestionByChapitreId', 'QuestionController@findQuestionByChapitreId')->name('questions.findQuestionByChapitreId');
 Route::get('/questions/validations', 'QuestionController@validateQuestions')->name('questions.validations');
 Route::post('/questions/validate', 'QuestionController@changeValidation')->name('questions.changeValidation');
+Route::post('/questions/voted', 'QuestionController@voted')->name('questions.voted');
+Route::post('/questions/devoted', 'QuestionController@devoted')->name('questions.devoted');
 Route::post('/questions/update', 'QuestionController@update')->name('questions.update');
 Route::Delete('/questions/delete', 'QuestionController@deleteQuestionById')->name('questions.deleteQuestionById');
 //mainParts
@@ -69,6 +71,8 @@ Route::post('/etudiants/store', 'StudentController@store')->name('students.store
 //affectations students
 Route::get('/affectation/etudiants', 'AffectationStudentController@index')->name('affectationStudent.index');
 Route::post('/affectation/etudiants/store', 'AffectationStudentController@store')->name('affectationStudent.store');
+Route::Delete('/affectation/etudiants/{idsemestre_student}/desafecterEtudiant', 'AffectationStudentController@desafecterEtudiant')->name('affectationStudent.desafecterEtudiant');
+
 //affectations professors
 Route::get('/affectation/professeurs', 'AffectationProfessorController@index')->name('affectationProfessor.index');
 Route::post('/affectation/professeurs/store', 'AffectationProfessorController@store')->name('affectationProfessor.store');

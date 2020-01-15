@@ -149,10 +149,20 @@ $('#semestre').on('change',function(){
             data: formProfessor.serializeArray(),
             dataType: 'JSON',
             success: function (data) {
-            var $toastContent = $("<span>"+data+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
-            Materialize.toast($toastContent, 3000);
+                if(data=="Nouveau professeur associé à ce module"){
+            //var $toastContent = $("<span>"+data+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+            //Materialize.toast($toastContent, 3000);
+            window.location.reload(true);          
             hideLoader('#form-professor button[type="submit"]', 'Affecter');
             console.log(data)
+                }
+                else{
+            window.location.reload(true);
+            hideLoader('#form-professor button[type="submit"]', 'Affecter');
+            console.log(data)
+
+                }
+            
             },
             error: function () {
                 hideLoader('#form-professor button[type="submit"]', 'Affecter');
@@ -172,6 +182,7 @@ $('#semestre').on('change',function(){
             data: formStudent.serializeArray(),
             dataType: 'JSON',
             success: function (data) {
+            location.reload();
             var $toastContent = $("<span>"+data+"</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
             Materialize.toast($toastContent, 3000);
             hideLoader('#form-student button[type="submit"]', 'Affecter');
@@ -185,4 +196,39 @@ $('#semestre').on('change',function(){
             },
         });
     });
+
+   
+
+
+
 })
+function onDesafecter(id, desafcterFromDb) {
+    if (desafcterFromDb==false) {
+        $("#modal1 input[type='hidden']").val(id);
+        console.log('desafecter modal opened');
+        console.log(id);
+    } else {
+        console.log('Desafecter with ajax');
+        var idsemestre_student=$("#modal1 input[type='hidden']").val();
+        console.log(idsemestre_student);
+        $.ajax({
+       url: "http://127.0.0.1:8000/affectation/etudiants/"+idsemestre_student+"/desafecterEtudiant",
+       dataType: 'JSON',
+       data: {
+        "_token": $('#form-student input[name="_token"]').val()
+        },
+        type: 'DELETE',
+        success:function(result){
+        console.log(result);
+        if(result=1){
+            $( "#affectationStudent" ).load( "http://127.0.0.1:8000/affectation/etudiants #affectationStudent" );
+            $('#modal1').modal('close');
+      
+        }
+        else {
+            alert("affectation introuvable");
+        }
+       }                
+        });      
+        }
+}
