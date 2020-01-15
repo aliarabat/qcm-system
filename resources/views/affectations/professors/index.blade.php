@@ -28,7 +28,7 @@
             <button type="submit" class="btn btn-flat waves-effect waves-light deep-orange accent-3 white-text">Affecter</button>
         </div>
         <div class="col s12">
-            <table class="centered">
+            <table class="centered" id="affectationsProf">
                 <thead>
                     <tr>
                         <th>Professeur</th>

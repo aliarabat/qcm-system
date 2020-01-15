@@ -55,4 +55,17 @@ class AffectationStudentController extends Controller
             return $message;
         }
     }
+
+
+    public function desafecterEtudiant($idsemestre_student){
+        $semestre_student_existant=StudentSemestre::findOrFail($idsemestre_student);
+        if ($semestre_student_existant) {
+            StudentSemestre::destroy($semestre_student_existant->id);
+            return 1;
+          } 
+          else {
+              return -2;
+          }
+
+    }
 }

@@ -22,7 +22,7 @@
             <button type="submit" class="btn btn-flat waves-effect waves-light deep-orange accent-3 white-text">Affecter</button>
         </div>
         <div class="col s12">
-            <table class="centered">
+            <table id="affectationStudent" class="centered">
                 <thead>
                     <tr>
                         <th>Etudiant</th>
@@ -38,7 +38,9 @@
                         <td>{{$stuSem->semestre->libelle}}</td>
                         <td>{{$stuSem->updated_at}}</td>
                         <td>
-                            <button class="btn btn-flat waves-effect waves-light deep-orange accent-3 white-text">Désaffecter</button>
+                            <a href="#modal1" onclick="return onDesafecter({{$stuSem->id}},false)" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Désaffecter">
+                                <div class="material-icons">edit</div>
+                            </a>
                         </td>
                     </tr>
                     @empty
@@ -59,8 +61,23 @@
         @endif
     </form>
 
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Désaffecter étudiant</h4>
+            <p>Voulez-vous vraiment désaffecter cet étudiant?</p>
+            <input type="hidden"/>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+            <a onclick="return onDesafecter(null,true)" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Désaffecter</a>
+            
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
     <script src="{{asset('js/affectations.js')}}"></script>
 @endsection
+
+

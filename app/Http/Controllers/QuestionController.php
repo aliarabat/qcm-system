@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use  App\Http\Controllers\Controller;
 
 use App\Question;
+use App\QuestionProfessor;
+use App\User;
 use App\Proposition;
 use App\Filiere;
 use App\Module;
@@ -207,6 +209,36 @@ class QuestionController extends Controller
 
         $question->validite = $request->input('validity');
         $question->save();
+        return response()->json(['status' => 'UPDATE_SUCCESS']);
+    }
+
+    public function voted(Request $request)
+    {
+        $question = Question::find($request->get('id_question'));
+        if (!$question) {
+            return response()->json(['status' => 'NOT_FOUND']);
+        }
+        $question->vote+=1;
+        $question->save();
+        $currentProf=User::find(Auth::user()->id);
+        $question_prof=new QuestionProfessor();
+        $question_prof->question()->associate($question);
+        $question_prof->professor()->associate($currentProf);
+        $question_prof->save();
+        //$question_prof=QuestionProfessor::get()->where('question_id',$question->id)->where('professor_id',$currentProf->id)->first();
+        return response()->json(['status' => 'UPDATE_SUCCESS']);
+    }
+    public function devoted(Request $request)
+    {
+        $question = Question::find($request->get('id_question'));
+        if (!$question) {
+            return response()->json(['status' => 'NOT_FOUND']);
+        }
+        $question->vote-=1;
+        $question->save();
+        $currentProf=User::find(Auth::user()->id);
+        $question_prof=QuestionProfessor::get()->where('question_id',$question->id)->where('professor_id',$currentProf->id)->first();
+        QuestionProfessor::destroy($question_prof->id);
         return response()->json(['status' => 'UPDATE_SUCCESS']);
     }
 

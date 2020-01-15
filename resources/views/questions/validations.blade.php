@@ -4,7 +4,7 @@
 
     <div class="row z-depth-4 mt-p-1">
         <div class="col s12" >
-            <table class="centered">
+            <table id="tabValidation"class="centered">
                 <thead>
                     <tr>
                         <th>Question</th>
@@ -45,10 +45,18 @@
                         @endcan
                         @can('create', App\Question::class)
                         <td>
+                            @if (App\QuestionProfessor::get()->where('question_id',$question->id)->where('professor_id',Auth::user()->id)->first())
                             <p>
-                                <input type="checkbox" class="filled-in" id="filled-in-box{{$loop->index}}"/>
+                                <input type="checkbox" onchange="return vote({{$question->id}},{{$loop->index}},$('#filled-in-box'+{{$loop->index}}).is(':checked'))" checked class="filled-in" id="filled-in-box{{$loop->index}}"/>
                                 <label for="filled-in-box{{$loop->index}}"></label>
                             </p>
+                            @else
+                            <p>
+                                <input type="checkbox" onchange="return vote({{$question->id}},{{$loop->index}},$('#filled-in-box'+{{$loop->index}}).is(':checked'))" class="filled-in" id="filled-in-box{{$loop->index}}"/>
+                                <label for="filled-in-box{{$loop->index}}"></label>
+                            </p>                            
+                            @endif
+                            
                         </td>
                         @endcan
                     </tr>
@@ -100,6 +108,55 @@
                 console.log(error);
             }
         })
+    }
+
+
+    function vote(id,loopIndex,checked){
+        var id_question=id;
+        //console.log(id)
+        if(checked==true){
+            console.log(1);
+            $.post({
+            url: "{{route('questions.voted')}}",
+            dataType: 'JSON',
+            data: {
+             "_token": '{{csrf_token()}}',
+             "id_question": id_question
+             },
+           success: function( result )
+           {
+            $( "#tabValidation" ).load( "http://127.0.0.1:8000/questions/validations #tabValidation" );
+           },
+           error: function()
+          {
+              //handle errors
+              alert('error...');
+          }
+        });
+
+
+        }
+        else{
+            console.log(2);
+            $.post({
+            url: "{{route('questions.devoted')}}",
+            dataType: 'JSON',
+            data: {
+             "_token": '{{csrf_token()}}',
+             "id_question": id_question
+             },
+           success: function( result )
+           {
+            $( "#tabValidation" ).load( "http://127.0.0.1:8000/questions/validations #tabValidation" );
+           },
+           error: function()
+          {
+              //handle errors
+              alert('error...');
+          }
+        });
+        }
+
     }
     </script>
 @endsection
