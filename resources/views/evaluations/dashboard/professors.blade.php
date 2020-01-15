@@ -24,7 +24,7 @@
                     <td>{{$qcm->duration}} min</td>
                     <td>{{$qcm->nbrQuestion}}</td>
                     <td>
-                        <a href="#modal" onclick="return showQcmDetails({{$qcm->id}});" class="btn-floating btn-small waves-effect waves-light red tooltipped modal-trigger" data-position="top" data-tooltip="Afficher résultats"><i class="material-icons">add</i></a>
+                        <a href="#modal" onclick="return showQcmDetail({{$qcm->id}});" class="btn-floating btn-small waves-effect waves-light red tooltipped modal-trigger" data-position="top" data-tooltip="Afficher résultats"><i class="material-icons">add</i></a>
                     </td>
                 </tr>
             </tbody>
@@ -55,7 +55,7 @@
 
 @section('script')
     <script>
-        function showQcmDetails(qcmId){
+        function showQcmDetail(qcmId){
             $('#modal tbody tr').each(function(index, el) {
                 $(el).remove();
             });
@@ -67,8 +67,8 @@
                },
                dataType: 'JSON',
                success: function(data){
-                   var qcm_users=data.qcm_users;
-                   const total =$('tr#'+qcmId).children('td').eq(4).text();
+                   var qcm_users=data.data.qcm_users;
+                   const total =data.data.noteTotal;
                    qcm_users.forEach(qcm_user => {
                     const row=`<tr>
                             <td>${qcm_user.user.last_name} ${qcm_user.user.first_name}</td>

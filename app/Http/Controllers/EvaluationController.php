@@ -315,7 +315,16 @@ class EvaluationController extends Controller
 
     public function getResults(Request $request)
     {
-        $qcm_users = QcmUsers::where('qcm_id', $request->input('quuid'))->with('user')->get();
-        return response()->json(compact('qcm_users'));
+        $refrence = Qcm::find($request->input('quuid'))->first()->value('reference');
+        $noteTotal = Question::find($refrence)->sum('note');
+        $data['noteTotal']=$noteTotal;
+        $data['qcm_users']=QcmUsers::where('qcm_id', $request->input('quuid'))->with('user')->get();
+        return response()->json(compact('data'));
+    }
+
+    public function counteNote(Request $request)
+    {
+        
+        return response()->json(compact('noteTotal'));
     }
 }
