@@ -4,7 +4,6 @@
     
     <div class="row z-depth-4 mt-p-1">
 
-    @forelse ($qcms as $qcm)
         <table class="centered">
             <thead> 
                 <tr>
@@ -17,6 +16,7 @@
                 </tr>
             </thead>    
             <tbody>
+                @forelse ($qcms as $qcm)
                 <tr id="{{$qcm->id}}">
                     <td>{{$qcm->description}}</td>
                     <td>{{$qcm->created_at}}</td>
@@ -27,11 +27,12 @@
                         <a href="#modal" onclick="return showQcmDetails({{$qcm->id}});" class="btn-floating btn-small waves-effect waves-light red tooltipped modal-trigger" data-position="top" data-tooltip="Afficher résultats"><i class="material-icons">add</i></a>
                     </td>
                 </tr>
-            </tbody>
-        </table>   
-    @empty
+                @empty
         <h4 class="flow-text">Aucun qcm trouvé à ce moment</h4>
     @endforelse
+            </tbody>
+        </table>   
+    
     </div>
 
      <!-- Modal Structure -->
@@ -67,8 +68,8 @@
                },
                dataType: 'JSON',
                success: function(data){
-                   var qcm_users=data.qcm_users;
-                   const total =$('tr#'+qcmId).children('td').eq(4).text();
+                var qcm_users=data.data.qcm_users;
+                   const total =data.data.noteTotal;
                    qcm_users.forEach(qcm_user => {
                     const row=`<tr>
                             <td>${qcm_user.user.last_name} ${qcm_user.user.first_name}</td>

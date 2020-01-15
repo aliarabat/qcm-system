@@ -57,6 +57,7 @@ Route::post('/evaluations/terminer', 'EvaluationController@end')->name('evaluati
 Route::post('/evaluations/store', 'EvaluationController@store')->name('evaluations.store');
 Route::get('/evaluations/resultats', 'EvaluationController@showResults')->name('evaluations.results');
 Route::get('/evaluations/getResults', 'EvaluationController@getResults')->name('evaluations.getResults');
+Route::get('/evaluations/countnote', 'EvaluationController@counteNote')->name('evaluations.countNote');
 //professors
 Route::get('/professeurs', 'ProfessorController@index')->name('professors.index');
 Route::post('/professeurs/store', 'ProfessorController@store')->name('professors.store');
