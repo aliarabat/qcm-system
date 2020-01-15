@@ -12,15 +12,17 @@
                     <th>Date de création</th>
                     <th>Difficulté</th>
                     <th>Durée</th>
+                    <th>Nombre de questions</th>
                     <th>Résultats</th>
                 </tr>
             </thead>    
             <tbody>
-                <tr>
+                <tr id="{{$qcm->id}}">
                     <td>{{$qcm->description}}</td>
                     <td>{{$qcm->created_at}}</td>
                     <td>{{$qcm->difficulty}}%</td>
                     <td>{{$qcm->duration}} min</td>
+                    <td>{{$qcm->nbrQuestion}}</td>
                     <td>
                         <a href="#modal" onclick="return showQcmDetails({{$qcm->id}});" class="btn-floating btn-small waves-effect waves-light red tooltipped modal-trigger" data-position="top" data-tooltip="Afficher résultats"><i class="material-icons">add</i></a>
                     </td>
@@ -35,7 +37,6 @@
      <!-- Modal Structure -->
      <div id="modal" class="modal">
         <div class="modal-content">
-            <h4 class="center-align">Résultats</h4>
             <table>
                 <thead>
                     <tr>
@@ -45,11 +46,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Arabat Ali</td>
-                        <td>12</td>
-                        <td>Passé</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -60,6 +56,9 @@
 @section('script')
     <script>
         function showQcmDetails(qcmId){
+            $('#modal tbody tr').each(function(index, el) {
+                $(el).remove();
+            });
             $.get({
                url: "{{route('evaluations.getResults')}}",
                data: {
@@ -69,20 +68,17 @@
                dataType: 'JSON',
                success: function(data){
                    var qcm_users=data.qcm_users;
-                   $('#modal tbody tr').each(function(index, el) {
-                       $(el).remove();
-                   })
+                   const total =$('tr#'+qcmId).children('td').eq(4).text();
                    qcm_users.forEach(qcm_user => {
                     const row=`<tr>
                             <td>${qcm_user.user.last_name} ${qcm_user.user.first_name}</td>
-                            <td>${qcm_user.note}</td>
+                            <td>${qcm_user.note}/${total}</td>
                             <td>${qcm_user.is_passed==1?'Passé':'Non passé'}</td>
                         </tr>`;
                     $('#modal tbody').append(row);
                    });
                },
                error: function () {
-                    console.log('error');
                 }
             });
         }

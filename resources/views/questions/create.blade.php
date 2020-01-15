@@ -5,10 +5,10 @@
     <form id="question-form" class="row" method="POST" action="{{route('questions.store')}}">
         @csrf
         <div id="question-create-form1" class="col-s12 z-depth-4 mt-p-1">
+            <p class="flow-text center-align">Création des questions</p>
             <div class="row">
                 <div class="input-field col s4">
                     <select name="filiere" id="filiere">
-                            
                         <option value="m1" selected disabled>Filière</option>
                         @forelse ($filieres as $filiere)
                         <option value="{{$filiere->id}}">{{$filiere->nom_filiere}}</option>
@@ -48,7 +48,7 @@
         </div>
         <div id="question-create-form2" class="col-s12 z-depth-4 mt-p-1" hidden>
             <div class="row">
-                <div class="input-field col s6">
+                <div class="input-field col s12">
                     <input type="text" onfocus="this.value=''" name="question" id="question">
                     <label for="question">Question</label>
                 </div>
@@ -56,7 +56,7 @@
                     <input name="note" id="note" type="number" min="0">
                     <label>Note</label>
                 </div>
-                <div class="input-field col s6 offset-s3">
+                <div class="input-field col s6">
                     <select name="difficulte" id="difficulte">
                         <option value="Facile">Facile</option>
                         <option value="Normal">Normal</option>

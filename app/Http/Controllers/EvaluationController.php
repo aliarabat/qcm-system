@@ -44,14 +44,10 @@ class EvaluationController extends Controller
         $qcms=[];
         $qcm_users = QcmUsers::where(['user_id' => Auth::user()->id, 'is_passed' => false])->get();
         $qcms = [];
-        // dd($qcm_users);
         foreach ($qcm_users as  $qcm_user) {
             $qcm = $qcm_user->qcm;
             array_push($qcms, $qcm);
         }
-        // foreach ($qcms as  $qcm) {
-        //     echo $qcm->description;
-        // }
         return view('evaluations.dashboard.students', ['qcms' => $qcms]);
     }
 
@@ -268,27 +264,33 @@ class EvaluationController extends Controller
         if ($request->ajax()) {
             $data = $request->except('_token');
             try {
-                $note=0;
+                $note = 0;
+                $diff = [];
+                $choosenProps = [];
                 for ($i = 0; $i < sizeof($data['data']); $i++) {
                     $choice = $data['data'][$i];
-                    $response=Response::create([
+                    $response = Response::create([
                         'responses' => implode("-", $choice['propositions']),
                         'qcm_users_id' => $data['quuid'],
                         'question_id' => $choice['question_id'],
                     ]);
-                    // $propositions=Question::find($choice['question_id'])->propositions()->where('reponse', true)->get();
-                    // $responses = [];
-                    // foreach ($propositions as  $prop) {
-                    //     array_push($responses, $prop->id);
-                    // }
-
-                    // $diffs=array_diff($propositions, $choice['propositions']);
-                    // if (count($diffs)==0 && count($choice['propositions'])==count(array_push($responses, $prop->id))) {
-                    //     $note++;
-                    // }
+                    $propositions = Question::find($choice['question_id'])->propositions()->where('reponse', true)->get();
+                    $responses = [];
+                    foreach ($propositions as  $prop) {
+                        array_push($responses, $prop->id);
+                    }
+                    $choosenProps = collect($choice['propositions'])->map(function ($val) {
+                        return intval($val);
+                    });
+                    $question=Question::whereId($choice['question_id'])->first();
+                    $diff = $choosenProps->diff(collect($responses));
+                    if (count($diff->all()) == 0 && count($choosenProps) == count($responses)) {
+                        $note += $question->note;
+                    }
                 }
-
-                // return response()->json($note);
+                $qcm_user=QcmUsers::whereId($data['quuid'])->first();
+                $qcm_user->note=$note;
+                $qcm_user->save();
                 Auth::logout();
                 return response()->json(['route' => route('login')]);
             } catch (Throwable $th) {
@@ -307,6 +309,7 @@ class EvaluationController extends Controller
 
     public function showResults()
     {
+        $this->authorize('create', Question::class);
         $semModuProfs = SemestreModuleProf::where('professor_id', Auth::user()->id)->get();
         $results = [];
         foreach ($semModuProfs as $smp) {
@@ -315,9 +318,9 @@ class EvaluationController extends Controller
         return view('evaluations.dashboard.professors', ['qcms' => $results]);
     }
 
-    public function getResults(Request $request)    
+    public function getResults(Request $request)
     {
-        $qcm_users=QcmUsers::where('qcm_id', $request->input('quuid'))->with('user')->get();
+        $qcm_users = QcmUsers::where('qcm_id', $request->input('quuid'))->with('user')->get();
         return response()->json(compact('qcm_users'));
     }
 }

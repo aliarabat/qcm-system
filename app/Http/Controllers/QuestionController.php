@@ -124,7 +124,7 @@ class QuestionController extends Controller
     {
         $id =  $request->get('question_id');
         $question =  $request->get('question');
-        $duree =  $request->get('duree');
+        // $duree =  $request->get('duree');
         $note =  $request->get('note');
         $difficulte =  $request->get('difficulte');
         $propositions =  $request->get('propositions');
@@ -134,20 +134,24 @@ class QuestionController extends Controller
         foreach($propositions_to_delete as $p){
             //$p->delete();
         }
-        $quest->duree = $duree;
+        // $quest->duree = $duree;
         $quest->note = $note;
         $quest->question = $question;
         $quest->difficulte = $difficulte;
-        $quest->save();
+        //$quest->save();
         $rep = $request->get('reponses');
+        return response()->json($rep);
+        
         foreach($propositions as $prop => $props){
             $proposition = new Proposition();
-            $proposition->question()->associate($quest);
+            $proposition->question_id=$id;
             $proposition->proposition = $props;
             $proposition->reponse = $rep[$prop];
-            $proposition->save();
+            
+            // $proposition->save();
+           
         }
-
+        
     
     }
     public function destroy()

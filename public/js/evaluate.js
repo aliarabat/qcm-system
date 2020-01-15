@@ -10,7 +10,7 @@ $(function () {
             '_token': $('#qcm-form input[name="_token"]').val()
         },
         dataType: 'JSON',
-        success: function(data){
+        success: function (data) {
             console.log(data);
         }
     });
@@ -94,7 +94,7 @@ function submitQCM(e = event) {
         url: form.data('route'),
         data: {
             "_token": $('#qcm-form input[name="_token"]').val(),
-            "quuid":$('#quuuid').val(),
+            "quuid": $('#quuuid').val(),
             "data": questions
         },
         dataType: 'JSON',
@@ -104,8 +104,9 @@ function submitQCM(e = event) {
             $('#modal1').modal('close');
         },
         success: function (data) {
-            // window.location.href=data.route;
-            console.log(data);
+            var $toastContent = $('<span>Vous avez terminé avec succées</span>');
+            Materialize.toast($toastContent, 3000);
+            window.location.href = data.route;
         },
         error: function (e) {
             console.log('error');

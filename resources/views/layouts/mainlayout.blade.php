@@ -33,11 +33,11 @@
                     <li class="">
                         <a class="" href="{{ route('login') }}">{{ __('Login') }}</a>
                     </li>
-                    @if (Route::has('register'))
+                    {{-- @if (Route::has('register'))
                         <li class="">
                             <a class="" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
-                    @endif
+                    @endif --}}
                 @else
                     <li class="">
                         <a id="" class="" href="#"  >

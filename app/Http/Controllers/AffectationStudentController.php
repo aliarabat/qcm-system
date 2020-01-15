@@ -13,6 +13,7 @@ class AffectationStudentController extends Controller
     private $niveaux;
     public function index()
     {
+        $this->authorize('create',Niveau::class);
         $this->allStudents = User::get()->where('role_id', 3);
         $this->niveaux = Niveau::all();
         $studentSemestres = StudentSemestre::paginate(5);
