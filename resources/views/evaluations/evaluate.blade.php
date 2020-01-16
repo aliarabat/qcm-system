@@ -4,7 +4,7 @@
     <div class="row z-depth-4 mt-p-1" id="Hello" onload="alert('wakhdmmmet');">
         <div class="col-s12">
             <div class="col s12 d-flex justify-content-between align-items-center">
-                <h4>Evaluation de Web</></h4>
+                <h4>{{$qcm->description}}</></h4>
                     <div class="controlls">
                         <div class="circle">
                             <svg width="120" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
@@ -82,8 +82,8 @@
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
         <div class="modal-content">
-            <h4>Terminition</h4>
-            <p>Voulez-vous vraiment treminer cet évaluation?</p>
+            <h4>Fin de l'évaluation</h4>
+            <p>Voulez-vous vraiment treminer cette évaluation?</p>
             <input type="hidden"/>
         </div>
         <div class="modal-footer">

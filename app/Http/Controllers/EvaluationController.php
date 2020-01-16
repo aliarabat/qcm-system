@@ -39,47 +39,45 @@ class EvaluationController extends Controller
      */
     public function index()
     {
-        $this->authorize('passer',Question::class);
-        $qcm_users = QcmUsers::where(['user_id'=>Auth::user()->id, 'is_passed'=>false])->get();
-        $qcms=[];
-        $qcm_users = QcmUsers::where(['user_id' => Auth::user()->id, 'is_passed' => false])->get();
+        $this->authorize('passer', Question::class);
         $qcms = [];
+        $qcm_users = QcmUsers::where(['user_id' => Auth::user()->id, 'is_passed' => false])->get();
+        // dd($qcm_users);
         foreach ($qcm_users as  $qcm_user) {
             $qcm = $qcm_user->qcm;
             array_push($qcms, $qcm);
         }
+        // dd($qcms);
         return view('evaluations.dashboard.students', ['qcms' => $qcms]);
     }
 
     public function create()
     {
-        $this->authorize('create',Question::class);
+        $this->authorize('create', Question::class);
         $modules = Module::all();
-        $filieress=[];
-        $semestre_module_profs = SemestreModuleProf::where('professor_id',Auth::user()->id)->get();
-        foreach($semestre_module_profs as $semestre_module_prof ){
-            $semestre_modules = SemestreModule::where('id',$semestre_module_prof->semestre_module_id)->get();
+        $filieress = [];
+        $semestre_module_profs = SemestreModuleProf::where('professor_id', Auth::user()->id)->get();
+        foreach ($semestre_module_profs as $semestre_module_prof) {
+            $semestre_modules = SemestreModule::where('id', $semestre_module_prof->semestre_module_id)->get();
 
-            foreach($semestre_modules as $semestre_module ){
-            $semestres = Semestre::where('id',$semestre_module->semestre_id)->get();
+            foreach ($semestre_modules as $semestre_module) {
+                $semestres = Semestre::where('id', $semestre_module->semestre_id)->get();
 
-            foreach($semestres as $semestre){
-                $filieres = Filiere::where('id',$semestre->filiere_id)->get();
+                foreach ($semestres as $semestre) {
+                    $filieres = Filiere::where('id', $semestre->filiere_id)->get();
 
-                   foreach($filieres as $filiere){
-                       if (in_array($filiere, $filieress)) {
-                           continue;
-                       }
-                       else{
-                           array_push($filieress,$filiere);
-                       }
-              }
-          } 
-        }
-          
+                    foreach ($filieres as $filiere) {
+                        if (in_array($filiere, $filieress)) {
+                            continue;
+                        } else {
+                            array_push($filieress, $filiere);
+                        }
+                    }
+                }
+            }
         }
         //return response()->json( $test);
-        
+
         return view(
             'evaluations.create',
             ['filieres' => $filieress]
@@ -92,34 +90,33 @@ class EvaluationController extends Controller
         $semestres = [];
         $this->validate($request, ['filiere_id' => 'required|exists:semestres,filiere_id']);
         $semestres1 = Semestre::where('filiere_id', mb_strtoupper($request->get('filiere_id')))->get();
-         foreach ($semestres1 as $semestre) {
-             $semestre_modules = SemestreModule::where('semestre_id', $semestre->id)->get();
+        foreach ($semestres1 as $semestre) {
+            $semestre_modules = SemestreModule::where('semestre_id', $semestre->id)->get();
 
-             foreach ($semestre_modules as $semestre_module) {
-                 $semestreModuleProfs = SemestreModuleProf::get()->where('professor_id', Auth::user()->id)->where('semestre_module_id', $semestre_module->id);
+            foreach ($semestre_modules as $semestre_module) {
+                $semestreModuleProfs = SemestreModuleProf::get()->where('professor_id', Auth::user()->id)->where('semestre_module_id', $semestre_module->id);
 
-                 foreach ($semestreModuleProfs as $semestreModuleProf) {
+                foreach ($semestreModuleProfs as $semestreModuleProf) {
 
-                     $semestreModules = SemestreModule::where('id', $semestreModuleProf->semestre_module_id)->get();
+                    $semestreModules = SemestreModule::where('id', $semestreModuleProf->semestre_module_id)->get();
 
-                     foreach ($semestreModules as $semestreModule) {
+                    foreach ($semestreModules as $semestreModule) {
                         $semestress = Semestre::where('id', $semestreModule->semestre_id)->get();
 
-                        foreach($semestress as $s ){
+                        foreach ($semestress as $s) {
                             if (in_array($s, $semestres)) {
                                 continue;
-                            }
-                            else{
+                            } else {
                                 array_push($semestres, $s);
                             }
-                     }
-                 }
-             }
-         }
+                        }
+                    }
+                }
+            }
         }
         $semestresData['data'] = $semestres;
         //return response()->json( ($request->get('filiere_id')));
-       return json_encode($semestresData);
+        return json_encode($semestresData);
     }
 
     public function findModuleBySemestre(Request $request)
@@ -127,26 +124,25 @@ class EvaluationController extends Controller
         $modules = [];
         $this->validate($request, ['semestre_id' => 'required|exists:semestre_modules,semestre_id']);
         $semestre_modules1 =  SemestreModule::where('semestre_id', mb_strtoupper($request->get('semestre_id')))->get();
-             foreach ($semestre_modules1 as $semestre_module1) {
-                 $semestreModuleProfs = SemestreModuleProf::get()->where('professor_id', Auth::user()->id)->where('semestre_module_id', $semestre_module1->id);
+        foreach ($semestre_modules1 as $semestre_module1) {
+            $semestreModuleProfs = SemestreModuleProf::get()->where('professor_id', Auth::user()->id)->where('semestre_module_id', $semestre_module1->id);
 
-                 foreach ($semestreModuleProfs as $semestreModuleProf) {
+            foreach ($semestreModuleProfs as $semestreModuleProf) {
 
-                     $semestreModules2 = SemestreModule::where('id', $semestreModuleProf->semestre_module_id)->get();
+                $semestreModules2 = SemestreModule::where('id', $semestreModuleProf->semestre_module_id)->get();
 
-                     foreach ($semestreModules2 as $semestreModule2) {
-                        $moduless = Module::where('id', $semestreModule2->module_id)->get();
-                        
-                        foreach($moduless as $m ){
-                         array_push($modules, $m);
-                     }
-                 
-             }
-         }
+                foreach ($semestreModules2 as $semestreModule2) {
+                    $moduless = Module::where('id', $semestreModule2->module_id)->get();
+
+                    foreach ($moduless as $m) {
+                        array_push($modules, $m);
+                    }
+                }
+            }
         }
         $modulessData['data'] = $modules;
         //return response()->json( ($request->get('filiere_id')));
-       return json_encode( $modulessData);
+        return json_encode($modulessData);
     }
 
     public function findChapitreByModule(Request $request)
@@ -167,19 +163,19 @@ class EvaluationController extends Controller
 
     public function store(Request $request)
     {
-      
+
         $datac = $request->all();
-        $chapitress = $datac['chapitres'] ;
-       
-           
-            $questionsData = [];
-            for ($i = 0; $i < sizeof($chapitress); $i++) {
+        $chapitress = $datac['chapitres'];
+
+
+        $questionsData = [];
+        for ($i = 0; $i < sizeof($chapitress); $i++) {
             $data = [];
             $questionsFN = [];
             $questions = [];
             $chapitre = $chapitress[$i]["chapitre"];
             $chapitres = Chapitre::get()->where('nom_chapitre', mb_strtoupper($chapitre))->first();
-       
+
             $questions = Question::get()->shuffle()->where('chapitre_id', $chapitres->id)->where('validite', 'valid');
             $qstDiff = Question::get()->where('chapitre_id', $chapitres->id)->where('difficulte', 'Difficile')->where('validite', 'valid');
             $countDiff = $qstDiff->count();
@@ -205,58 +201,52 @@ class EvaluationController extends Controller
                 $nbrQstFaNo = ($nbr - $nbrQstDiff) + ($nbrQstDiff - $countDiff);
             }
 
-            $questionsData =array_merge($questionsData,array_slice($questionsFN, 0, $nbrQstFaNo), array_slice($data, 0, $nbrQstDiff));
-         
-       
+            $questionsData = array_merge($questionsData, array_slice($questionsFN, 0, $nbrQstFaNo), array_slice($data, 0, $nbrQstDiff));
         }
         $module = Module::get()->where('nom_module', $request->input('module'))->first();
-        $semestre_module =  SemestreModule::get()->where('semestre_id', $request->input('semestre'))->where('module_id',$module->id)->first();
-        $semestre_module_prof =$semestreModuleProfs = SemestreModuleProf::get()->where('semestre_module_id', $semestre_module->id)->first();
+        $semestre_module =  SemestreModule::get()->where('semestre_id', $request->input('semestre'))->where('module_id', $module->id)->first();
+        $semestre_module_prof = $semestreModuleProfs = SemestreModuleProf::get()->where('semestre_module_id', $semestre_module->id)->first();
         $qcm = new QCM();
-        $qcm->semestre_module_professor_id	=  $semestre_module_prof->id;
-        $qcm -> description = $request->input('description');
+        $qcm->semestre_module_professor_id    =  $semestre_module_prof->id;
+        $qcm->description = $request->input('description');
         $qcm->duration = $request->input('duree');
         $qcm->difficulty = $request->input('difficulte');
         $qcm->nbrQuestion = sizeof($questionsData);
 
-           $ref = "";
-            for($i = 0; $i < sizeof($questionsData); $i++){
-                $qst=$questionsData[$i];
-                if(sizeof($questionsData)-1 == $i){
-                    $ref .=$qst->id;
-                }else{
-                    $ref .=$qst->id."-"; 
-                }
-
-                 
+        $ref = "";
+        for ($i = 0; $i < sizeof($questionsData); $i++) {
+            $qst = $questionsData[$i];
+            if (sizeof($questionsData) - 1 == $i) {
+                $ref .= $qst->id;
+            } else {
+                $ref .= $qst->id . "-";
             }
-            $qcm->reference = $ref;
+        }
+        $qcm->reference = $ref;
 
         $qcm->save();
 
         $student_semestres =  StudentSemestre::get()->where('semestre_id', $request->input('semestre'));
 
-        foreach($student_semestres as $student_semestre){
+        foreach ($student_semestres as $student_semestre) {
             $qcmUsers = new QcmUsers();
-            $qcmUsers->	qcm_id = $qcm->id;
-            $qcmUsers-> user_id	= $student_semestre->student_id; 
+            $qcmUsers->qcm_id = $qcm->id;
+            $qcmUsers->user_id    = $student_semestre->student_id;
             $qcmUsers->save();
-
         }
-
-
-
     }
 
     public function start($qcmId)
     {
-        $isPassed = QcmUsers::where(['qcm_id' => $qcmId, 'user_id' => Auth::user()->id])->first()->value('is_passed');
-        if ($isPassed) {
+        $qcm_user = QcmUsers::where(['qcm_id' => $qcmId, 'user_id' => Auth::user()->id])->first();
+        // dd($qcm_user);
+        if ($qcm_user->is_passed) {
             Auth::logout();
             return redirect()->route('login');
         }
-        $qcm = Qcm::find($qcmId)->first();
-        $qcm['questions'] = Question::find($qcm->reference)->get()->shuffle();
+        $qcm = Qcm::whereId($qcmId)->first();
+        $questionsIds = explode('-', $qcm->reference);
+        $qcm['questions'] = Question::whereIn('id', $questionsIds)->get()->shuffle();
         foreach ($qcm['questions'] as $key => $question) {
             $question->propositions = $question->propositions->shuffle();
         }
@@ -275,26 +265,28 @@ class EvaluationController extends Controller
                 for ($i = 0; $i < sizeof($data['data']); $i++) {
                     $choice = $data['data'][$i];
                     $response = Response::create([
-                        'responses' => implode("-", $choice['propositions']),
+                        'responses' => $choice['propositions']!=""?implode("-", $choice['propositions']):"",
                         'qcm_users_id' => $data['quuid'],
                         'question_id' => $choice['question_id'],
                     ]);
                     $propositions = Question::find($choice['question_id'])->propositions()->where('reponse', true)->get();
                     $responses = [];
-                    foreach ($propositions as  $prop) {
-                        array_push($responses, $prop->id);
-                    }
-                    $choosenProps = collect($choice['propositions'])->map(function ($val) {
-                        return intval($val);
-                    });
-                    $question=Question::whereId($choice['question_id'])->first();
-                    $diff = $choosenProps->diff(collect($responses));
-                    if (count($diff->all()) == 0 && count($choosenProps) == count($responses)) {
-                        $note += $question->note;
+                    if (count($choice['propositions']) > 0) {
+                        foreach ($propositions as  $prop) {
+                            array_push($responses, $prop->id);
+                        }
+                        $choosenProps = collect($choice['propositions'])->map(function ($val) {
+                            return intval($val);
+                        });
+                        $question = Question::whereId($choice['question_id'])->first();
+                        $diff = $choosenProps->diff(collect($responses));
+                        if (count($diff->all()) == 0 && count($choosenProps) == count($responses)) {
+                            $note += $question->note;
+                        }
                     }
                 }
-                $qcm_user=QcmUsers::whereId($data['quuid'])->first();
-                $qcm_user->note=$note;
+                $qcm_user = QcmUsers::where(['qcm_id' => $data['quuid'], 'user_id' => Auth::user()->id])->first();
+                $qcm_user->note = $note;
                 $qcm_user->save();
                 Auth::logout();
                 return response()->json(['route' => route('login')]);
@@ -318,10 +310,10 @@ class EvaluationController extends Controller
         $semModuProfs = SemestreModuleProf::where('professor_id', Auth::user()->id)->get();
         $results = array();
         foreach ($semModuProfs as $smp) {
-            $qcms=Qcm::get()->where('semestre_module_professor_id',$smp->id);
-            foreach($qcms as $qcm){
-                $qcmExistant=Qcm::find($qcm->id);
-                array_push($results,$qcmExistant);
+            $qcms = Qcm::get()->where('semestre_module_professor_id', $smp->id);
+            foreach ($qcms as $qcm) {
+                $qcmExistant = Qcm::find($qcm->id);
+                array_push($results, $qcmExistant);
             }
         }
         return view('evaluations.dashboard.professors', ['qcms' => $results]);
@@ -329,16 +321,12 @@ class EvaluationController extends Controller
 
     public function getResults(Request $request)
     {
-        $refrence = Qcm::find($request->input('quuid'))->first()->value('reference');
-        $noteTotal = Question::find($refrence)->sum('note');
-        $data['noteTotal']=$noteTotal;
-        $data['qcm_users']=QcmUsers::where('qcm_id', $request->input('quuid'))->with('user')->get();
+        // dd($request->input('quuid'));
+        $qcm = Qcm::whereId($request->input('quuid'))->first();
+        $questions = explode('-', $qcm->reference);
+        $noteTotal = Question::whereIn('id', $questions)->sum('note');
+        $data['noteTotal'] = $noteTotal;
+        $data['qcm_users'] = QcmUsers::where('qcm_id', $request->input('quuid'))->with('user')->get();
         return response()->json(compact('data'));
-    }
-
-    public function counteNote(Request $request)
-    {
-        
-        return response()->json(compact('noteTotal'));
     }
 }
