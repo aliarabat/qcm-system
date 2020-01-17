@@ -41,6 +41,7 @@ class ProfessorController extends Controller
             $user->save();
             Mail::to($user)->send(new UserCreated($user, $generatePwd, 'professeur'));
 
+
             return response()->json(['status' => 'CREATED_SUCCESSFULLY']);
         }
 
