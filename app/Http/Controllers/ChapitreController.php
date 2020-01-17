@@ -5,44 +5,45 @@ namespace App\Http\Controllers;
 use App\Chapitre;
 use App\Filiere;
 use App\Module;
-use App\Niveau;
 use App\Semestre;
 use App\semestreModule;
-
 use Illuminate\Http\Request;
 
-class MainPartsController extends Controller
+class ChapitreController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->authorizeResource(Niveau::class, 'create');
-
-    }
-
-    private $niveaux;
+    //
     private $filieres;
-    private $modules;
-    private $allAssocSemestreModules;
     private $chapitres;
 
 
-    public function create()
+    public function showChapitre()
     {
-        $this->niveaux = Niveau::all();
         $this->filieres = Filiere::all();
-        $this->modules = Module::all();
-        $this->allAssocSemestreModules = semestreModule::all();
         $this->chapitres = Chapitre::all();
         return view(
-            'mainparts.create',
-            ['modules' => $this->modules, 'filieres' => $this->filieres, 'niveaux' => $this->niveaux, 'assocSemestreModule' => $this->allAssocSemestreModules, 'chapitres' => $this->chapitres]
+            'mainparts.chapitre',
+            ['filieres' => $this->filieres, 'chapitres' => $this->chapitres]
         );
     }
 
+    //Génération du select module par la filiere
 
-
+    public function modulesFiliere(Request $request)
+    {
+        $this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
+        $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nom_filiere')))->first();
+        $semestresFiliere = Semestre::get()->where('filiere_id', $filiereExistant->id);
+        $data = array();
+        foreach ($semestresFiliere as $semestre) {
+            $array_semestre_module = semestreModule::get()->where('semestre_id', $semestre->id);
+            foreach ($array_semestre_module as $semestre_module) {
+                $moduleExistant = Module::get()->where('id', $semestre_module->module_id)->first();
+                array_push($data, $moduleExistant);
+            }
+        }
+        $modulesData['data'] = $data;
+        return json_encode($modulesData);
+    }
 
     //Création d'un nouveau chapitre
 
@@ -106,36 +107,4 @@ class MainPartsController extends Controller
         }
     }
 
-
-    //Génération du select module par la filiere
-
-    public function modulesFiliere(Request $request)
-    {
-        $this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
-        $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nom_filiere')))->first();
-        $semestresFiliere = Semestre::get()->where('filiere_id', $filiereExistant->id);
-        $data = array();
-        foreach ($semestresFiliere as $semestre) {
-            $array_semestre_module = semestreModule::get()->where('semestre_id', $semestre->id);
-            foreach ($array_semestre_module as $semestre_module) {
-                $moduleExistant = Module::get()->where('id', $semestre_module->module_id)->first();
-                array_push($data, $moduleExistant);
-            }
-        }
-        $modulesData['data'] = $data;
-        return json_encode($modulesData);
-    }
-
-    public function semestresFiliere(Request $request)
-    {
-        $this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
-        $filiereExistant = Filiere::get()->where('nom_filiere', mb_strtoupper($request->get('nom_filiere')))->first();
-        $semestresFiliere = Semestre::get()->where('filiere_id', $filiereExistant->id);
-        $data = array();
-        foreach ($semestresFiliere as $semestre) {
-            array_push($data, $semestre);
-        }
-        $semestresData['data'] = $data;
-        return json_encode($semestresData);
-    }
 }

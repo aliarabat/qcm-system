@@ -30,18 +30,9 @@ Route::Delete('/questions/delete', 'QuestionController@deleteQuestionById')->nam
 //mainParts
 Route::get('/mainparts', 'MainPartsController@create')->name('mainParts.create');
 Route::Get('/mainparts/modulesFiliere', 'MainPartsController@modulesFiliere')->name('mainParts.modulesFiliere');
-Route::Get('/mainparts/semestresFiliere', 'MainPartsController@semestresFiliere')->name('mainParts.semestresFiliere');
-Route::Post('/mainparts/filiere', 'MainPartsController@createFiliere')->name('mainParts.createFiliere');
-Route::Post('/mainparts/module', 'MainPartsController@createModule')->name('mainParts.createModule');
 Route::Post('/mainparts/chapitre', 'MainPartsController@createChapitre')->name('mainParts.createChapitre');
-Route::Post('/mainparts/{idFiliere}/updateFiliere', 'MainPartsController@updateFiliere')->name('mainParts.updateFiliere');
-Route::Delete('/mainparts/{idFiliere}/deleteFiliere', 'MainPartsController@deleteFiliere')->name('mainParts.deleteFiliere');
-Route::Get('/mainparts/refreshNiveaux', 'MainPartsController@refreshNiveaux')->name('mainParts.refreshNiveaux');
-Route::Post('/mainparts/{idModule}/updateModule', 'MainPartsController@updateModule')->name('mainParts.updateModule');
-Route::Delete('/mainparts/{idModule}/deleteModule', 'MainPartsController@deleteModule')->name('mainParts.deleteModule');
 Route::Post('/mainparts/{idChapitre}/updateChapitre', 'MainPartsController@updateChapitre')->name('mainParts.updateChapitre');
 Route::Delete('/mainparts/{idChapitre}/deleteChapitre', 'MainPartsController@deleteChapitre')->name('mainParts.deleteChapitre');
-Route::Get('/mainparts/refreshFilieres', 'MainPartsController@refreshFilieres')->name('mainParts.refreshFilieres');
 //Niveau
 Route::get('/mainparts/niveau', 'NiveauController@showNiveau')->name('mainParts.niveau');
 Route::Post('/mainparts/niveau', 'NiveauController@createNiveau')->name('mainParts.niveau.createNiveau');
@@ -54,7 +45,19 @@ Route::Post('/mainparts/filiere', 'FiliereController@createFiliere')->name('main
 Route::Post('/mainparts/filiere/{idFiliere}/updateFiliere', 'FiliereController@updateFiliere')->name('mainParts.filiere.updateFiliere');
 Route::Delete('/mainparts/filiere/{idFiliere}/deleteFiliere', 'FiliereController@deleteFiliere')->name('mainParts.filiere.deleteFiliere');
 
+//Module
+Route::get('/mainparts/module', 'ModuleController@showModule')->name('mainParts.module');
+Route::get('/mainparts/module/semestresFiliere', 'ModuleController@semestresFiliere')->name('mainParts.module.semestresFiliere');
+Route::Post('/mainparts/module', 'ModuleController@createModule')->name('mainParts.module.createModule');
+Route::Post('/mainparts/module/{idModule}/updateModule', 'ModuleController@updateModule')->name('mainParts.module.updateModule');
+Route::Delete('/mainparts/module/{idModule}/deleteModule', 'ModuleController@deleteModule')->name('mainParts.module.deleteModule');
 
+//Chapitre
+Route::get('/mainparts/chapitre', 'ChapitreController@showChapitre')->name('mainParts.chapitre');
+Route::get('/mainparts/chapitre/modulesFiliere', 'ChapitreController@modulesFiliere')->name('mainParts.chapitre.modulesFiliere');
+Route::Post('/mainparts/chapitre', 'ChapitreController@createChapitre')->name('mainParts.chapitre.createChapitre');
+Route::Post('/mainparts/chapitre/{idChapitre}/updateChapitre', 'ChapitreController@updateChapitre')->name('mainParts.chapitre.updateChapitre');
+Route::Delete('/mainparts/chapitre/{idChapitre}/deleteChapitre', 'ChapitreController@deleteChapitre')->name('mainParts.chapitre.deleteChapitre');
 
 
 
