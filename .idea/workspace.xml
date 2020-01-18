@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="24e7b242-b205-4334-b2e2-57afe07c85b5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MainPartsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MainPartsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mainparts/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mainparts/create.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,7 +215,7 @@
       <workItem from="1577195480181" duration="1453000" />
       <workItem from="1577521555907" duration="1494000" />
       <workItem from="1579254677357" duration="15402000" />
-      <workItem from="1579348993363" duration="3168000" />
+      <workItem from="1579348993363" duration="3418000" />
     </task>
     <task id="LOCAL-00001" summary="init auth">
       <created>1575674878663</created>
@@ -296,7 +294,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579276488927</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="just finished the re-organization of the mainpart &amp; make a unique entrance">
+      <created>1579352504261</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1579352504261</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -313,17 +318,18 @@
     <MESSAGE value="begin to re-organized the mainparts" />
     <MESSAGE value="begin to re-organized the mainparts added controllers and js to each part" />
     <MESSAGE value="re-organized the mainparts added controllers and js to each part" />
-    <option name="LAST_COMMIT_MESSAGE" value="re-organized the mainparts added controllers and js to each part" />
+    <MESSAGE value="just finished the re-organization of the mainpart &amp; make a unique entrance" />
+    <option name="LAST_COMMIT_MESSAGE" value="just finished the re-organization of the mainpart &amp; make a unique entrance" />
   </component>
   <component name="WindowStateProjectService">
     <state x="421" y="146" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1579276023715">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="421" y="146" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.768@0.0.1366.768" timestamp="1579276023715" />
-    <state x="294" y="0" key="CommitChangelistDialog2" timestamp="1579276488649">
+    <state x="294" y="0" key="CommitChangelistDialog2" timestamp="1579352503561">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="294" y="0" key="CommitChangelistDialog2/0.0.1366.768@0.0.1366.768" timestamp="1579276488649" />
+    <state x="294" y="0" key="CommitChangelistDialog2/0.0.1366.768@0.0.1366.768" timestamp="1579352503561" />
     <state x="507" y="314" key="NewPhpFileDialog" timestamp="1579273958622">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -341,5 +347,9 @@
     </state>
     <state x="428" y="233" key="com.intellij.ide.util.TipDialog/0.0.1366.768@0.0.1366.768" timestamp="1579348995407" />
     <state x="501" y="273" key="com.intellij.ide.util.TipDialog/0.0.1600.900@0.0.1600.900" timestamp="1575219830333" />
+    <state x="397" y="164" key="git4idea.merge.GitPullDialog" timestamp="1579352586456">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="397" y="164" key="git4idea.merge.GitPullDialog/0.0.1366.768@0.0.1366.768" timestamp="1579352586456" />
   </component>
 </project>
