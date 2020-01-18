@@ -34,10 +34,11 @@ Route::Post('/mainparts/chapitre', 'MainPartsController@createChapitre')->name('
 Route::Post('/mainparts/{idChapitre}/updateChapitre', 'MainPartsController@updateChapitre')->name('mainParts.updateChapitre');
 Route::Delete('/mainparts/{idChapitre}/deleteChapitre', 'MainPartsController@deleteChapitre')->name('mainParts.deleteChapitre');
 //Niveau
-Route::get('/mainparts/niveau', 'NiveauController@showNiveau')->name('mainParts.niveau');
-Route::Post('/mainparts/niveau', 'NiveauController@createNiveau')->name('mainParts.niveau.createNiveau');
-Route::Post('/mainparts/niveau/{idNiveau}/updateNiveau', 'NiveauController@updateNiveau')->name('mainParts.niveau.updateNiveau');
-Route::Delete('/mainparts/niveau/{idNiveau}/deleteNiveau', 'NiveauController@deleteNiveau')->name('mainParts.niveau.deleteNiveau');
+Route::get('/mainparts/niveau/niveaux', 'NiveauController@showNiveaux')->name('mainParts.niveau.niveaux');
+Route::get('/mainparts/niveau/createNiveau', 'CreateNiveauController@showCreateNiveau')->name('mainParts.niveau.createNiveau');
+Route::Post('/mainparts/niveau/createNiveau', 'CreateNiveauController@create')->name('mainParts.niveau.createNiveau.create');
+Route::Post('/mainparts/niveau/niveaux/{idNiveau}/updateNiveau', 'NiveauController@updateNiveau')->name('mainParts.niveau.updateNiveau');
+Route::Delete('/mainparts/niveau/niveaux/{idNiveau}/deleteNiveau', 'NiveauController@deleteNiveau')->name('mainParts.niveau.deleteNiveau');
 
 //Filiere
 Route::get('/mainparts/filiere', 'FiliereController@showFiliere')->name('mainParts.filiere');
@@ -58,7 +59,6 @@ Route::get('/mainparts/chapitre/modulesFiliere', 'ChapitreController@modulesFili
 Route::Post('/mainparts/chapitre', 'ChapitreController@createChapitre')->name('mainParts.chapitre.createChapitre');
 Route::Post('/mainparts/chapitre/{idChapitre}/updateChapitre', 'ChapitreController@updateChapitre')->name('mainParts.chapitre.updateChapitre');
 Route::Delete('/mainparts/chapitre/{idChapitre}/deleteChapitre', 'ChapitreController@deleteChapitre')->name('mainParts.chapitre.deleteChapitre');
-
 
 
 //Evaluations routes

@@ -14,33 +14,15 @@ class NiveauController extends Controller
     //
     private $niveaux;
 
-    public function showNiveau()
+    public function showNiveaux()
     {
         $this->niveaux = Niveau::all();
         return view(
-            'mainparts.niveau',
+            'mainparts.niveau.niveaux',
             ['niveaux' => $this->niveaux,]
         );
     }
 
-    //Création d'un nouveau niveau
-
-    public function createNiveau(Request $request)
-    {
-        $niveauExistant = Niveau::get()->where('niveau', mb_strtoupper($request->input('niveau')))->where('type', mb_strtoupper($request->input('type')))->first();
-        if ($niveauExistant) {
-            $messagePane = 'Ce Niveau est déjà créé';
-            return $messagePane;
-        } else {
-            $niveau = new Niveau();
-            $niveau->niveau = mb_strtoupper($request->input('niveau'));
-            $niveau->type = mb_strtoupper($request->input('type'));
-            $niveau->save();
-            $messagePane = 'Le Niveau a été créé';
-            return $messagePane;
-
-        }
-    }
 
     public function updateNiveau(Request $request, $idNiveau)
     {
