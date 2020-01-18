@@ -1,7 +1,7 @@
 <ul id="slide-out" class="side-nav collapsible" data-collapsible="accordion">
     <li><div class=" collapsible-header"><i class="material-icons">dashboard</i>QCM</div>
       @can('create', App\Question::class)
-      <div class="collapsible-body"><a href="{{route('questions.index')}}">Mes questions</a></div>
+      {{-- <div class="collapsible-body"><a href="{{route('questions.index')}}">Mes questions</a></div> --}}
       <div class="collapsible-body"><a href="{{route('questions.create')}}">Création des questions</a></div>
       @endcan
       @can('create', App\Niveau::class)
