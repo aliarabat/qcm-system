@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24e7b242-b205-4334-b2e2-57afe07c85b5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MainPartsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MainPartsController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/mainparts/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mainparts/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +169,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -218,7 +216,8 @@
       <workItem from="1575901740814" duration="3318000" />
       <workItem from="1577195480181" duration="1453000" />
       <workItem from="1577521555907" duration="1494000" />
-      <workItem from="1579254677357" duration="14922000" />
+      <workItem from="1579254677357" duration="15402000" />
+      <workItem from="1579348993363" duration="3168000" />
     </task>
     <task id="LOCAL-00001" summary="init auth">
       <created>1575674878663</created>
@@ -290,7 +289,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579263386856</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="re-organized the mainparts added controllers and js to each part">
+      <created>1579276488927</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1579276488927</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -306,29 +312,34 @@
     <MESSAGE value="modifications before the presentation" />
     <MESSAGE value="begin to re-organized the mainparts" />
     <MESSAGE value="begin to re-organized the mainparts added controllers and js to each part" />
-    <option name="LAST_COMMIT_MESSAGE" value="begin to re-organized the mainparts added controllers and js to each part" />
+    <MESSAGE value="re-organized the mainparts added controllers and js to each part" />
+    <option name="LAST_COMMIT_MESSAGE" value="re-organized the mainparts added controllers and js to each part" />
   </component>
   <component name="WindowStateProjectService">
     <state x="421" y="146" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1579276023715">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="421" y="146" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.768@0.0.1366.768" timestamp="1579276023715" />
-    <state x="294" y="0" key="CommitChangelistDialog2" timestamp="1579263386625">
+    <state x="294" y="0" key="CommitChangelistDialog2" timestamp="1579276488649">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="294" y="0" key="CommitChangelistDialog2/0.0.1366.768@0.0.1366.768" timestamp="1579263386625" />
+    <state x="294" y="0" key="CommitChangelistDialog2/0.0.1366.768@0.0.1366.768" timestamp="1579276488649" />
     <state x="507" y="314" key="NewPhpFileDialog" timestamp="1579273958622">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="507" y="314" key="NewPhpFileDialog/0.0.1366.768@0.0.1366.768" timestamp="1579273958622" />
+    <state x="192" y="23" key="SettingsEditor" timestamp="1579348709241">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="192" y="23" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1579348709241" />
     <state x="283" y="124" key="Vcs.Push.Dialog.v2" timestamp="1579255009903">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="283" y="124" key="Vcs.Push.Dialog.v2/0.0.1366.768@0.0.1366.768" timestamp="1579255009903" />
-    <state x="428" y="233" key="com.intellij.ide.util.TipDialog" timestamp="1579254686264">
+    <state x="428" y="233" key="com.intellij.ide.util.TipDialog" timestamp="1579348995407">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="428" y="233" key="com.intellij.ide.util.TipDialog/0.0.1366.768@0.0.1366.768" timestamp="1579254686264" />
+    <state x="428" y="233" key="com.intellij.ide.util.TipDialog/0.0.1366.768@0.0.1366.768" timestamp="1579348995407" />
     <state x="501" y="273" key="com.intellij.ide.util.TipDialog/0.0.1600.900@0.0.1600.900" timestamp="1575219830333" />
   </component>
 </project>
