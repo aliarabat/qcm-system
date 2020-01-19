@@ -8,11 +8,11 @@
         <nav style="background-color: white">
             <div class="nav-wrapper col s12">
                 <ul id="nav-mobile" class="center hide-on-med-and-down " style="background-color: white">
-                    <li class="col s3"><a style="color: orangered" href="{{route('mainParts.niveau.niveaux')}}">NIVEAU</a></li>
-                    <li class="col s3"><a style="color: orangered" href="{{route('mainParts.filiere')}}">FILIÈRE</a>
+                    <li class="col s3"><a style="color: orangered" href="{{route('mainParts.niveau.niveaux')}}">NIVEAUX</a></li>
+                    <li class="col s3"><a style="color: orangered" href="{{route('mainParts.filiere')}}">FILIÈRES</a>
                     </li>
-                    <li class="col s3"><a style="color: orangered" href="{{route('mainParts.module')}}">MODULE</a></li>
-                    <li class="col s3"><a style="color: orangered" href="{{route('mainParts.chapitre')}}">CHAPITRE</a>
+                    <li class="col s3"><a style="color: orangered" href="{{route('mainParts.module')}}">MODULES</a></li>
+                    <li class="col s3"><a style="color: orangered" href="{{route('mainParts.chapitre')}}">CHAPITRES</a>
                     </li>
                 </ul>
             </div>

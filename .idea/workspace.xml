@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24e7b242-b205-4334-b2e2-57afe07c85b5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/NiveauController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/NiveauController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/niveau.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/niveau.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CreateNiveauController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CreateNiveauController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/createNiveau.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/createNiveau.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/mainparts/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mainparts/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mainparts/niveau.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mainparts/niveau/niveaux.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mainparts/niveau/createNiveau.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mainparts/niveau/createNiveau.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mainparts/niveau/niveaux.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mainparts/niveau/niveaux.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,12 +147,6 @@
       <path value="$PROJECT_DIR$/vendor/phpoffice/phpspreadsheet" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-11" />
-    <option name="y" value="-17" />
-    <option name="width" value="1346" />
-    <option name="height" value="688" />
-  </component>
   <component name="ProjectId" id="1ULa4RyfXKCwaTy2a4MQezfViQw" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -167,7 +162,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../task_app" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -222,6 +217,8 @@
       <workItem from="1577521555907" duration="1494000" />
       <workItem from="1579254677357" duration="15402000" />
       <workItem from="1579348993363" duration="7158000" />
+      <workItem from="1579372732547" duration="865000" />
+      <workItem from="1579446596789" duration="4308000" />
     </task>
     <task id="LOCAL-00001" summary="init auth">
       <created>1575674878663</created>
@@ -348,6 +345,26 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="294" y="0" key="CommitChangelistDialog2/0.0.1366.768@0.0.1366.768" timestamp="1579352617898" />
+    <state x="580" y="206" key="FileChooserDialogImpl" timestamp="1579448171773">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state x="580" y="206" key="FileChooserDialogImpl/0.0.1600.900@0.0.1600.900" timestamp="1579448171773" />
+    <state width="1557" height="215" key="GridCell.Tab.0.bottom" timestamp="1579372886550">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="1557" height="215" key="GridCell.Tab.0.bottom/0.0.1600.900@0.0.1600.900" timestamp="1579372886550" />
+    <state width="1557" height="215" key="GridCell.Tab.0.center" timestamp="1579372886550">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="1557" height="215" key="GridCell.Tab.0.center/0.0.1600.900@0.0.1600.900" timestamp="1579372886550" />
+    <state width="1557" height="215" key="GridCell.Tab.0.left" timestamp="1579372886550">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="1557" height="215" key="GridCell.Tab.0.left/0.0.1600.900@0.0.1600.900" timestamp="1579372886550" />
+    <state width="1557" height="215" key="GridCell.Tab.0.right" timestamp="1579372886550">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="1557" height="215" key="GridCell.Tab.0.right/0.0.1600.900@0.0.1600.900" timestamp="1579372886550" />
     <state x="507" y="314" key="NewPhpFileDialog" timestamp="1579354002306">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -360,11 +377,11 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="283" y="124" key="Vcs.Push.Dialog.v2/0.0.1366.768@0.0.1366.768" timestamp="1579352637679" />
-    <state x="428" y="233" key="com.intellij.ide.util.TipDialog" timestamp="1579348995407">
-      <screen x="0" y="0" width="1366" height="768" />
+    <state x="501" y="273" key="com.intellij.ide.util.TipDialog" timestamp="1579446639596">
+      <screen x="0" y="0" width="1600" height="900" />
     </state>
     <state x="428" y="233" key="com.intellij.ide.util.TipDialog/0.0.1366.768@0.0.1366.768" timestamp="1579348995407" />
-    <state x="501" y="273" key="com.intellij.ide.util.TipDialog/0.0.1600.900@0.0.1600.900" timestamp="1575219830333" />
+    <state x="501" y="273" key="com.intellij.ide.util.TipDialog/0.0.1600.900@0.0.1600.900" timestamp="1579446639596" />
     <state x="397" y="164" key="git4idea.merge.GitPullDialog" timestamp="1579352586456">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

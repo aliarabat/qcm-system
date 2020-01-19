@@ -1,10 +1,25 @@
 @extends('layouts.mainLayout')
 @section('mainContent')
     <meta name="csrf-token" content="{!! csrf_token() !!}">
-    <div class="row z-depth-4 mt-p-1" style="padding-top: 12%">
+    <div class="row z-depth-4 mt-p-1" style="padding-top: 10%">
+        @if(session()->has('status'))
+            <script>
+                var $toastContent = $("<span>{{session()->get('status')}}</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
+                Materialize.toast($toastContent, 3000, 'rounded');
+            </script>
+        @endif
+        <br>
         <span
-            style="padding-left: 42%;padding-bottom: 5%; font-family: 'Raleway',sans-serif; font-size: 40px; font-weight: 800; line-height: 72px; margin: 0 0 24px; text-align: center; text-transform: uppercase; ">Niveaux</span>
+            style="padding-left: 40%;padding-bottom: 5%; font-family: 'Raleway',sans-serif; font-size: 40px; font-weight: 800; line-height: 72px; margin: 0 0 24px; text-align: center; text-transform: uppercase; ">Niveaux</span>
         <br><br><br>
+        <div class="row" style="display: flex; padding-left: 36.5%;">
+
+            <a class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text"
+               href="{{route('mainParts.niveau.createNiveau')}}"> <i class="material-icons right">add</i>
+                Ajout d'un nouveau Niveau</a>
+
+        </div>
+        <br>
         <div id="niveau" class="col s12">
             <!-- list des Niveaux-->
             <div class="row">
