@@ -1,4 +1,4 @@
-$(function () {
+/*$(function () {
     if ($("#niveau-form").length > 0) {
         $("#niveau-form").validate({
 
@@ -68,4 +68,4 @@ $(function () {
     }
 
 
-});
+});*/

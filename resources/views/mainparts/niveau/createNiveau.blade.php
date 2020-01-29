@@ -9,7 +9,8 @@
 
             <div style="display: flex; align-items: center;">
 
-                <form id="niveau-form" method="post" class="col s12">
+                <form id="niveau-form" method="post" action="{{route('mainParts.niveau.createNiveau.create')}}"
+                      class="col s12">
                     @csrf
 
                     <div class="input-field col s6 ">
@@ -21,7 +22,8 @@
                         <label for="typeIn">Type</label>
                     </div>
                     <div class="col s2 offset-s5">
-                        <button id="niveauSubmit" type="submit" value="{{route('mainParts.niveau.createNiveau.create')}}"
+                        <button id="niveauSubmit" type="submit"
+                                value="{{route('mainParts.niveau.createNiveau.create')}}"
                                 class="btn waves-effect waves-light btn-flat white-text deep-orange accent3">Créer
                         </button>
                     </div>
