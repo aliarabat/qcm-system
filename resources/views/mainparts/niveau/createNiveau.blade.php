@@ -1,6 +1,26 @@
 @extends('layouts.mainLayout')
 @section('mainContent')
     <div class="row z-depth-4 mt-p-1" style="padding-top: 12%">
+        @if($message = Session::get('status'))
+     
+
+        <div class="alert" style="padding: 20px;
+        background-color: #f44336;
+        color: white;
+        margin-bottom: 15px;">
+            <span class="closebtn" style="margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;" onclick="this.parentElement.style.display='none';">&times;</span>
+            {{ $message }}
+          </div>
+            
+        @endif
+        <br>
         <span
             style="padding-left: 18%;padding-bottom: 5%; font-family: 'Raleway',sans-serif; font-size: 40px; font-weight: 800; line-height: 72px; margin: 0 0 24px; text-align: center; text-transform: uppercase; ">Ajout d'un nouveau niveau</span>
         <br><br><br>

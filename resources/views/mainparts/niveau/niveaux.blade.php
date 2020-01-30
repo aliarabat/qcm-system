@@ -2,21 +2,55 @@
 @section('mainContent')
     <meta name="csrf-token" content="{!! csrf_token() !!}">
     <div class="row z-depth-4 mt-p-1" style="padding-top: 10%">
-        @if(session()->has('status'))
-            <script>
-                var $toastContent = $("<span>{{session()->get('status')}}</span>").add($('<button class="btn-flat toast-action">Annuler</button>'));
-                Materialize.toast($toastContent, 3000, 'rounded');
-            </script>
+        @if($message = Session::get('status'))
+     
+
+        <div class="alert" style="padding: 20px;
+        background-color: green;
+        color: white;
+        margin-bottom: 15px;">
+            <span class="closebtn" style="margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;" onclick="this.parentElement.style.display='none';">&times;</span>
+            {{ $message }}
+          </div>
+            
         @endif
         <br>
         <span
             style="padding-left: 40%;padding-bottom: 5%; font-family: 'Raleway',sans-serif; font-size: 40px; font-weight: 800; line-height: 72px; margin: 0 0 24px; text-align: center; text-transform: uppercase; ">Niveaux</span>
         <br><br><br>
-        <div class="row" style="display: flex; padding-left: 36.5%;">
-
-            <a class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text"
-               href="{{route('mainParts.niveau.createNiveau')}}"> <i class="material-icons right">add</i>
-                Ajout d'un nouveau Niveau</a>
+        <div class="row" >
+<div class="col s12">
+    <div class="col s6">
+        <a class="btn-flat waves-effect waves-light deep-orange accent-3 btn-small white-text"
+        href="{{route('mainParts.niveau.createNiveau')}}"> <i class="material-icons right">add</i>
+         Ajout d'un nouveau Niveau</a>
+    </div>
+    <div class="col s6">
+        <nav style="background-color: orangered;height:40px">
+        <div class="nav-wrapper">
+            <form>
+              <div class="input-field">
+                <input id="search" type="search" required>
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                <i class="material-icons">close</i>
+              </div>
+            </form>
+          </div>
+        </nav>
+    </div>
+   
+                
+                    
+                
+</div>
+            
 
         </div>
         <br>
