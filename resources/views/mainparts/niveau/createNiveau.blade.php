@@ -1,8 +1,8 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 @section('mainContent')
     <div class="row z-depth-4 mt-p-1" style="padding-top: 12%">
         @if($message = Session::get('status'))
-     
+
 
         <div class="alert" style="padding: 20px;
         background-color: #f44336;
@@ -18,7 +18,7 @@
             transition: 0.3s;" onclick="this.parentElement.style.display='none';">&times;</span>
             {{ $message }}
           </div>
-            
+
         @endif
         <br>
         <span

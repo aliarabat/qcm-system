@@ -6,7 +6,7 @@ use App\Chapitre;
 use App\Filiere;
 use App\Module;
 use App\Semestre;
-use App\semestreModule;
+use App\SemestreModule;
 use Illuminate\Http\Request;
 
 class ChapitreController extends Controller
@@ -35,7 +35,7 @@ class ChapitreController extends Controller
         $semestresFiliere = Semestre::get()->where('filiere_id', $filiereExistant->id);
         $data = array();
         foreach ($semestresFiliere as $semestre) {
-            $array_semestre_module = semestreModule::get()->where('semestre_id', $semestre->id);
+            $array_semestre_module = SemestreModule::get()->where('semestre_id', $semestre->id);
             foreach ($array_semestre_module as $semestre_module) {
                 $moduleExistant = Module::get()->where('id', $semestre_module->module_id)->first();
                 array_push($data, $moduleExistant);

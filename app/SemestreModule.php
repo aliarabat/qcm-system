@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class semestreModule extends Model
+class SemestreModule extends Model
 {
     protected $fillable=['semestre_id','module_id'];
 
@@ -14,5 +14,5 @@ class semestreModule extends Model
     public function semestre(){
         return $this->belongsTo(Semestre::class);
     }
-   
+
 }

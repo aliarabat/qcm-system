@@ -1,4 +1,4 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 @section('mainContent')
 
 
@@ -18,23 +18,23 @@
                 </select>
                     <label for="module">Filière</label>
                 </div>
-    
+
                 <div class="input-field col s4">
                     <select name="semestre" id="semestre">
-    
+
                 </select>
                     <label for="semestre">Semestre</label>
                 </div>
-    
+
                    <div class="input-field col s4" id="moduleChap">
                             <select  name="moduleChap" id="moduleChap">
-                                   
+
                             </select>
                             <label>Module</label>
                         </div>
                         <div class="input-field col s4">
                                 <select name="chapitre" id="chapitre">
-                                       
+
                                 </select>
                                 <label>Chapitre</label>
                             </div>
@@ -72,7 +72,7 @@
                             <label>Réponse 1</label>
                         </div>
                         <p class="">
-    
+
                         <input id="hidden" type="hidden" name="reponse[0]" value="0" >
                         <input name="reponse[0]"  type="checkbox" class="filled-in" id="check0"  value="1">
                             <label for="check0"></label>
@@ -97,10 +97,10 @@
                         Créer
                     </button>
                 </div>
-    
-         
+
+
     </form>
-    
+
 @endsection
 <!--Script de la génération du select modules par filiere-->
 
@@ -120,14 +120,14 @@ $.ajax({
 
     "_token": "{{ csrf_token() }}",
      "filiere_id": filiere_id,
-     
+
      },
    type: 'GET',
    dataType: 'JSON',
    success: function( result )
    {
      var len = 0;
-          
+
      if(result['data'] != null){
             len = result['data'].length;
             $('select[name="semestre"]').empty();
@@ -136,7 +136,7 @@ $.ajax({
       for( var i = 0; i<len; i++){
                  var id = result['data'][i].id;
                   var name = result['data'][i].libelle;
-                 s+='<option value="' + id  + '">' + name + '</option>'; 
+                 s+='<option value="' + id  + '">' + name + '</option>';
                  $('select[name="semestre"]').html(s);
                  $('select[name="semestre"]').material_select();
                  console.log(name);
@@ -146,7 +146,7 @@ $.ajax({
   {
       //handle errors
       alert('error...');
-  
+
   }
 });
 
@@ -167,14 +167,14 @@ $.ajax({
 
     "_token": "{{ csrf_token() }}",
      "semestre_id": semestre_id,
-     
+
      },
    type: 'GET',
    dataType: 'JSON',
    success: function( result )
    {
      var len = 0;
-          
+
      if(result['data'] != null){
             len = result['data'].length;
             $('select[name="moduleChap"]').empty();
@@ -183,7 +183,7 @@ $.ajax({
       for( var i = 0; i<len; i++){
                  var id = result['data'][i].id;
                   var name = result['data'][i].nom_module;
-                 s+='<option value="' + name  + '">' + name + '</option>'; 
+                 s+='<option value="' + name  + '">' + name + '</option>';
                  $('select[name="moduleChap"]').html(s);
                  $('select[name="moduleChap"]').material_select();
                  console.log(name);
@@ -193,7 +193,7 @@ $.ajax({
   {
       //handle errors
       alert('error...');
-  
+
   }
 });
 
@@ -219,12 +219,12 @@ $.ajax({
     //         console.log(len);
 
     //              if(len!=0){
-                  
+
     //                var s='<option value="m1" selected disabled>Module</option>';
     //                for( var i = 0; i<len; i++){
     //                     var id = result['data'][i].id;
     //                     var name = result['data'][i].nom_module;
-    //                     s+='<option value="' + name + '">' + name + '</option>'; 
+    //                     s+='<option value="' + name + '">' + name + '</option>';
     //                     $('select[name="moduleChap"]').html(s);
     //                     $('select[name="moduleChap"]').material_select();
     //                 }
@@ -233,7 +233,7 @@ $.ajax({
     //                 var s='<option value="m1" selected disabled>Module</option>';
     //                 $('select[name="moduleChap"]').html(s);
     //                 $('select[name="moduleChap"]').material_select();
-    //              }             
+    //              }
     //       },
     //       error: function()
     //      {
@@ -250,21 +250,21 @@ $('#moduleChap').on('change',function(){
    var sel = document.getElementById('moduleChap');
    var nom_module = $("#moduleChap option:selected").val();
    console.log(nom_module);
-   
+
 
    $.ajax({
        url: "{{route('questions.findChapitreByModule')}}",
        dataType: 'JSON',
       data: {
         "nom_module": nom_module,
-        
+
         },
       type: 'GET',
       dataType: 'JSON',
       success: function( result )
       {
         var len = 0;
-             
+
         if(result['data'] != null){
                len = result['data'].length;
                $('select[name="chapitre"]').empty();
@@ -273,57 +273,57 @@ $('#moduleChap').on('change',function(){
          for( var i = 0; i<len; i++){
                     var id = result['data'][i].id;
                      var name = result['data'][i].nom_chapitre;
-                    s+='<option value="'+ name +'">' + name + '</option>'; 
+                    s+='<option value="'+ name +'">' + name + '</option>';
                     console.log(name)
                     $('select[name="chapitre"]').html(s);
                     $('select[name="chapitre"]').material_select();
-                    
+
                 }
       },
       error: function()
      {
          //handle errors
          alert('error...');
-     
+
      }
    });
 
-   
+
 });
 
 if ($("#question-form").length > 0) {
     $("#question-form").validate({
-      
+
     rules: {
         question: {
         required: true,
         maxlength: 100,
       },
-  
+
       duree: {
             required: true,
             digits:true,
             min: 1,
-           
+
         },
         difficulte: {
                 required: true,
                 maxlength: 50,
-            },   
+            },
             note: {
                 required: true,
                 number:true,
                 max: 20,
                 min: 1,
-            }, 
+            },
             'proposition[]': {
                 required: true,
-                
-            },  
-            
+
+            },
+
     },
     messages: {
-        
+
         question: {
         required: "Please enter question",
       },
@@ -331,22 +331,22 @@ if ($("#question-form").length > 0) {
         required: "Please enter duree",
         digits: "Please enter only numbers",
         min:"Please enter duration greater than or equal to 1",
-         
+
       },
       difficulte: {
           required: "Please enter difficulte",
-        
+
         },
         note: {
           required: "Please enter note",
           max:"Please enter note less than or equal to 20",
           min:"Please enter note greater than or equal to 1",
-          
+
         },
         'propostion[]': {
           required: "Please enter proposition",
         },
-        
+
     },
     errorElement : 'div',
         errorPlacement: function(error, element) {
@@ -373,8 +373,8 @@ if ($("#question-form").length > 0) {
             $('#res_message').show();
             $('#res_message').html(response.msg);
             $('#msg_div').removeClass('d-none');
- 
-           //document.getElementById("question-create-form2").empty(); 
+
+           //document.getElementById("question-create-form2").empty();
            $('[id^=response]').each(function(index){
                if(index!=0){
                    $(this).remove()
@@ -387,7 +387,7 @@ if ($("#question-form").length > 0) {
            $( '#question' ).val("");
            $( '#duree' ).val("");
            $( '#note' ).val("");
-          
+
             setTimeout(function(){
             $('#res_message').hide();
             $('#msg_div').hide();
@@ -395,12 +395,12 @@ if ($("#question-form").length > 0) {
         }
       });
 
-      
+
     }
   })
 }
 
-    $('#chapitre').on('change', function (e) { 
+    $('#chapitre').on('change', function (e) {
         var chapitreValue=$(this).val();
         if (chapitreValue!=='') {
             $('#arrow-forward').removeAttr('disabled');

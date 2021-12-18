@@ -1,9 +1,9 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 @section('mainContent')
     <meta name="csrf-token" content="{!! csrf_token() !!}">
     <div class="row z-depth-4 mt-p-1" style="padding-top: 10%">
         @if($message = Session::get('status'))
-     
+
 
         <div class="alert" style="padding: 20px;
         background-color: green;
@@ -19,7 +19,7 @@
             transition: 0.3s;" onclick="this.parentElement.style.display='none';">&times;</span>
             {{ $message }}
           </div>
-            
+
         @endif
         <br>
         <span
@@ -45,12 +45,12 @@
           </div>
         </nav>
     </div>
-   
-                
-                    
-                
+
+
+
+
 </div>
-            
+
 
         </div>
         <br>

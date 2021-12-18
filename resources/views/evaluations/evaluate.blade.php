@@ -38,7 +38,7 @@
                         @else
                         <li id="pg{{$loop->index}}" class="waves-effect"><a onclick="return changeQuestion('question{{$loop->index}}')">{{$loop->index+1}}</a></li>
                         @endif
-                        
+
                     @endforeach
                     {{-- <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li> --}}
                 </ul>

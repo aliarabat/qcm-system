@@ -1,4 +1,4 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 
 @section('mainContent')
 
@@ -70,7 +70,7 @@
         <div class="modal-footer">
             <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
             <a onclick="return onDesafecter(null,true)" class="waves-effect waves-light btn-flat deep-orange accent-4 white-text">Désaffecter</a>
-            
+
         </div>
     </div>
 

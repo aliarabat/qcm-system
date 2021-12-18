@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Filiere;
 use App\Module;
 use App\Semestre;
-use App\semestreModule;
+use App\SemestreModule;
 use Illuminate\Http\Request;
 
 class ModuleController extends Controller
@@ -17,7 +17,7 @@ class ModuleController extends Controller
 
     public function showModule()
     {
-        $this->allAssocSemestreModules = semestreModule::all();
+        $this->allAssocSemestreModules = SemestreModule::all();
         $this->filieres = Filiere::all();
         return view(
             'mainparts.module',
@@ -50,14 +50,14 @@ class ModuleController extends Controller
             //$filiereExistant = Filiere::get()->where('id',intval($selectFiliere) )->first();
             $selectedSemestre = $request->input('semestreFiliere');
             $semestreExistant = Semestre::get()->where('libelle', $selectedSemestre)->where('filiere_id', $filiereExistant->id)->first();
-            $assocSemestreModule = semestreModule::get()->where('semestre_id', $semestreExistant->id)->where('module_id', $moduleExistant->id)->first();
+            $assocSemestreModule = SemestreModule::get()->where('semestre_id', $semestreExistant->id)->where('module_id', $moduleExistant->id)->first();
             if ($assocSemestreModule) {
                 $messagePane = 'Ce module est déjà associé à cette filière pour un semestre';
                 return $messagePane;
             } else {
                 //$semestreId = $semestreExistant->id;
                 //$moduleId=$moduleExistant->id;
-                $assocSemestreModuleNew = new semestreModule();
+                $assocSemestreModuleNew = new SemestreModule();
                 $assocSemestreModuleNew->semestre()->associate($semestreExistant);
                 $assocSemestreModuleNew->module()->associate($moduleExistant);
                 $assocSemestreModuleNew->save();
@@ -80,7 +80,7 @@ class ModuleController extends Controller
             $moduleExistant = Module::get()->where('nom_module', mb_strtoupper($request->input('nom_module')))->first();
             //$semestreId = $semestreExistant->id;
             //$moduleId=$moduleExistant->id;
-            $assocSemestreModuleNew = new semestreModule();
+            $assocSemestreModuleNew = new SemestreModule();
             $assocSemestreModuleNew->semestre()->associate($semestreExistant);
             $assocSemestreModuleNew->module()->associate($moduleExistant);
             $assocSemestreModuleNew->save();
@@ -124,10 +124,10 @@ class ModuleController extends Controller
     {
         $moduleExistant = Module::findOrFail($idModule);
         if ($moduleExistant) {
-            $assocsSemestreModule = semestreModule::get()->where('module_id', $idModule);
+            $assocsSemestreModule = SemestreModule::get()->where('module_id', $idModule);
             $data = array();
             foreach ($assocsSemestreModule as $assocSemModule) {
-                semestreModule::destroy($assocSemModule->id);
+                SemestreModule::destroy($assocSemModule->id);
             }
             Module::destroy($moduleExistant->id);
             return 1;

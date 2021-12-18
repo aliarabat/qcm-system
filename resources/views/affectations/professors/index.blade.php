@@ -1,4 +1,4 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 
 @section('mainContent')
 
@@ -16,7 +16,7 @@
         @include('layouts.forms.affectationform')
         <div class="input-field col s6">
             <select name="module" id="module">
-        
+
             </select>
             <label for="module">Module</label>
         </div>

@@ -1,4 +1,4 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 @section('mainContent')
     <div class="row z-depth-4 mt-p-1">
         <!--Chapitre-->

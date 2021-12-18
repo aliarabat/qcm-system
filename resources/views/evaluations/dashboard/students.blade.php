@@ -1,7 +1,7 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 
 @section('mainContent')
-    
+
     <div class="row z-depth-4 mt-p-1">
 
     @forelse ($qcms as $qcm)
@@ -17,7 +17,7 @@
                     <a href="{{route('evaluations.start', ['id'=>$qcm->id])}}" class="btn btn-flat waves-effect waves-light white-text deep-orange accent-4">Commencer</a>
                 </div>
             </div>
-        </div>    
+        </div>
     @empty
         <h4 class="flow-text center-align">Aucun qcm trouvé à ce moment</h4>
     @endforelse

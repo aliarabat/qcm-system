@@ -1,4 +1,4 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 
 @section('mainContent')
 
@@ -7,7 +7,7 @@
         <div id="niveau" class="col s12" >
             <div style="display: flex; align-items: center;">
                 <form data-route="{{route('questions.findQuestionByChapitreId')}}" class="col s12" >
-                    @csrf  
+                    @csrf
                     <div class="input-field col s6 ">
                         <select name="nom_module" id="nom_module">
                             <option value="">select module</option>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="input-field col s6">
                         <select name="chapitre" id="chapitre">
-                            
+
                         </select>
                         <label for="chapitre">Chapitre</label>
                     </div>
@@ -59,7 +59,7 @@
 
 
     <div id="update-modal" class="modal">
-        
+
         <div class="modal-content">
             <h4>Mise à jour</h4>
             <div class="row">
@@ -68,7 +68,7 @@
                     <input placeholder="question" type="text" id="question" name="question" value=""/>
                     <label  for="question">Question</label>
                 </div>
-                
+
                 <div class="input-field col s6">
                     <select name="difficulte" id="difficulte">
                         <option value="Facile" id="Facile">Facile</option>
@@ -146,15 +146,15 @@ $.ajax({
     dataType: 'JSON',
    data: {
      "nom_module": nom_module,
-     
+
      },
    type: 'GET',
    dataType: 'JSON',
    success: function( result )
    {
-       
+
      var len = 0;
-          
+
      if(result['data'] != null){
             len = result['data'].length;
             $('select[name="chapitre"]').empty();
@@ -163,11 +163,11 @@ $.ajax({
       for( var i = 0; i<len; i++){
                  var id = result['data'][i].id;
                   var name = result['data'][i].nom_chapitre;
-                 s+='<option value="'+ id +'">' + name + '</option>'; 
+                 s+='<option value="'+ id +'">' + name + '</option>';
                  console.log(name)
                  $('select[name="chapitre"]').html(s);
                  $('select[name="chapitre"]').material_select();
-                 
+
              }
      console.log(result);
    },
@@ -175,7 +175,7 @@ $.ajax({
   {
       //handle errors
       alert('error...');
-  
+
   }
 });
 
@@ -194,19 +194,19 @@ $.ajax({
     dataType: 'JSON',
    data: {
      "chapitre_id": chapitre_id,
-     
+
      },
    type: 'GET',
    dataType: 'JSON',
    success: function( result )
    {
-       
+
      var len = 0;
-     var s='';    
+     var s='';
      if(result['data'] != null){
             len = result['data'].length;
             $('#table_content').empty();
-            
+
      }
       for( var i = 0; i<len; i++){
                 var id = result['data'][i].id;
@@ -215,7 +215,7 @@ $.ajax({
                 var difficulte = result['data'][i].difficulte;
                 // var duree = result['data'][i].duree;
                 var note = result['data'][i].note;
-                
+
                 console.log();
                 s+='<tr>'+
                 '<td>'+ques+'</td>'+
@@ -223,11 +223,11 @@ $.ajax({
                 '<a href="#update-modal" onclick="return onUpdateQuestion(\''+id+'\',\''+question+'\',\''+note+'\',\''+difficulte+'\','+false+')" class="light-blue-text text-darken-4 tooltipped modal-trigger" data-position="top" data-tooltip="Mettre à jour">';
                 s+='<div class="material-icons">edit</div></a><a href="#delete-modal" onclick="return onDeleteQuestion('+id+','+false+')" class="red-text text-accent-4 tooltipped modal-trigger" data-position="top" data-tooltip="Supprimer">';
                 s+='<div class="material-icons">delete</div></a></td>'+
-                    '</tr>'; 
+                    '</tr>';
                 // console.log(name)
                 $('#table_content').html(s);
                 // $('select[name="chapitre"]').material_select();
-                 
+
              }
      console.log(result);
    },
@@ -235,7 +235,7 @@ $.ajax({
   {
       //handle errors
       alert('error...');
-  
+
   }
 });
 
@@ -258,7 +258,7 @@ function onDeleteQuestion(id, deleteFromDb) {
            url: "{{route('questions.deleteQuestionById')}}",
            dataType: 'JSON',
            data: {
-            "_token": "{{ csrf_token() }}",   
+            "_token": "{{ csrf_token() }}",
             "question_id": question_id,
             },
             type: 'DELETE',
@@ -307,7 +307,7 @@ function onUpdateQuestion(id,question,note,difficulte,deleteFromDb) {
                 dataType: 'JSON',
                 success: function( result )
                 {
-       
+
                 var len = 0;
                 var s='';
                 if(result['data'] != null){
@@ -333,17 +333,17 @@ function onUpdateQuestion(id,question,note,difficulte,deleteFromDb) {
                                 '<a href="#" onclick="return deleteResponse(\'response'+0+'\')" class="red-text text-accent-4">'+
                                 '<i class="material-icons ">delete</i>'+
                                 '</a>'+
-                                '</div>'; 
+                                '</div>';
                                 $('#propositions').html(s);
                         }
-                        
+
                 console.log(result);
                 },
                 error: function()
                 {
                     //handle errors
                     alert('error...');
-                
+
                 }
             });
 
@@ -360,11 +360,11 @@ function onUpdateQuestion(id,question,note,difficulte,deleteFromDb) {
                 });
                 //console.log(reponses);
             $.ajax({
-                
+
                 url: "{{route('questions.update')}}",
                 dataType: 'JSON',
                 data: {
-                    "_token": "{{ csrf_token() }}", 
+                    "_token": "{{ csrf_token() }}",
                     "question_id" : $("#hidden_id_2").val(),
                     "question" : $("#question").val(),
                     // "duree" : $("#duree").val(),
@@ -375,10 +375,10 @@ function onUpdateQuestion(id,question,note,difficulte,deleteFromDb) {
 
                 },
                 type: 'POST',
-                
+
                 success: function( result )
                 {
-            
+
                 console.log(result);
                 },
                 error: function()
@@ -388,7 +388,7 @@ function onUpdateQuestion(id,question,note,difficulte,deleteFromDb) {
                 }
             });
 
-        
+
         }
 }
 

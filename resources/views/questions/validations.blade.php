@@ -1,4 +1,4 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 
 @section('mainContent')
 
@@ -54,9 +54,9 @@
                             <p>
                                 <input type="checkbox" onchange="return vote({{$question->id}},{{$loop->index}},$('#filled-in-box'+{{$loop->index}}).is(':checked'))" class="filled-in" id="filled-in-box{{$loop->index}}"/>
                                 <label for="filled-in-box{{$loop->index}}"></label>
-                            </p>                            
+                            </p>
                             @endif
-                            
+
                         </td>
                         @endcan
                     </tr>
@@ -101,7 +101,7 @@
             url: "{{route('questions.changeValidation')}}",
             data: data,
             dataType: 'JSON',
-            success: function (data) { 
+            success: function (data) {
                 console.log(data);
             },
             error: function(error){

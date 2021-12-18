@@ -1,7 +1,7 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 
 @section('mainContent')
-    
+
     <div class="row z-depth-4 mt-p-1">
         <div class="col-s12">
             <div class="input-field col s4">
@@ -18,7 +18,7 @@
             </div>
             <div class="input-field col s4">
                 <select name="filiere" id="filiere">
-                        
+
                     <option value="m1" selected disabled>Filière</option>
                     @forelse ($filieres as $filiere)
                     <option value="{{$filiere->id}}">{{$filiere->nom_filiere}}</option>
@@ -45,7 +45,7 @@
 
             <div class="input-field col s4">
                 <select name="chapitre" id="chapitre">
-                       
+
                 </select>
                 <label for="chapitre">Chapitre</label>
             </div>
@@ -89,7 +89,7 @@
         function addQCMQuestions() {
             var tbody=$('#tableQCM tbody');
             var nbrRow=$('#tableQCM tbody tr').length;
-        
+
             var row=`<tr id='row${nbrRow}'>
                         <td>${$('#module').val()}</td>
                         <td>${$('#chapitre').val()}</td>
@@ -116,17 +116,17 @@
                 $('#filiere').removeAttr('disabled');
                 $('#semestre').removeAttr('disabled');
                 $('#module').removeAttr('disabled');
-            }    
+            }
         }
 
-     
+
         function deleteQCMQuestions(id) {
             $('#'+id).remove();
         }
 
         function createQCM() {
             var questions=[];
-            $('#tableQCM tbody tr').each(function (index, elem) { 
+            $('#tableQCM tbody tr').each(function (index, elem) {
                 var question={
                     "chapitre": $(this).children('td').eq(1).text(),
                     "nbrQuestion": parseInt($(this).children('td').eq(2).text())
@@ -147,19 +147,19 @@
                 url: "{{route('evaluations.store')}}",
                 data: qcm,
                 dataType: 'JSON',
-                success: function (data) { 
+                success: function (data) {
                     console.log(data);
-                    $("#tableQCM tbody tr").remove(); 
+                    $("#tableQCM tbody tr").remove();
                     $( '#description' ).val("");
                     $( '#duree' ).val("");
                     $( '#difficulte' ).val("");
                 },
-                error: function (error) { 
+                error: function (error) {
 
                 },
-                beforeSend: function () { 
+                beforeSend: function () {
 
-                }  
+                }
             });
         }
 
@@ -178,14 +178,14 @@ $.ajax({
 
     "_token": "{{ csrf_token() }}",
      "filiere_id": filiere_id,
-     
+
      },
    type: 'GET',
    dataType: 'JSON',
    success: function( result )
    {
      var len = 0;
-          
+
      if(result['data'] != null){
             len = result['data'].length;
             $('select[name="semestre"]').empty();
@@ -194,7 +194,7 @@ $.ajax({
       for( var i = 0; i<len; i++){
                  var id = result['data'][i].id;
                   var name = result['data'][i].libelle;
-                 s+='<option value="' + id  + '">' + name + '</option>'; 
+                 s+='<option value="' + id  + '">' + name + '</option>';
                  $('select[name="semestre"]').html(s);
                  $('select[name="semestre"]').material_select();
                  console.log(name);
@@ -204,7 +204,7 @@ $.ajax({
   {
       //handle errors
       alert('error...');
-  
+
   }
 });
 
@@ -225,14 +225,14 @@ $.ajax({
 
     "_token": "{{ csrf_token() }}",
      "semestre_id": semestre_id,
-     
+
      },
    type: 'GET',
    dataType: 'JSON',
    success: function( result )
    {
      var len = 0;
-          
+
      if(result['data'] != null){
             len = result['data'].length;
             $('select[name="module"]').empty();
@@ -241,7 +241,7 @@ $.ajax({
       for( var i = 0; i<len; i++){
                  var id = result['data'][i].id;
                   var name = result['data'][i].nom_module;
-                 s+='<option value="' + name  + '">' + name + '</option>'; 
+                 s+='<option value="' + name  + '">' + name + '</option>';
                  $('select[name="module"]').html(s);
                  $('select[name="module"]').material_select();
                  console.log(name);
@@ -251,7 +251,7 @@ $.ajax({
   {
       //handle errors
       alert('error...');
-  
+
   }
 });
 
@@ -270,14 +270,14 @@ $.ajax({
     dataType: 'JSON',
    data: {
      "nom_module": nom_module,
-     
+
      },
    type: 'GET',
    dataType: 'JSON',
    success: function( result )
    {
      var len = 0;
-          
+
      if(result['data'] != null){
             len = result['data'].length;
             $('select[name="chapitre"]').empty();
@@ -286,17 +286,17 @@ $.ajax({
       for( var i = 0; i<len; i++){
                  var id = result['data'][i].id;
                   var name = result['data'][i].nom_chapitre;
-                 s+='<option value="' + name + '">' + name + '</option>'; 
+                 s+='<option value="' + name + '">' + name + '</option>';
                  $('select[name="chapitre"]').html(s);
                  $('select[name="chapitre"]').material_select();
-                 
+
              }
    },
    error: function()
   {
       //handle errors
       alert('error...');
-  
+
   }
 });
 

@@ -6,7 +6,7 @@ use App\Niveau;
 use App\Filiere;
 use App\Semestre;
 use App\Module;
-use App\semestreModule;
+use App\SemestreModule;
 use App\SemestreModuleProf;
 use Illuminate\Http\Request;
 class AffectationProfessorController extends Controller
@@ -24,7 +24,7 @@ class AffectationProfessorController extends Controller
     }
     public function store(Request $request)
     {
-        $semestre_module_existant = semestreModule::get()->where('semestre_id', $request->semestre)->where('module_id', $request->module)->first();
+        $semestre_module_existant = SemestreModule::get()->where('semestre_id', $request->semestre)->where('module_id', $request->module)->first();
         $semestre_module_prof_existant = SemestreModuleProf::get()->where('semestre_module_id', $semestre_module_existant->id)->first();
         if ($semestre_module_prof_existant) {
             $prof = User::get()->where('id', $request->professor)->first();
@@ -72,7 +72,7 @@ class AffectationProfessorController extends Controller
     {
         //$this->validate($request, ['nom_filiere' => 'required|exists:filieres,nom_filiere']);
         $selectSemestre = $request->get('semestre');
-        $listSemestreModule = semestreModule::get()->where('semestre_id', $selectSemestre);
+        $listSemestreModule = SemestreModule::get()->where('semestre_id', $selectSemestre);
         $data = array();
         foreach ($listSemestreModule as $semestreModule) {
             $moduleExistant = Module::get()->where('id', $semestreModule->module_id)->first();

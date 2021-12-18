@@ -1,11 +1,11 @@
-@extends('layouts.mainLayout')
+@extends('layouts.mainlayout')
 
 @section('mainContent')
-    
+
     <div class="row z-depth-4 mt-p-1">
 
         <table class="centered">
-            <thead> 
+            <thead>
                 <tr>
                     <th>Description</th>
                     <th>Date de création</th>
@@ -14,7 +14,7 @@
                     <th>Nombre de questions</th>
                     <th>Résultats</th>
                 </tr>
-            </thead>    
+            </thead>
             <tbody>
                 @forelse ($qcms as $qcm)
                 <tr id="{{$qcm->id}}">
@@ -31,8 +31,8 @@
         <h4 class="flow-text">Aucun qcm trouvé à ce moment</h4>
     @endforelse
             </tbody>
-        </table>   
-    
+        </table>
+
     </div>
 
      <!-- Modal Structure -->
@@ -83,5 +83,5 @@
                 }
             });
         }
-    </script> 
+    </script>
 @endsection

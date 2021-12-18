@@ -6,7 +6,7 @@ use App\Filiere;
 use App\Module;
 use App\Niveau;
 use App\Semestre;
-use App\semestreModule;
+use App\SemestreModule;
 use Illuminate\Http\Request;
 
 class NiveauController extends Controller
@@ -51,7 +51,7 @@ class NiveauController extends Controller
             foreach ($filieresById as $filiere) {
                 $semestresFiliere = Semestre::get()->where('filiere_id', $filiere->id);
                 foreach ($semestresFiliere as $semestre) {
-                    $array_semestre_module = semestreModule::get()->where('semestre_id', $semestre->id);
+                    $array_semestre_module = SemestreModule::get()->where('semestre_id', $semestre->id);
                     foreach ($array_semestre_module as $semestre_module) {
                         $moduleExistant = Module::get()->where('id', $semestre_module->module_id)->first();
                         array_push($data, $moduleExistant);
@@ -60,7 +60,7 @@ class NiveauController extends Controller
             }
             Niveau::destroy($idNiveau);
             foreach ($data as $itemModule) {
-                $newArray_semestre_module = semestreModule::get()->where('module_id', $itemModule->id);
+                $newArray_semestre_module = SemestreModule::get()->where('module_id', $itemModule->id);
                 if ($newArray_semestre_module) {
                     continue;
                 } else {

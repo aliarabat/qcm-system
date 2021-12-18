@@ -247,11 +247,11 @@ class EvaluationController extends Controller
         $qcm = Qcm::whereId($qcmId)->first();
         $questionsIds = explode('-', $qcm->reference);
         $qcm['questions'] = Question::whereIn('id', $questionsIds)->get()->shuffle();
-        foreach ($qcm['questions'] as $key => $question) {
+        foreach ($qcm['questions'] as $question) {
             $question->propositions = $question->propositions->shuffle();
         }
-
-        return view('evaluations.evaluate', compact(['qcm']));
+        // dd($qcm);
+        return view('evaluations.evaluate', compact('qcm'));
     }
 
     public function end(Request $request)
