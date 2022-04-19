@@ -85,7 +85,7 @@
                         borderColor: 'rgba(54, 162, 235)',
                         showLine:true
                     }],
-                    
+
                 }
             });
     </script>

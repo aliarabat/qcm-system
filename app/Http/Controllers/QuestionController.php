@@ -28,8 +28,6 @@ class QuestionController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
-        
     }
 
     public function index()
@@ -45,7 +43,7 @@ class QuestionController extends Controller
      */
     public function create()
 
-    { 
+    {
          $filieress=[];
         $semestre_module_profs = SemestreModuleProf::where('professor_id',Auth::user()->id)->get();
         foreach($semestre_module_profs as $semestre_module_prof ){
@@ -65,12 +63,12 @@ class QuestionController extends Controller
                             array_push($filieress,$filiere);
                         }
                }
-           } 
+           }
         }
-          
+
         }
         //return response()->json( $test);
-        
+
         return view(
             'questions.create',
             ['filieres' => $filieress]
@@ -128,7 +126,7 @@ class QuestionController extends Controller
         $note =  $request->get('note');
         $difficulte =  $request->get('difficulte');
         $propositions =  $request->get('propositions');
-        
+
         $quest = Question::find($id);
         $propositions_to_delete = Proposition::get()->where('question_id',$id);
         foreach($propositions_to_delete as $p){
@@ -141,18 +139,18 @@ class QuestionController extends Controller
         //$quest->save();
         $rep = $request->get('reponses');
         return response()->json($rep);
-        
+
         foreach($propositions as $prop => $props){
             $proposition = new Proposition();
             $proposition->question_id=$id;
             $proposition->proposition = $props;
             $proposition->reponse = $rep[$prop];
-            
+
             // $proposition->save();
-           
+
         }
-        
-    
+
+
     }
     public function destroy()
     {
@@ -251,7 +249,7 @@ class QuestionController extends Controller
         $data = array();
         $questions = [];
         $questions = Question::where('chapitre_id', $chapitre->id)->with('propositions')->get();
-        
+
         foreach ($questions as $question) {
             array_push($data, $question);
         }
@@ -262,7 +260,7 @@ class QuestionController extends Controller
 
     public function deleteQuestionById(Request $request){
         $propositions = Proposition::get()->where('question_id',$request->get('question_id'));
-        
+
         foreach($propositions as $p){
             $p->delete();
         }

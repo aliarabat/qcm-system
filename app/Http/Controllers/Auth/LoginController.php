@@ -29,26 +29,18 @@ class LoginController extends Controller
      */
     // protected $redirectTo = '/home';
 
-    public function authenticated(Request $request, $user){
-        
+    public function authenticated(Request $request, $user)
+    {
+
         // User role
-        $role = $user->role->name; 
-        
+        $role = $user->role->name;
+
         // Check user role
-        switch ($role) {
-            case 'ADMIN':
-                    return redirect('/mainparts');
-                break;
-            case 'STUDENT':
-                    return redirect('/evaluations');
-                break; 
-            case 'PROFESSOR':
-                    return redirect('/questions/creation');
-            break;
-            default:
-                    return redirect('/login'); 
-                break;
-        }
+        return match ($role) {
+            'MANAGER' => redirect('/mainparts'),
+            'STUDENT' => redirect('/evaluations'),
+            'PROFESSOR' => redirect('/questions/creation')
+        };
     }
 
     /**

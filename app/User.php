@@ -19,7 +19,7 @@ class User extends Authenticatable
      */
     public function role()
     {
-        return $this->belongsTo('App\Role');
+        return $this->belongsTo(Role::class);
     }
 
     public function semestres()
@@ -28,7 +28,7 @@ class User extends Authenticatable
     }
 
     protected $fillable = [
-        'first_name','last_name' ,'email', 'password','role_id'
+        'first_name', 'last_name', 'email', 'password', 'role_id'
     ];
 
     /**
@@ -48,4 +48,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function hasRole(string $role)
+    {
+        return $this->role->name == $role;
+    }
 }
